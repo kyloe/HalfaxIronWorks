@@ -7,7 +7,7 @@ include("scripts/WidgetFactory.js");
 
 
 //
-// Create main object 
+// Create main object  
 // Add a comment    
 //
 
