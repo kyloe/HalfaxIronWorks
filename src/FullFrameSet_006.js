@@ -8,6 +8,7 @@ include("scripts/WidgetFactory.js");
 
 //
 // Create main object 
+// Add a comment
 //
 
 function FullFrameSet_006() {
