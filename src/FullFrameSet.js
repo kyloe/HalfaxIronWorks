@@ -92,7 +92,7 @@ FullFrameSet.setValues = function() {
     FullFrameSet.topbarBarWidth = parseFloat(FullFrameSet.widgets["TopBarWidth"].text, 10);
     FullFrameSet.topbarRelativeWidth = parseFloat(FullFrameSet.widgets["TopBarRelativeWidth"].text, 10);
     FullFrameSet.handleRampHolePosition = parseFloat(FullFrameSet.widgets["HandleRampHolePosition"].text, 10);
-
+    FullFrameSet.includeRampHandle = FullFrameSet.widgets["IncludeRampHandle"].checked;
 
 	FullFrameSet.setDerivedValues();
 
@@ -225,7 +225,7 @@ FullFrameSet.createIcon = function(documentInterface) {
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),10,12);
     this.createRectangle(documentInterface, addOperation,new RVector(1,1),8,10);
 	this.createText(documentInterface, addOperation,new RVector(0,0),"HX");
-	this.createText(documentInterface, addOperation,new RVector(3,7),"07");
+	this.createText(documentInterface, addOperation,new RVector(3,7),"08");
 	
 	return addOperation;
 };
@@ -242,7 +242,11 @@ FullFrameSet.createFrameA = function(documentInterface, addOperation) {
 	FullFrameSet.createFrameAInner(documentInterface, addOperation);	
 	FullFrameSet.drillFrameAHoles(documentInterface, addOperation);
 	FullFrameSet.drillPlasticHoles(documentInterface, addOperation);
-	FullFrameSet.drillFrameAHandleRampHolesVariablePosition(documentInterface, addOperation,FullFrameSet.handleRampHolePosition);
+
+    if (FullFrameSet.includeRampHandle)
+        {
+        FullFrameSet.drillFrameAHandleRampHolesVariablePosition(documentInterface, addOperation,FullFrameSet.handleRampHolePosition);
+	    }
 	// FullFrameSet.drillFrameAHandleRampHoles(documentInterface, addOperation);
 	return addOperation;
 };
