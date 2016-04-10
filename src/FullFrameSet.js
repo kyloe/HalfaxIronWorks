@@ -4,6 +4,7 @@
 
 include("scripts/library.js");
 include("scripts/WidgetFactory.js");	
+include("scripts/File/SaveAs/SaveAs.js");
 
 
 //
@@ -33,6 +34,7 @@ FullFrameSet.init = function(formWidget) {
 
 FullFrameSet.setValues = function() {
 
+    FullFrameSet.customerName = FullFrameSet.widgets["CustomerName"].text;
     FullFrameSet.finishedWidth = parseFloat(FullFrameSet.widgets["FinishedWidth"].text, 10);
     FullFrameSet.finishedHeight = parseFloat(FullFrameSet.widgets["FinishedHeight"].text, 10);
     FullFrameSet.cutoutHeight = parseFloat(FullFrameSet.widgets["CutoutHeight"].text, 10);
@@ -212,8 +214,13 @@ FullFrameSet.create = function(documentInterface) {
 	FullFrameSet.createSidebar(documentInterface, addOperation);
 	FullFrameSet.createTopbar(documentInterface, addOperation);
     	FullFrameSet.createBottombar(documentInterface, addOperation);
+// debugger;
+    FullFrameSet.commentBox(documentInterface, addOperation);
+    
+    var saveAsAction = new SaveAs();
 
-    	
+    saveAsAction.save(FullFrameSet.customerName+"_W_"+FullFrameSet.finishedWidth+"_x_H_"+FullFrameSet.finishedHeight+".dxf","R27",false);    
+
     return addOperation;
 };
 
@@ -225,9 +232,27 @@ FullFrameSet.createIcon = function(documentInterface) {
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),10,12);
     this.createRectangle(documentInterface, addOperation,new RVector(1,1),8,10);
 	this.createText(documentInterface, addOperation,new RVector(0,0),"HX");
-	this.createText(documentInterface, addOperation,new RVector(3,7),"08");
+	this.createText(documentInterface, addOperation,new RVector(3,7),"09");
 	
 	return addOperation;
+};
+
+//********************************************************************************************************************
+//
+//  Comments box
+//
+//********************************************************************************************************************
+
+
+FullFrameSet.commentBox = function(documentInterface, addOperation) {
+
+    this.createRectangle(documentInterface, addOperation,new RVector(0,0),120,40);
+    this.createText(documentInterface, addOperation,new RVector(5,30),FullFrameSet.customerName);
+    this.createText(documentInterface, addOperation,new RVector(5,20),"Dimensions (WxH)");
+    this.createText(documentInterface, addOperation,new RVector(5,10),FullFrameSet.finishedWidth+"x"+FullFrameSet.finishedHeight);
+    
+
+    return addOperation;
 };
 
 
