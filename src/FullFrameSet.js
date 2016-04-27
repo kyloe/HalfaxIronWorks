@@ -219,7 +219,7 @@ FullFrameSet.create = function(documentInterface) {
     
     var saveAsAction = new SaveAs();
 
-    saveAsAction.save(FullFrameSet.customerName+"_W_"+FullFrameSet.finishedWidth+"_x_H_"+FullFrameSet.finishedHeight+".dxf","R27",false);    
+    saveAsAction.save("../DXF_WINDOW_DRAWINGS/"+FullFrameSet.customerName+"_W_"+FullFrameSet.finishedWidth+"_x_H_"+FullFrameSet.finishedHeight+".dxf","R27",false);    
 
     return addOperation;
 };
@@ -232,7 +232,7 @@ FullFrameSet.createIcon = function(documentInterface) {
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),10,12);
     this.createRectangle(documentInterface, addOperation,new RVector(1,1),8,10);
 	this.createText(documentInterface, addOperation,new RVector(0,0),"HX");
-	this.createText(documentInterface, addOperation,new RVector(3,7),"09");
+	this.createText(documentInterface, addOperation,new RVector(3,7),"10");
 	
 	return addOperation;
 };
@@ -246,10 +246,10 @@ FullFrameSet.createIcon = function(documentInterface) {
 
 FullFrameSet.commentBox = function(documentInterface, addOperation) {
 
-    this.createRectangle(documentInterface, addOperation,new RVector(0,0),120,40);
-    this.createText(documentInterface, addOperation,new RVector(5,30),FullFrameSet.customerName);
-    this.createText(documentInterface, addOperation,new RVector(5,20),"Dimensions (WxH)");
-    this.createText(documentInterface, addOperation,new RVector(5,10),FullFrameSet.finishedWidth+"x"+FullFrameSet.finishedHeight);
+    this.createRectangle(documentInterface, addOperation,new RVector(0,0),400,80);
+    this.createBigText(documentInterface, addOperation,new RVector(5,75),FullFrameSet.customerName);
+    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
+    this.createBigText(documentInterface, addOperation,new RVector(5,25),FullFrameSet.finishedWidth+"x"+FullFrameSet.finishedHeight);
     
 
     return addOperation;
@@ -784,6 +784,21 @@ FullFrameSet.createText = function(documentInterface, addOperation, pos,text ) {
         var textEntity = new RTextEntity(documentInterface.getDocument(), textData);
         addOperation.addObject(textEntity);
 };
+
+FullFrameSet.createBigText = function(documentInterface, addOperation, pos,text ) {
+    var textData = new RTextData();
+    textData.setText(text);
+    textData.setTextHeight(20);
+    textData.setTextWidth(10);
+    textData.setPosition(pos);
+    textData.move(pos);
+    
+    var textEntity = new RTextEntity(documentInterface.getDocument(), textData);
+    addOperation.addObject(textEntity);
+};
+
+
+
 
 FullFrameSet.drawPolyLine = function(documentInterface, addOperation, vectors) {
 
