@@ -154,7 +154,7 @@ FullFrameSet.setDefaults = function() {
 	FullFrameSet.topbarWidth = .1;
 	FullFrameSet.topbarRelativeWidth = .1;
 	FullFrameSet.frameAPlasticHoleSpacing = 1;
-	FullFrameSet.sidebarSealHoleSpacing = 3;
+	FullFrameSet.sidebarSealHoleSpacing = 3;	
  
 	FullFrameSet.setDerivedValues();
 
@@ -217,10 +217,13 @@ FullFrameSet.create = function(documentInterface) {
 // debugger;
     FullFrameSet.commentBox(documentInterface, addOperation);
     
-    var saveAsAction = new SaveAs();
+    //var saveAsAction = new SaveAs();
 
-    saveAsAction.save("../DXF_WINDOW_DRAWINGS/"+FullFrameSet.customerName+"_W_"+FullFrameSet.finishedWidth+"_x_H_"+FullFrameSet.finishedHeight+".dxf","R27",false);    
+    //saveAsAction.save("../DXF_WINDOW_DRAWINGS/"+FullFrameSet.customerName+"_W_"+FullFrameSet.finishedWidth+"_x_H_"+FullFrameSet.finishedHeight+".dxf","R27",false);    
 
+    //documentInterface.getDocument().setFileName();    
+    
+    
     return addOperation;
 };
 
@@ -232,7 +235,7 @@ FullFrameSet.createIcon = function(documentInterface) {
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),10,12);
     this.createRectangle(documentInterface, addOperation,new RVector(1,1),8,10);
 	this.createText(documentInterface, addOperation,new RVector(0,0),"HX");
-	this.createText(documentInterface, addOperation,new RVector(3,7),"10");
+	this.createText(documentInterface, addOperation,new RVector(3,7),"11");
 	
 	return addOperation;
 };
