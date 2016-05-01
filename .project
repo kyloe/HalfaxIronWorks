@@ -8,4 +8,11 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/HXWorks</name>
+			<type>2</type>
+			<location>/home/ian/opt/qcad-3.7.7-pro-linux-x86_64/scripts/HXWorks</location>
+		</link>
+	</linkedResources>
 </projectDescription>
