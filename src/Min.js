@@ -62,8 +62,11 @@ Min.create = function(documentInterface)
 	// First create all the required layers
 
 	var layers = ["Laser Cutting", "Text", "Etching", "Dimensions"];
-
 	this.createLayers(documentInterface, layers);
+
+	var blocks = ["Masons Opening", "Frame A", "Frame C", "Arch Piece",
+			"Full Side Bar", "Split Side Bar"];
+	this.createBlocks(documentInterface, blocks);
 
 	// Then add the items to each layer
 	// empty layers will not be displayed
@@ -103,14 +106,31 @@ Min.create = function(documentInterface)
 	this.createBottomBar(documentInterface, addOperation, offset(this.root,
 			maxWidth, 6));
 
+	this.createSimpleBars(documentInterface, addOperation, offset(this.root,
+			maxWidth, 7));
+
 	addOperation.apply(documentInterface.getDocument());
 
 	// and add some labels
 
 	documentInterface.setCurrentLayer("Text");
 
-	createText(documentInterface, addOperation, this.root
-			.operator_add(new RVector(10, -10)), "Masons opening as measured");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 0),
+			"Masons opening as measured");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 1),
+			"Frame A");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 2),
+			"Frame C");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 3),
+			"Capped Arch");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 4),
+			"Full Side Bar");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 5),
+			"Split Side Bar");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 6),
+			"Bottom Bar");
+	createText(documentInterface, addOperation, offset(this.root, maxWidth, 7),
+			"Simple Bars");
 
 	addOperation.apply(documentInterface.getDocument());
 
@@ -143,75 +163,196 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
 	var height = this.getFloat("MasonsOpeningHeight");
-	var allowance = this.getFloat("FrameARelativeWidth")
-			+ this.getFloat("Allowance"); // 26+2.5
+	var allowance = this.getFloat("FrameARelativeWidth") / 2;
+
 	var topOnly = true;
+
 	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
-			height, allowance);
+			height, this.getFloat("ArchBarWidth") + allowance);
 	// TODO: Work out why 20 - needs to be derived from UI
 	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
-			height, 20, topOnly);
+			height, allowance, topOnly);
 	// createGothicArchRel(documentInterface,
 	// addOperation,pos,radius,width,height,allowance+this.getFloat("FrameCBarWidth"));
-	var spring = getGothicSpring(radius,width,height);
-	this.createFrameAOutline(documentInterface, addOperation,pos.operator_add(new RVector(-9.5,0)),width+19,spring);
-	//TODO: Work out why this is 19 ??
+	var spring = getGothicSpring(radius, width, height);
+	// this.createFrameAOutline(documentInterface,
+	// addOperation,pos.operator_add(new RVector(-9.5,0)),width+19,spring);
+	// debugger;
+	var frameARoot = pos.operator_add(new RVector(-allowance, -allowance));
+
+	this.createFrameAOutline(documentInterface, addOperation, frameARoot,
+			width, spring + allowance);
+
+	// Create Plastic holes as hole arrays
+
+	var bottomBarHoles = new HoleArray();
+
+	var startPos = frameARoot.operator_add(new RVector(this
+			.getFloat("CutoutWidth")
+			+ this.getFloat("PlasticHoleInset"), this
+			.getFloat("PlasticHoleMargin")));
+
+	var endPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+			- this.getFloat("CutoutWidth") - this.getFloat("PlasticHoleInset"),
+			this.getFloat("PlasticHoleMargin")));
+
+	bottomBarHoles.autospace(startPos, endPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	bottomBarHoles.render(documentInterface, addOperation)
+
+	var leftBarHoles = new HoleArray();
+
+	var lhstartPos = frameARoot.operator_add(new RVector(this
+			.getFloat("PlasticHoleMargin"), this.getFloat("CutoutHeight")
+			+ this.getFloat("PlasticHoleInset")));
+
+	var lhendPos = frameARoot.operator_add(new RVector(this
+			.getFloat("PlasticHoleMargin"), spring + allowance
+			- this.getFloat("PlasticHoleInset")));
+
+	leftBarHoles.autospace(lhstartPos, lhendPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	leftBarHoles.render(documentInterface, addOperation);
+
+	var rightBarHoles = new HoleArray();
+
+	var rhstartPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+			- this.getFloat("PlasticHoleMargin"), this.getFloat("CutoutHeight")
+			+ this.getFloat("PlasticHoleInset")));
+
+	var rhendPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+			- this.getFloat("PlasticHoleMargin"), spring + allowance
+			- this.getFloat("PlasticHoleInset")));
+
+	rightBarHoles.autospace(rhstartPos, rhendPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	rightBarHoles.render(documentInterface, addOperation);
+
 	};
-		
-Min.createFrameAOutline = function(documentInterface, addOperation,pos,width,spring) {
-var height 			= this.getFloat("MasonsOpeningHeight")-this.getFloat("FrameARelativeHeight");
-var cutoutWidth 	= this.getFloat("CutoutWidth");
-var cutoutHeight 	= this.getFloat("CutoutHeight");
-var bendReliefSlotWidth = this.getFloat("BendReliefSlotWidth");
 
-var va = new Array(
-		
-        pos.operator_add(new RVector(cutoutWidth-bendReliefSlotWidth,cutoutHeight)),
-        pos.operator_add(new RVector(0, cutoutHeight)),
-        pos.operator_add(new RVector(0, spring)),
-        pos.operator_add(new RVector(cutoutWidth-bendReliefSlotWidth, spring))
-);
+Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
+		spring)
+	{
+	var height = this.getFloat("MasonsOpeningHeight")
+			- this.getFloat("FrameARelativeHeight");
+	var cutoutWidth = this.getFloat("CutoutWidth");
+	var cutoutHeight = this.getFloat("CutoutHeight");
+	var bendReliefSlotWidth = this.getFloat("BendReliefSlotWidth");
+	var allowance = this.getFloat("FrameARelativeWidth") / 2;
 
-createPolyLine(documentInterface, addOperation, va);
+	// Hinge parameters
 
-//var va2 = new Array(
-//        pos.operator_add(new RVector(cutoutWidth, height-cutoutHeight)),
-//        pos.operator_add(new RVector(cutoutWidth, height)),
-//        pos.operator_add(new RVector(width-cutoutWidth,height)),
-//        pos.operator_add(new RVector(width-cutoutWidth,height-cutoutHeight))
-// );
-//
-//createPolyLine(documentInterface, addOperation, va2);
+	var h_length = this.getFloat("HingeMountLength");
+	var h_width = this.getFloat("HingeMountWidth");
+	var r = this.getFloat("HingeMountRadius");
+	var d = this.getFloat("HingeMountHoleDia");
+	// spring needs to be OUTER SPRING
+	var va = new Array(
 
-var va3 = new Array(
-       pos.operator_add(new RVector(width-cutoutWidth+bendReliefSlotWidth,spring)),
-        pos.operator_add(new RVector(width,spring)),
-        pos.operator_add(new RVector(width,cutoutHeight)),
-        pos.operator_add(new RVector(width-cutoutWidth+bendReliefSlotWidth,cutoutHeight))
-);
-createPolyLine(documentInterface, addOperation, va3);
+	pos.operator_add(new RVector(cutoutWidth - bendReliefSlotWidth,
+			cutoutHeight)), pos.operator_add(new RVector(0, cutoutHeight)), pos
+			.operator_add(new RVector(0, spring
+					- this.getFloat("BendSlotHeight"))), pos
+			.operator_add(new RVector(this.getFloat("FrameABarWidth")
+					- this.getFloat("ArchBarWidth")
+					+ this.getFloat("BendSlotWidth"), spring
+					- this.getFloat("BendSlotHeight"))), pos
+			.operator_add(new RVector(this.getFloat("FrameABarWidth")
+					- this.getFloat("ArchBarWidth")
+					+ this.getFloat("BendSlotWidth"), spring)), pos
+			.operator_add(new RVector(this.getFloat("FrameABarWidth")
+					- this.getFloat("ArchBarWidth"), spring))
 
-var va4 = new Array(
-        pos.operator_add(new RVector(width-cutoutWidth,cutoutHeight)),
-        pos.operator_add(new RVector(width-cutoutWidth,0)),
-        pos.operator_add(new RVector(cutoutWidth,0)),
-        pos.operator_add(new RVector(cutoutWidth,cutoutHeight))
-);
-createPolyLine(documentInterface, addOperation, va4);
+	);
 
-// Now insert the bend reliefs
+	createPolyLine(documentInterface, addOperation, va);
 
-var diameter 	= this.getFloat("BendReliefDiameter");
-var slotWidth = this.getFloat("BendReliefSlotWidth");
-var slotLength 	= this.getFloat("BendReliefSlotLength");
+	// var va2 = new Array(
+	// pos.operator_add(new RVector(cutoutWidth, height-cutoutHeight)),
+	// pos.operator_add(new RVector(cutoutWidth, height)),
+	// pos.operator_add(new RVector(width-cutoutWidth,height)),
+	// pos.operator_add(new RVector(width-cutoutWidth,height-cutoutHeight))
+	// );
+	//
+	// createPolyLine(documentInterface, addOperation, va2);
 
-createVBendRelief(documentInterface, addOperation,pos.operator_add(new RVector(cutoutWidth-bendReliefSlotWidth,cutoutHeight)),1,1, diameter, slotWidth, slotLength);
-createVBendRelief(documentInterface, addOperation,pos.operator_add(new RVector(cutoutWidth-bendReliefSlotWidth, height-cutoutHeight)),-1,1, diameter, slotWidth, slotLength);
-createVBendRelief(documentInterface, addOperation,pos.operator_add(new RVector(width-cutoutWidth,height-cutoutHeight)),-1,-1, diameter, slotWidth, slotLength);
-createVBendRelief(documentInterface, addOperation,pos.operator_add(new RVector(width-cutoutWidth,cutoutHeight)),1,-1, diameter, slotWidth, slotLength);
+	var va3 = new Array(pos.operator_add(new RVector(width + 2 * allowance
+			- this.getFloat("FrameABarWidth") + this.getFloat("ArchBarWidth"),
+			spring)), pos.operator_add(new RVector(width + 2 * allowance
+			- this.getFloat("FrameABarWidth") + this.getFloat("ArchBarWidth")
+			- this.getFloat("BendSlotWidth"), spring)), pos
+			.operator_add(new RVector(width + 2 * allowance
+					- this.getFloat("FrameABarWidth")
+					+ this.getFloat("ArchBarWidth")
+					- this.getFloat("BendSlotWidth"), spring
+					- this.getFloat("BendSlotHeight"))), pos
+			.operator_add(new RVector(width + 2 * allowance, spring
+					- this.getFloat("BendSlotHeight"))));
 
-};
+	createPolyLine(documentInterface, addOperation, va3);
 
+	createGothicHinge(documentInterface, addOperation, pos
+			.operator_add(new RVector(width + 2 * allowance, spring - 75)),
+			h_length, h_width, r, d);
+	createGothicHinge(documentInterface, addOperation, pos
+			.operator_add(new RVector(width + 2 * allowance, spring / 2
+					- h_length / 2 - r)), h_length, h_width, r, d);
+	createGothicHinge(documentInterface, addOperation, pos
+			.operator_add(new RVector(width + 2 * allowance, 75)), h_length,
+			h_width, r, d);
+
+	line(documentInterface, addOperation, pos.operator_add(new RVector(width
+			+ 2 * allowance, spring - this.getFloat("BendSlotHeight"))), pos
+			.operator_add(new RVector(width + 2 * allowance, spring
+					- this.getFloat("BendSlotHeight") - 75 + h_length + 2 * r)));
+
+	line(documentInterface, addOperation, pos.operator_add(new RVector(width
+			+ 2 * allowance, spring / 2 + h_length / 2 + r)), pos
+			.operator_add(new RVector(width + 2 * allowance, spring
+					- this.getFloat("BendSlotHeight") - 75)));
+
+	line(documentInterface, addOperation, pos.operator_add(new RVector(width
+			+ 2 * allowance, 75 + h_length + 2 * r)), pos
+			.operator_add(new RVector(width + 2 * allowance, spring / 2
+					- h_length / 2 - r)));
+
+	line(documentInterface, addOperation, pos.operator_add(new RVector(width
+			+ 2 * allowance, cutoutHeight)), pos.operator_add(new RVector(width
+			+ 2 * allowance, 75)));
+
+	var va4 = new Array(pos.operator_add(new RVector(width + 2 * allowance,
+			cutoutHeight)), pos.operator_add(new RVector(width + 2 * allowance
+			- cutoutWidth + bendReliefSlotWidth, cutoutHeight)));
+
+	createPolyLine(documentInterface, addOperation, va4);
+
+	var va5 = new Array(pos.operator_add(new RVector(width + 2 * allowance
+			- cutoutWidth, cutoutHeight)), pos.operator_add(new RVector(width
+			+ 2 * allowance - cutoutWidth, 0)), pos.operator_add(new RVector(
+			cutoutWidth, 0)), pos.operator_add(new RVector(cutoutWidth,
+			cutoutHeight)));
+	createPolyLine(documentInterface, addOperation, va5);
+
+	// Now insert the bend reliefs
+
+	var diameter = this.getFloat("BendReliefDiameter");
+	var slotWidth = this.getFloat("BendReliefSlotWidth");
+	var slotLength = this.getFloat("BendReliefSlotLength");
+
+	createVBendRelief(documentInterface, addOperation, pos
+			.operator_add(new RVector(cutoutWidth - bendReliefSlotWidth,
+					cutoutHeight)), 1, 1, diameter, slotWidth, slotLength);
+	// createVBendRelief(documentInterface, addOperation,pos.operator_add(new
+	// RVector(cutoutWidth-bendReliefSlotWidth, height-cutoutHeight)),-1,1,
+	// diameter, slotWidth, slotLength);
+	// createVBendRelief(documentInterface, addOperation,pos.operator_add(new
+	// RVector(width-cutoutWidth,height-cutoutHeight)),-1,-1, diameter,
+	// slotWidth, slotLength);
+	createVBendRelief(documentInterface, addOperation, pos
+			.operator_add(new RVector(width + 2 * allowance - cutoutWidth,
+					cutoutHeight)), 1, -1, diameter, slotWidth, slotLength);
+
+	};
 
 Min.createFrameC = function(documentInterface, addOperation, pos)
 // ********************************************************************************************************************
@@ -225,6 +366,9 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	var height = this.getFloat("MasonsOpeningHeight");
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
 			+ this.getFloat("Allowance"); // 6+2.5
+	var sidebarHeight = getGothicSpring(radius, width, height) - allowance
+			- this.getFloat("FrameCBarWidth") / 2
+			- this.getFloat("WeldLugHoleWidth") / 2;
 
 	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
 			height, allowance);
@@ -232,23 +376,142 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
 			height, allowance + this.getFloat("FrameCBarWidth"));
 
-	var weldTabBarHeight = getGothicSpring(radius, width, height) - allowance;
+	var weldTabBarHeight = getGothicSpring(radius, width, height) - allowance
+			- this.getFloat("FrameCBarWidth") / 2
+			- this.getFloat("WeldLugHoleWidth") / 2;
 
 	// var weldTabPos = pos.operator_add(
 	// new
 	// RVector(allowance+this.getFloat("FrameCBarWidth")/2-this.getFloat("WeldLugHoleWidth")/2-this.getFloat("WeldLugHoleClearance")/2,
 	// allowance+this.getFloat("WeldLugInset")));
 
+	var insetStartHole = true;
+	var insetEndHole = false;
+
 	this.createWeldTabHoleLine(documentInterface, addOperation, pos
-			.operator_add(new RVector(allowance, allowance)), weldTabBarHeight,
-			this.getFloat("FrameCBarWidth"), NORTH);
+			.operator_add(new RVector(allowance, allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2)),
+			weldTabBarHeight, this.getFloat("FrameCBarWidth"), NORTH,
+			insetStartHole, insetEndHole);
+
+	// this.createWeldTabHoleLine(documentInterface,
+	// addOperation,
+	// pos.operator_add(new RVector(width - allowance -
+	// this.getFloat("FrameCBarWidth"),
+	// allowance+this.getFloat("FrameCBarWidth")/2+this.getFloat("WeldLugHoleWidth")/2)),
+	// weldTabBarHeight,
+	// this.getFloat("FrameCBarWidth"),
+	// NORTH);
+
+	var insetStartHole = true;
+	var insetEndHole = false;
+
 	this.createWeldTabHoleLine(documentInterface, addOperation, pos
 			.operator_add(new RVector(width - allowance
-					- this.getFloat("FrameCBarWidth"), allowance)),
-			weldTabBarHeight, this.getFloat("FrameCBarWidth"), NORTH);
+					- this.getFloat("FrameCBarWidth"), allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2)), 75, this
+			.getFloat("FrameCBarWidth"), NORTH, insetStartHole, insetEndHole);
+
+	insetStartHole = false;
+	insetEndHole = false;
+
 	this.createWeldTabHoleLine(documentInterface, addOperation, pos
-			.operator_add(new RVector(allowance, allowance)), width - 2
-			* allowance, this.getFloat("FrameCBarWidth"), EAST);
+			.operator_add(new RVector(width - allowance
+					- this.getFloat("FrameCBarWidth"), allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + 107)),
+			(sidebarHeight - 246) / 2, this.getFloat("FrameCBarWidth"), NORTH,
+			insetStartHole, insetEndHole);
+
+	insetStartHole = false;
+	insetEndHole = false;
+
+	this.createWeldTabHoleLine(documentInterface, addOperation, pos
+			.operator_add(new RVector(width - allowance
+					- this.getFloat("FrameCBarWidth"), allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + 139
+					+ (sidebarHeight - 246) / 2)), (sidebarHeight - 246) / 2,
+			this.getFloat("FrameCBarWidth"), NORTH, insetStartHole,
+			insetEndHole);
+
+	insetStartHole = false;
+	insetEndHole = true;
+
+	this.createWeldTabHoleLine(documentInterface, addOperation, pos
+			.operator_add(new RVector(width - allowance
+					- this.getFloat("FrameCBarWidth"), allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + sidebarHeight
+					- 75)), 75, this.getFloat("FrameCBarWidth"), NORTH,
+			insetStartHole, insetEndHole);
+
+	// var t_allowance = this.getFloat("TopBarRelativeWidth") / 2 +
+	// this.getFloat("Allowance"); // 6+2.5
+	// var sidebarHeight = this.getFloat("MasonsOpeningWidth") - 2 *
+	// t_allowance;
+
+	var offset = this.getFloat("Allowance")
+			+ this.getFloat("FrameCRelativeWidth") / 2
+			+ this.getFloat("FrameCBarWidth") / 2
+			- this.getFloat("WeldLugHoleWidth") / 2;
+	var w_tab_width = width - 2 * offset;
+
+	var startPos = pos.operator_add(new RVector(offset, this
+			.getFloat("Allowance")
+			+ this.getFloat("FrameCRelativeWidth") / 2));
+
+	var insetStartHole = false;
+	var insetEndHole = false;
+
+	this.createWeldTabHoleLine(documentInterface, addOperation, startPos,
+			w_tab_width, this.getFloat("FrameCBarWidth"), EAST, insetStartHole,
+			insetEndHole);
+
+	// Bottom Hinge mount holes
+
+	createHole(documentInterface, addOperation, pos.operator_add(new RVector(
+			width - allowance - this.getFloat("FrameCBarWidth") + 13, allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + 75 + 15 / 2)),
+			5.5);
+
+	createHole(documentInterface, addOperation,
+			pos
+					.operator_add(new RVector(width - allowance
+							- this.getFloat("FrameCBarWidth") + 13, allowance
+							+ this.getFloat("FrameCBarWidth") / 2
+							+ this.getFloat("WeldLugHoleWidth") / 2 + 75 + 15
+							/ 2 + 17)), 5.5);
+
+	// Bottom Hinge mount holes
+
+	createHole(documentInterface, addOperation, pos.operator_add(new RVector(
+			width - allowance - this.getFloat("FrameCBarWidth") + 13, allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + sidebarHeight / 2
+					- 17 / 2)), 5.5);
+	createHole(documentInterface, addOperation, pos.operator_add(new RVector(
+			width - allowance - this.getFloat("FrameCBarWidth") + 13, allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + sidebarHeight / 2
+					+ 17 / 2)), 5.5);
+
+	// Top holes
+
+	createHole(documentInterface, addOperation, pos.operator_add(new RVector(
+			width - allowance - this.getFloat("FrameCBarWidth") + 13, allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + sidebarHeight
+					- 75 - 15 / 2)), 5.5);
+
+	createHole(documentInterface, addOperation, pos.operator_add(new RVector(
+			width - allowance - this.getFloat("FrameCBarWidth") + 13, allowance
+					+ this.getFloat("FrameCBarWidth") / 2
+					+ this.getFloat("WeldLugHoleWidth") / 2 + sidebarHeight
+					- 75 - 15 / 2 - 17)), 5.5);
 
 	}
 
@@ -265,7 +528,7 @@ Min.createCappedArch = function(documentInterface, addOperation, pos)
 	var width = this.getFloat("MasonsOpeningWidth");
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
 			+ this.getFloat("Allowance") + 10; // TODO - work out why this is
-												// 10
+	// 10
 
 	createCappedGothicArch(documentInterface, addOperation, pos, radius, width
 			- 2 * allowance, 20);
@@ -289,7 +552,9 @@ Min.createFullSideBar = function(di, ao, pos)
 	var height = this.getFloat("MasonsOpeningHeight");
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
 			+ this.getFloat("Allowance"); // 6+2.5
-	var sidebarHeight = getGothicSpring(radius, width, height) - allowance;
+	var sidebarHeight = getGothicSpring(radius, width, height) - allowance
+			- this.getFloat("FrameCBarWidth") / 2
+			- this.getFloat("WeldLugHoleWidth") / 2;
 
 	var sidebarWidth = this.getFloat("SidebarWidth");
 	// Pick up params before calling generic routine
@@ -303,10 +568,14 @@ Min.createFullSideBar = function(di, ao, pos)
 	var lugHoleDiameter = this.getFloat("LugHoleDiameter");
 	var lugWidth = this.getFloat("LugWidth");
 	var lugHoleOffset = this.getFloat("LugHoleOffset");
+
+	var insetStartTab = false;
+	var insetEndTab = true;
+
 	createSidebar(di, ao, pos, sidebarHeight, sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset)
+			lugHoleOffset, insetStartTab, insetEndTab)
 
 	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0,
 			sidebarHeight)), pos.operator_add(new RVector(-40,
@@ -326,7 +595,9 @@ Min.createSplitSideBar = function(di, ao, pos)
 	var height = this.getFloat("MasonsOpeningHeight");
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
 			+ this.getFloat("Allowance"); // 6+2.5
-	var sidebarHeight = getGothicSpring(radius, width, height) - allowance;
+	var sidebarHeight = getGothicSpring(radius, width, height) - allowance
+			- this.getFloat("FrameCBarWidth") / 2
+			- this.getFloat("WeldLugHoleWidth") / 2;
 
 	var sidebarWidth = this.getFloat("SidebarWidth");
 	// Pick up params before calling generic routine
@@ -341,24 +612,40 @@ Min.createSplitSideBar = function(di, ao, pos)
 	var lugWidth = this.getFloat("LugWidth");
 	var lugHoleOffset = this.getFloat("LugHoleOffset");
 
+	var insetStartTab = false;
+	var insetEndTab = true;
+
 	createSidebar(di, ao, pos, 75, sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset)
+			lugHoleOffset, insetStartTab, insetEndTab);
+
+	insetStartTab = false;
+	insetEndTab = false;
+
 	createSidebar(di, ao, pos.operator_add(new RVector(0, 107)),
 			(sidebarHeight - 246) / 2, sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset)
+			lugHoleOffset, insetStartTab, insetEndTab);
+	insetStartTab = false;
+	insetEndTab = false;
+
 	createSidebar(di, ao, pos.operator_add(new RVector(0,
 			139 + (sidebarHeight - 246) / 2)), (sidebarHeight - 246) / 2,
 			sidebarWidth, mountingLugInset, mountingLugMinSpacing,
 			weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
-			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset)
+			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
+			insetStartTab, insetEndTab);
+
+	insetStartTab = true;
+	insetEndTab = false;
+
 	createSidebar(di, ao, pos.operator_add(new RVector(0, sidebarHeight - 75)),
 			75, sidebarWidth, mountingLugInset, mountingLugMinSpacing,
 			weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
-			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset)
+			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
+			insetStartTab, insetEndTab);
 
 	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0,
 			sidebarHeight)), pos.operator_add(new RVector(-40,
@@ -376,7 +663,7 @@ Min.createBottomBar = function(di, ao, pos)
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
 	var height = this.getFloat("MasonsOpeningHeight");
-	var allowance = this.getFloat("FrameCRelativeWidth") / 2
+	var allowance = this.getFloat("TopBarRelativeWidth") / 2
 			+ this.getFloat("Allowance"); // 6+2.5
 	var sidebarHeight = this.getFloat("MasonsOpeningWidth") - 2 * allowance;
 
@@ -384,7 +671,7 @@ Min.createBottomBar = function(di, ao, pos)
 	// Pick up params before calling generic routine
 	var mountingLugInset = this.getFloat("MountingLugInset");
 	var mountingLugMinSpacing = this.getFloat("MountingLugMinSpacing");
-	var weldLugInset = this.getFloat("WeldLugInset");
+	var weldLugInset = 0;
 	var weldLugMinSpacing = this.getFloat("WeldLugMinSpacing");
 	var weldLugMaxSpacing = this.getFloat("WeldLugMaxSpacing");
 	var weldLugWidth = this.getFloat("WeldLugWidth");
@@ -393,14 +680,47 @@ Min.createBottomBar = function(di, ao, pos)
 	var lugWidth = this.getFloat("LugWidth");
 	var lugHoleOffset = this.getFloat("LugHoleOffset");
 
+	var insetStartTab = false;
+	var insetEndTab = false;
+
 	createSidebar(di, ao, pos, sidebarHeight, sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset)
+			lugHoleOffset, insetStartTab, insetEndTab);
 
 	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0,
 			sidebarHeight)), pos.operator_add(new RVector(-40,
 			sidebarHeight / 2)));
+	}
+
+Min.createSimpleBars = function(di, ao, pos)
+// ********************************************************************************************************************
+//
+// Simple bars
+//
+// ********************************************************************************************************************
+	{
+	createRectangle(di, ao, pos, this.getFloat("SimpleBarWidth"), this
+			.getFloat("MasonsOpeningWidth")
+			- this.getFloat("SimpleBarRelWidth"));
+	createRectangle(di, ao, pos.operator_add(new RVector(30, 0)), this
+			.getFloat("SimpleBarWidth"), this.getFloat("MasonsOpeningWidth")
+			- this.getFloat("SimpleBarRelWidth"));
+	createRectangle(di, ao, pos.operator_add(new RVector(60, 0)), this
+			.getFloat("HoledSimpleBarWidth"), this
+			.getFloat("MasonsOpeningWidth")
+			- this.getFloat("SimpleBarRelWidth"));
+	createRectangle(di, ao, pos.operator_add(new RVector(90, 0)), this
+			.getFloat("HoledSimpleBarWidth"), this
+			.getFloat("MasonsOpeningWidth")
+			- this.getFloat("SimpleBarRelWidth"));
+
+	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0, this
+			.getFloat("MasonsOpeningWidth")
+			- this.getFloat("SimpleBarRelWidth"))), pos
+			.operator_add(new RVector(-25,
+					(this.getFloat("MasonsOpeningWidth") - this
+							.getFloat("SimpleBarRelWidth")) / 2)));
 	}
 
 Min.createMasonsOpening = function(documentInterface, addOperation, pos)
@@ -412,8 +732,15 @@ Min.createMasonsOpening = function(documentInterface, addOperation, pos)
 // ********************************************************************************************************************
 
 	{
+	block = new RBlock(documentInterface.getDocument(), "Masons Opening", pos);
+
+	documentInterface.setCurrentBlock("Masons Opening");
+
 	this.createMasonsOpeningOutline(documentInterface, addOperation, pos);
 	this.createMasonsOpeningArch(documentInterface, addOperation, pos);
+	addOperation.apply(documentInterface.getDocument());
+	documentInterface.setCurrentBlock("");
+
 	this.createMasonsOpeningDimensions(documentInterface, addOperation, pos);
 	};
 
@@ -468,7 +795,7 @@ Min.createMasonsOpeningDimensions = function(documentInterface, addOperation,
 // ********************************************************************************************************************
 
 Min.createWeldTabHoleLine = function(documentInterface, addOperation, pos,
-		length, width, orientation)
+		length, width, orientation, insetStartHole, insetEndHole)
 	{
 	// Convenience wrapper to save getting the standard dims every time
 	// pos is bottom left corner of bar
@@ -483,9 +810,91 @@ Min.createWeldTabHoleLine = function(documentInterface, addOperation, pos,
 
 	createWeldTabHoleLine(documentInterface, addOperation, pos, length, width,
 			minSpacing, maxSpacing, orientation, weldLugWidth,
-			weldLugHoleWidth, weldLugHoleClearance, weldLugInset);
+			weldLugHoleWidth, weldLugHoleClearance, weldLugInset,
+			insetStartHole, insetEndHole);
 
 	}
+
+// Min.drillPlasticHoles = function(documentInterface, addOperation,pos,spring)
+// {
+//
+// var length = spring-2*this.getfloat("FrameABarWidth");
+//	
+// var s = this.calcHoleCount(length,FullFrameSet.frameAPlasticHoleSpacing,3);
+// spacing = length/(s-1);
+//
+// var v = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// FullFrameSet.frameARoot.operator_add(new
+// RVector(5,FullFrameSet.frameABarHeight+3)),
+// FullFrameSet.plasticHoleDiameter);
+//
+// var v2 = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// FullFrameSet.frameARoot.operator_add(new
+// RVector(FullFrameSet.frameAWidth-5,FullFrameSet.frameABarHeight+3)),
+// FullFrameSet.plasticHoleDiameter);
+// s--;
+//
+// for (var i = 1; i <= s; i++) {
+// v = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// v.operator_add(new RVector(0,spacing)),
+// FullFrameSet.plasticHoleDiameter);
+// v2 = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// v2.operator_add(new RVector(0,spacing)),
+// FullFrameSet.plasticHoleDiameter);
+// }
+//
+
+// FullFrameSet.createHole(documentInterface, addOperation,
+// FullFrameSet.frameARoot.operator_add(new
+// RVector(FullFrameSet.cutoutWidth+11,FullFrameSet.frameAHeight-5.5)), 99);
+//
+// var width =
+// FullFrameSet.frameAWidth-(FullFrameSet.frameABarWidth+38)-(FullFrameSet.frameABarWidth+3)
+// ;
+//	
+// //s = Math.ceil(width/FullFrameSet.frameAPlasticHoleSpacing);
+// s =
+// FullFrameSet.calcHoleCount(width,FullFrameSet.frameAPlasticHoleSpacing,3);
+// spacing = width/(s-1);
+//
+// var v3 = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// FullFrameSet.frameARoot.operator_add(new
+// RVector(FullFrameSet.frameABarWidth+38,5)),
+// FullFrameSet.plasticHoleDiameter);
+//
+// var v4 = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// FullFrameSet.frameARoot.operator_add(new
+// RVector(FullFrameSet.frameABarWidth+38,FullFrameSet.frameAHeight-5)),
+// FullFrameSet.plasticHoleDiameter);
+//
+// s--;
+//
+// for (var i = 1; i <= s; i++) {
+// v3 = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// v3.operator_add(new RVector(spacing,0)),
+// FullFrameSet.plasticHoleDiameter);
+// v4 = FullFrameSet.createHole(documentInterface,
+// addOperation,
+// v4.operator_add(new RVector(spacing,0)),
+// FullFrameSet.plasticHoleDiameter);
+// }
+//
+//
+// //FullFrameSet.createHole(documentInterface, addOperation,
+// FullFrameSet.frameARoot.operator_add(new
+// RVector(FullFrameSet.cutoutWidth+11,FullFrameSet.frameAHeight-5.5)), 99);
+//
+//
+//
+//
+// };
 
 Min.createIcon = function(documentInterface)
 	{
@@ -520,6 +929,25 @@ Min.createLayers = function(documentInterface, layers)
 		}
 
 	addLayerOperation.apply(documentInterface.getDocument());
+
+	};
+
+Min.createBlocks = function(documentInterface, blocks)
+
+//
+// createLayers: adds a number of layers from an array of text labels
+//
+	{
+
+	var addBlockOperation = new RAddObjectsOperation(false);
+
+	for (i = 0; i < blocks.length; i++)
+		{
+		addBlockOperation.addObject(new RBlock(documentInterface.getDocument(),
+				blocks[i], new RVector(0, 0)));
+		}
+
+	addBlockOperation.apply(documentInterface.getDocument());
 
 	};
 
@@ -578,6 +1006,7 @@ Min.getFloat = function(label)
 		}
 	else
 		{
+		print("Error getting " + label);
 		return label.concat(": not defined");
 		}
 	}
@@ -621,15 +1050,6 @@ Min.setValues = function()
 	this.frameABarHeight = parseFloat(this.widgets["FrameABarHeight"].text, 10);
 	this.frameAPlasticHoleSpacing = parseFloat(
 			this.widgets["FrameAPlasticHoleSpacing"].text, 10);
-
-	this.handleRampHoleHeight = parseFloat(
-			this.widgets["HandleRampHoleHeight"].text, 10);
-	this.handleRampHoleWidth = parseFloat(
-			this.widgets["HandleRampHoleWidth"].text, 10);
-	this.handleRampHoleCentres = parseFloat(
-			this.widgets["HandleRampHoleCentres"].text, 10);
-	this.handleRampHoleInset = parseFloat(
-			this.widgets["HandleRampHoleInset"].text, 10);
 
 	this.frameCRelativeWidth = parseFloat(
 			this.widgets["FrameCRelativeWidth"].text, 10);
@@ -690,9 +1110,6 @@ Min.setValues = function()
 	this.topbarBarWidth = parseFloat(this.widgets["TopBarWidth"].text, 10);
 	this.topbarRelativeWidth = parseFloat(
 			this.widgets["TopBarRelativeWidth"].text, 10);
-	this.handleRampHolePosition = parseFloat(
-			this.widgets["HandleRampHolePosition"].text, 10);
-	this.includeRampHandle = this.widgets["IncludeRampHandle"].checked;
 
 	this.setDerivedValues();
 
