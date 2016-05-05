@@ -759,7 +759,8 @@ FullFrameSet.createBottombar = function(documentInterface, addOperation) {
 
 
 	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.sidebarWidth)));
-	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
+	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,
+			FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
 	
 };
 

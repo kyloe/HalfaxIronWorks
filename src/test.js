@@ -34,22 +34,21 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 		{
 
 		// Special case - centre the lug
-		var l = length / 2 - lugWidth / 2;
+		var l = length / 2 - FullFrameSet.lugWidth / 2;
 
-		if (orientation == EAST)
+		if (orientation == 0)
 			{ // if the orientation East/West {
 			joinerOffset = new RVector(l, 0);
 			}
-		else if (orientation == NORTH)
+		else if (orientation == Math.PI / 2)
 			{
 			joinerOffset = new RVector(0, l);
 			}
-		else if (orientation == WEST)
+		else if (orientation == Math.PI)
 			{
 			joinerOffset = new RVector(-l, 0);
 			}
 		else
-			// SOUTH
 			{
 			joinerOffset = new RVector(0, -l);
 			}
@@ -57,8 +56,8 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 		var lugStart = line(documentInterface, addOperation, pos, pos
 				.operator_add(joinerOffset));
 
-		var lastLineStart = createMountingLug(documentInterface, addOperation,
-				lugStart, orientation, lugHoleDiameter, lugWidth, lugHoleOffset);
+		var lastLineStart = calcWeldTabCount(documentInterface, addOperation,
+				lugStart, orientation);
 
 		lastPoint = line(documentInterface, addOperation, lastLineStart,
 				lastLineStart.operator_add(joinerOffset));
@@ -69,20 +68,19 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 
 		var l = (length - lugWidth) / (lugCount - 1) - lugWidth;
 
-		if (orientation == EAST)
+		if (orientation == 0)
 			{ // if the orientation East/West {
 			joinerOffset = new RVector(l, 0);
 			}
-		else if (orientation == NORTH)
+		else if (orientation == Math.PI / 2)
 			{
 			joinerOffset = new RVector(0, l);
 			}
-		else if (orientation == WEST)
+		else if (orientation == Math.PI)
 			{
 			joinerOffset = new RVector(-l, 0);
 			}
 		else
-			// SOUTH
 			{
 			joinerOffset = new RVector(0, -l);
 			}
@@ -108,10 +106,12 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 	return lastPoint;
 	}
 
+
+
 function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		mountingLugInset, mountingLugMinSpacing, weldLugInset, weldLugWidth,
 		weldLugDepth, weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter,
-		lugWidth, lugHoleOffset, insetStartTab, insetEndTab,suppressTop)
+		lugWidth, lugHoleOffset)
 	{
 	// ********************************************************************************************************************
 	//
@@ -120,50 +120,22 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 	// ********************************************************************************************************************
 
 	var v;
-	if (suppressTop === 'undefined')
-		{
-		suppressTop = false;
-		}
-	
+
 	v = line(di, ao, pos, pos.operator_add(new RVector(-1 * sidebarWidth, 0)));
 	v = line(di, ao, v, v.operator_add(new RVector(0, mountingLugInset)));
 	v = createLuggedLine(di, ao, v, sidebarHeight - 2 * mountingLugInset,
-			mountingLugMinSpacing, 1, NORTH, lugHoleDiameter, lugWidth,
+			mountingLugMinSpacing, 2, NORTH, lugHoleDiameter, lugWidth,
 			lugHoleOffset);
 	v = line(di, ao, v, v.operator_add(new RVector(0, mountingLugInset)));
-	if (!suppressTop)
-		{
-		v = line(di, ao, v, v.operator_add(new RVector(sidebarWidth, 0)));		
-		}
-	else
-		{
-		v=v.operator_add(new RVector(sidebarWidth,0));
-		}
+	v = line(di, ao, v, v.operator_add(new RVector(sidebarWidth, 0)));
+	v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
 
-	var tabLength = sidebarHeight;
+	v = createTabbedLine(di, ao, v, sidebarHeight - 2 * weldLugInset,
+			weldLugMinSpacing, weldLugMaxSpacing, SOUTH, weldLugWidth,
+			weldLugDepth);
 
-	if (insetStartTab)
-		{
-		tabLength = tabLength - weldLugInset;
-		}
+	v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
 
-	if (insetEndTab)
-		{
-		tabLength = tabLength - weldLugInset;
-		}
-
-	if (insetStartTab)
-		{
-		v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
-		}
-
-	v = createTabbedLine(di, ao, v, tabLength, weldLugMinSpacing,
-			weldLugMaxSpacing, SOUTH, weldLugWidth, weldLugDepth);
-
-	if (insetEndTab)
-		{
-		v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
-		}
 	}
 
 function createMountingLug(documentInterface, addOperation, pos, angle,
@@ -196,11 +168,11 @@ function createMountingLug(documentInterface, addOperation, pos, angle,
 
 	var lineData = new RLineData(v1, v2);
 	var line = new RLineEntity(documentInterface.getDocument(), lineData);
-	addOperation.addObject(line, false);
+	addOperation.addObject(line);
 
 	var lineData2 = new RLineData(v3, v4);
 	var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
-	addOperation.addObject(line2, false);
+	addOperation.addObject(line2);
 
 	createHole(documentInterface, addOperation, v5, lugHoleDiameter);
 
@@ -208,7 +180,7 @@ function createMountingLug(documentInterface, addOperation, pos, angle,
 	var arcData = new RArcData(arc);
 	var arcEnt = new RArcEntity(documentInterface.getDocument(), arcData);
 
-	addOperation.addObject(arcEnt, false);
+	addOperation.addObject(arcEnt);
 
 	return v4; // start point for next object
 
@@ -264,8 +236,7 @@ function createTabbedLine(documentInterface, addOperation, pos, length,
 	// plot lug and if not last lug - join with a line
 
 	// var count = FullFrameSet.calculateSpacing(minSpacing,maxSpacing,length);
-	var count = calcWeldTabCount(length, minSpacing, 1);
-
+	var count = calcWeldTabCount(length, minSpacing, 3);
 	var joinerOffset;
 	var lastPoint;
 
@@ -325,28 +296,22 @@ function createWeldLug(documentInterface, addOperation, pos, weldLugWidth,
 
 function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
 		barWidth, minSpacing, maxSpacing, orientation, weldLugWidth,
-		weldLugHoleWidth, weldLugHoleClearance, weldLugInset, insetStartHole,
-		insetEndHole)
+		weldLugHoleWidth, weldLugHoleClearance, weldLugInset)
 	{
+
+	// Math.PI/2 = Lugs West
+	// Math.PI = Lugs South
+	// 3*Math.PI/2 = Lugs East
+	// 0 = Lugs North
 
 	// Calculate the number of lug
 	// based on orientation - work out what the far end of the line is
 	// For each lug
 	// plot lug and if not last lug - join with a line
 
-	var length = barLength + 2 * weldLugHoleClearance;
+	var length = barLength - 2 * weldLugInset + 2 * weldLugHoleClearance;
 
-	if (insetStartHole)
-		{
-		length = length - weldLugInset;
-		}
-	if (insetEndHole)
-		{
-		length = length - weldLugInset;
-		}
-
-	var count = calcWeldTabCount(length, minSpacing, 1);
-
+	var count = calcWeldTabCount(length, minSpacing, 3);
 	var joinerOffset;
 
 	var l = (length - weldLugWidth - 2 * weldLugHoleClearance) / count;
@@ -354,17 +319,9 @@ function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
 	var x, y;
 	var startPos;
 
-	var t_weldLugInset = 0;
-	if (insetStartHole)
-		{
-		t_weldLugInset = weldLugInset;
-
-		}
-
 	if (orientation == EAST)
 		{ // if the orientation East/West {
-
-		startPos = pos.operator_add(new RVector(t_weldLugInset
+		startPos = pos.operator_add(new RVector(weldLugInset
 				- weldLugHoleClearance, barWidth / 2 - weldLugHoleWidth / 2
 				- weldLugHoleClearance));
 		joinerOffset = new RVector(l, 0);
@@ -373,18 +330,17 @@ function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
 		}
 	else if (orientation == NORTH)
 		{
-
-		startPos = pos.operator_add(new RVector(barWidth / 2 - weldLugHoleWidth
-				/ 2 - weldLugHoleClearance, t_weldLugInset
-				+ weldLugHoleClearance));
-
+		startPos = pos
+				.operator_add(new RVector(barWidth / 2 - weldLugHoleWidth / 2
+						- weldLugHoleClearance, weldLugInset
+						+ weldLugHoleClearance));
 		joinerOffset = new RVector(0, l);
 		x = weldLugHoleWidth + 2 * weldLugHoleClearance;
 		y = weldLugWidth + 2 * weldLugHoleClearance;
 		}
 	else if (orientation == WEST)
 		{
-		startPos = pos.operator_add(new RVector(-t_weldLugInset
+		startPos = pos.operator_add(new RVector(-weldLugInset
 				- weldLugHoleClearance, barWidth / 2 - weldLugHoleWidth / 2
 				- weldLugHoleClearance));
 		joinerOffset = new RVector(-l, 0);
@@ -394,7 +350,7 @@ function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
 	else
 		{
 		startPos = pos.operator_add(new RVector(barWidth / 2 - weldLugHoleWidth
-				/ 2 - weldLugHoleClearance, -t_weldLugInset
+				/ 2 - weldLugHoleClearance, -weldLugInset
 				- weldLugHoleClearance));
 		joinerOffset = new RVector(0, -l); // Tested OK
 		x = -(weldLugHoleWidth + 2 * weldLugHoleClearance);
@@ -414,7 +370,8 @@ function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
 				x, y);
 		}
 
-	}
+	}		
+
 
 function createRectangleArray(documentInterface, addOperation, pos, width,
 		height, count, offset)
@@ -452,15 +409,11 @@ function createRectangle(documentInterface, addOperation, pos, x, y)
 	return v2;
 	}
 
-
-
-
-
 function line(documentInterface, addOperation, start, end)
 	{
 	var lineData = new RLineData(start, end);
 	var line = new RLineEntity(documentInterface.getDocument(), lineData);
-	addOperation.addObject(line, false);
+	addOperation.addObject(line);
 	return end;
 	}
 
@@ -511,8 +464,8 @@ function createVBendRelief(documentInterface, addOperation, pos, vorientation,
 		}
 	var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
 
-	addOperation.addObject(line, false);
-	addOperation.addObject(line2, false);
+	addOperation.addObject(line);
+	addOperation.addObject(line2);
 
 	// var arc = RArc.createFrom3Points( v2, pos.operator_add(new
 	// RVector(slotWidth/2,vorientation*(slotLength+diameter))),v4 );
@@ -533,7 +486,7 @@ function createVBendRelief(documentInterface, addOperation, pos, vorientation,
 	var keyHoleData = new RArcData(arc);
 	var keyHole = new RArcEntity(documentInterface.getDocument(), keyHoleData);
 
-	addOperation.addObject(keyHole, false);
+	addOperation.addObject(keyHole);
 
 	}
 
@@ -542,7 +495,7 @@ function createText(documentInterface, addOperation, pos, text)
 	//
 	// createText: creates a text label at the specified position
 	// width and height are fixed for an Icon
-	var textData = new RTextData();
+	// var textData = new RTextData();
 	textData.setText(text);
 	textData.setTextHeight(4);
 	textData.setTextWidth(2);
@@ -584,23 +537,20 @@ function createCappedGothicArch(documentInterface, addOperation, pos, radius,
 	// create capped arc - specify outer width and bar 'width' along with other
 	// params
 	// Create two arcs
-
 	createGothicArchTop(documentInterface, addOperation, pos, radius, width,
 			getGothicApex(radius, width));
-	
 	createGothicArchTop(documentInterface, addOperation, pos
-			.operator_add(new RVector(-barWidth, 0)), radius + barWidth, width
-			+ 2 * barWidth, getGothicApex(radius + barWidth, width + 2
+			.operator_add(new RVector(barWidth, 0)), radius - barWidth, width
+			- 2 * barWidth, getGothicApex(radius - barWidth, width - 2
 			* barWidth));
 	// join the bases
-	
 	var lineData = new RLineData(pos, pos
-			.operator_add(new RVector(-barWidth, 0)));
+			.operator_add(new RVector(barWidth, 0)));
 	var line = new RLineEntity(documentInterface.getDocument(), lineData);
 	addOperation.addObject(line, false);
 
 	var lineData2 = new RLineData(pos.operator_add(new RVector(width, 0)), pos
-			.operator_add(new RVector(width + barWidth, 0)));
+			.operator_add(new RVector(width - barWidth, 0)));
 	var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
 	addOperation.addObject(line2, false);
 	}
@@ -668,52 +618,6 @@ function createGothicArchTop(documentInterface, addOperation, pos, radius,
 	addOperation.addObject(arcEntity2, false);
 	}
 
-function createArcBar(di, ao, pos,holeArcWidth,holeArcRadius,barWidth,holeSpaceAngle, weldLugWidth, weldLugDepth,sidebarWidth)
-{
-
-//get length of arc
-var length=getGothicArchLength(holeArcRadius,holeArcWidth)
-//get spacing for angle on that length
-var spacing=getArcLength(holeArcRadius,holeSpaceAngle);
-//plot tabs
-createTabbedLine(di, ao, pos.operator_add(new RVector(0,length)), length,
-		spacing, spacing, SOUTH, weldLugWidth, weldLugDepth);
-corner = line(di, ao,pos.operator_add(new RVector(-sidebarWidth,0)),pos.operator_add(new RVector(-barWidth,0)));
-corner = line(di, ao,corner,corner.operator_add(new RVector(0,length)));
-corner = line(di, ao,corner,corner.operator_add(new RVector(barWidth,0)));
-
-// cap it
-//and back home 
-// then add holes
-}
-
-function getGothicArchLength(radius,width)
-	{
-	// Gets distance along arch from spring to apex (i.e one side)
-	var arc = new RArc(
-			new RVector(0, 0), // Center
-			radius, // Radius
-			0, // Start angle
-			getGothicAngle(radius, width), // End angle
-			false // Reversed
-			);
-	return arc.getLength();
-	}
-
-function getArcLength(radius,angle)
-	{
-	// Gets distance along arch from spring to apex (i.e one side)
-	var arc = new RArc(
-			new RVector(0, 0), // Center
-			radius, // Radius
-			0, // Start angle
-			angle, // End angle
-			false // Reversed
-			);
-	return arc.getLength();
-	}
-
-
 function getGothicAngle(radius, width)
 	{
 
@@ -734,151 +638,9 @@ function getGothicApex(radius, width)
 	return radius * Math.sin(getGothicAngle(radius, width));
 	}
 
-function createGothicHinge(di, ao, pos, length, width, r, d)
-	{
-
-	// Outline
-	arc(di, ao, pos.operator_add(new RVector(r, 0)), r, WEST, NORTH, true);
-	line(di, ao, pos.operator_add(new RVector(r, r)), pos
-			.operator_add(new RVector(width - r, r)));
-	arc(di, ao, pos.operator_add(new RVector(width - r, 2 * r)), r, SOUTH,
-			EAST, false);
-	line(di, ao, pos.operator_add(new RVector(width, 2 * r)), pos
-			.operator_add(new RVector(width, length)));
-	arc(di, ao, pos.operator_add(new RVector(width - r, length)), r, EAST,
-			NORTH, false);
-	line(di, ao, pos.operator_add(new RVector(width - r, length + r)), pos
-			.operator_add(new RVector(r, length + r)));
-	arc(di, ao, pos.operator_add(new RVector(r, length + 2 * r)), r, SOUTH,
-			WEST, true);
-	// Holes
-	createHole(di, ao, pos.operator_add(new RVector(10, 6.5 + r)), d);
-	createHole(di, ao, pos.operator_add(new RVector(-2, length / 2 + r)), d);
-	createHole(di, ao, pos.operator_add(new RVector(10, length + r - 6.5)), d);
-
-	return pos.operator_add(new RVector(0, length + 2 * r));
-	}
-
-function arc(di, ao, pos, radius, start, end, reverse)
-	{
-	var arcData = new RArcData(pos, radius, start, end, reverse);
-	var arcEnt = new RArcEntity(di.getDocument(), arcData);
-	ao.addObject(arcEnt, false);
-
-	}
-
 function offset(vector, dist, n)
 	{
 	// Given a vector, offsets it by n * max width to right for plopping onto
 	// screen
 	return vector.operator_add(new RVector(n * (dist + 50), 0));
-	}
-
-// Class definitions - this is how this shit sould be done - just converting as I
-// go
-
-//
-// Class: Rectangle
-//
-
-
-function Rectangle(){};
-
-Rectangle.prototype.create = function (pos, x, y)
-	{
-	//
-	// createRectangle: creates a simple rectangle based on width & height
-	//
-	this.x = x;
-	this.y = y;
-	this.pos = pos;
-	};
-
-Rectangle.prototype.render = function(di,ao)
-	{
-	var va = new Array(new RVector(0, 0), new RVector(0, y), new RVector(x, y),
-			new RVector(x, 0));
-
-	for (var i = 0; i < va.length; ++i)
-		{
-		var v1 = va[i].operator_add(pos);
-		var v2 = va[(i + 1) % va.length].operator_add(pos);
-		var lineData = new RLineData(v1, v2);
-		var line = new RLineEntity(documentInterface.getDocument(), lineData);
-
-		addOperation.addObject(line, false);
-		}
-	return v2;
-	};
-
-
-
-//
-// CLASS: Hole array
-//
-
-function HoleArray()
-	{
-	};
-
-HoleArray.prototype.create = function(pos, size, count, offset)
-	{
-	// pos - start position
-	// size - diameter
-	// count - how many
-	// offset - vector for the 'step' to the next hole
-
-	this.size = size;
-	this.pos = pos;
-	this.count = count;
-	this.offset = offset;
-	}
-
-HoleArray.prototype.interpolate = function(startPos, endPos, size, count)
-	{
-	// startPos - center of first hole
-	// endPos - center of last hole
-	// count - how many
-
-	this.size = size;
-	this.pos = startPos;
-	this.count = count;
-
-	var xOffset = (endPos.getX() - startPos.getX()) / (count - 1);
-	var yOffset = (endPos.getY() - startPos.getY()) / (count - 1);
-
-	this.offset = new RVector(xOffset, yOffset);
-	}
-
-HoleArray.prototype.autospace = function(startPos, endPos, size, approxSpacing)
-	{
-	// startPos - center of first hole
-	// endPos - center of last hole
-	// count - how many
-
-	this.size = size;
-	this.pos = startPos;
-
-
-	var xOffset = endPos.getX() - startPos.getX();
-	var yOffset = endPos.getY() - startPos.getY();
-
-	var l = startPos.getDistanceTo2d(endPos);
-	
-    this.count = (l-(l % approxSpacing))/approxSpacing+1;
-	
-    this.offset = new RVector(xOffset/(this.count-1), yOffset/(this.count-1));
-	
-	}
-
-HoleArray.prototype.render = function(di, ao)
-	{
-
-	var currentPos = new RVector(this.pos.getX(), this.pos.getY());
-	for (var i = 0; i < this.count; i++)
-		{
-		createHole(di, ao, currentPos, this.size);
-		currentPos = currentPos.operator_add(this.offset);
-		}
-
 	}

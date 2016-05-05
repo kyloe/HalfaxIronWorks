@@ -4,7 +4,7 @@
 
 include("scripts/library.js");
 include("scripts/WidgetFactory.js");
-include("scripts/HXWorks/primitives.js");
+include("./primitives.js");
 
 //
 // Create main object
@@ -527,10 +527,9 @@ Min.createCappedArch = function(documentInterface, addOperation, pos)
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
-			+ this.getFloat("Allowance") + 10; // TODO - work out why this is
+			+ this.getFloat("Allowance")+this.getFloat("FrameCBarWidth"); // TODO - work out why this is
 	// 10
-
-	createCappedGothicArch(documentInterface, addOperation, pos, radius, width
+	createCappedGothicArch(documentInterface, addOperation, pos, radius-allowance, width
 			- 2 * allowance, 20);
 
 	this.addDimensions(documentInterface, addOperation, pos
@@ -593,6 +592,7 @@ Min.createSplitSideBar = function(di, ao, pos)
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
 	var height = this.getFloat("MasonsOpeningHeight");
+	
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
 			+ this.getFloat("Allowance"); // 6+2.5
 	var sidebarHeight = getGothicSpring(radius, width, height) - allowance
@@ -640,13 +640,21 @@ Min.createSplitSideBar = function(di, ao, pos)
 
 	insetStartTab = true;
 	insetEndTab = false;
-
+	var suppressTop = true;
+	
 	createSidebar(di, ao, pos.operator_add(new RVector(0, sidebarHeight - 75)),
 			75, sidebarWidth, mountingLugInset, mountingLugMinSpacing,
 			weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
 			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
-			insetStartTab, insetEndTab);
+			insetStartTab, insetEndTab,suppressTop);
 
+	var holeArcRadius = radius-allowance-this.getFloat("FrameCBarWidth") / 2;
+	var barWidth=this.getFloat("TopBarWidth");
+	var holeSpaceAngle=2*Math.PI/36; // Ten degrees of arc
+	var holeArcWidth=width-2*allowance-this.getFloat("FrameCBarWidth");
+	
+	createArcBar(di, ao, pos.operator_add(new RVector(0, sidebarHeight)),holeArcWidth,holeArcRadius,barWidth,holeSpaceAngle, weldLugWidth, weldLugDepth,sidebarWidth);
+	
 	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0,
 			sidebarHeight)), pos.operator_add(new RVector(-40,
 			sidebarHeight / 2)));
@@ -700,28 +708,63 @@ Min.createSimpleBars = function(di, ao, pos)
 //
 // ********************************************************************************************************************
 	{
-	createRectangle(di, ao, pos, this.getFloat("SimpleBarWidth"), this
-			.getFloat("MasonsOpeningWidth")
-			- this.getFloat("SimpleBarRelWidth"));
-	createRectangle(di, ao, pos.operator_add(new RVector(30, 0)), this
-			.getFloat("SimpleBarWidth"), this.getFloat("MasonsOpeningWidth")
-			- this.getFloat("SimpleBarRelWidth"));
-	createRectangle(di, ao, pos.operator_add(new RVector(60, 0)), this
-			.getFloat("HoledSimpleBarWidth"), this
-			.getFloat("MasonsOpeningWidth")
-			- this.getFloat("SimpleBarRelWidth"));
-	createRectangle(di, ao, pos.operator_add(new RVector(90, 0)), this
-			.getFloat("HoledSimpleBarWidth"), this
-			.getFloat("MasonsOpeningWidth")
-			- this.getFloat("SimpleBarRelWidth"));
+	
+	var allowance_17 = this.getFloat("FrameCRelativeWidth") + this.getFloat("Allowance") + this.getFloat("FrameCBarWidth"); // TODO - work out why this is
+	// 17mm bar fits outer arc of capped arch
 
-	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0, this
-			.getFloat("MasonsOpeningWidth")
-			- this.getFloat("SimpleBarRelWidth"))), pos
-			.operator_add(new RVector(-25,
-					(this.getFloat("MasonsOpeningWidth") - this
-							.getFloat("SimpleBarRelWidth")) / 2)));
-	}
+	var radius_17 = this.getFloat("Radius")-allowance_17+this.getFloat("CappedArchBarWidth");
+	var width_17 = this.getFloat("MasonsOpeningWidth")-2*allowance_17+this.getFloat("CappedArchBarWidth");
+
+	
+	createRectangle(di, ao, pos, this.getFloat("SimpleBarWidth"),getGothicArchLength(radius_17,width_17) );
+	createRectangle(di, ao, pos.operator_add(new RVector(30, 0)), this.getFloat("SimpleBarWidth"),getGothicArchLength(radius_17,width_17) );
+	
+	// 22mm bar fits ouer arc of frame A
+	var allowance_22 = this.getFloat("Allowance")-this.getFloat("FrameARelativeWidth") + this.getFloat("FrameABarWidth") - this.getFloat("ArchBarWidth"); // TODO - work out why this is
+	var radius_22 = this.getFloat("Radius")-allowance_22;
+	var width_22 = this.getFloat("MasonsOpeningWidth")-2*allowance_22;	
+	
+	createRectangle(di, ao, pos.operator_add(new RVector(60, 0)), this.getFloat("HoledSimpleBarWidth"),getGothicArchLength(radius_22,width_22));
+	createRectangle(di, ao, pos.operator_add(new RVector(90, 0)), this.getFloat("HoledSimpleBarWidth"),getGothicArchLength(radius_22,width_22));
+	
+	// Add holes to this one
+	
+	var firstBarHoles = new HoleArray();
+
+	var firstStartPos = pos.operator_add(new RVector(60+this.getFloat("HoledBarMargin"),this.getFloat("HoledBarBottomInset")));
+	var firstEndPos = pos.operator_add(new RVector(60+this.getFloat("HoledBarMargin"),getGothicArchLength(radius_22,width_22)-this.getFloat("HoledBarTopInset")));
+
+
+	firstBarHoles.autospace(firstStartPos,firstEndPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	firstBarHoles.render(di,ao);
+
+
+	var secondBarHoles = new HoleArray();
+
+	var secondStartPos = pos.operator_add(new RVector(90+this.getFloat("HoledBarMargin"),this.getFloat("HoledBarBottomInset")));
+	var secondEndPos = pos.operator_add(new RVector(90+this.getFloat("HoledBarMargin"),getGothicArchLength(radius_22,width_22)-this.getFloat("HoledBarTopInset")));
+
+
+	secondBarHoles.autospace(secondStartPos,secondEndPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	secondBarHoles.render(di,ao);
+
+
+	
+	// Dimensions
+	
+	this.addDimensions(di, ao, 	pos, 
+			pos.operator_add(new RVector(0, getGothicArchLength(radius_17,width_17))), 
+			pos.operator_add(new RVector(-25,getGothicArchLength(radius_17,width_17)/2))
+			);
+
+	this.addDimensions(di, ao, 	pos.operator_add(new RVector(112,0)), 
+			pos.operator_add(new RVector(112, getGothicArchLength(radius_22,width_22))), 
+			pos.operator_add(new RVector(137,getGothicArchLength(radius_22,width_22)/2))
+			);
+
+	};
 
 Min.createMasonsOpening = function(documentInterface, addOperation, pos)
 
