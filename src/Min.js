@@ -10,6 +10,8 @@ include("./primitives.js");
 // Create main object
 //
 
+var ui;
+
 function Min()
 	{
 	};
@@ -31,7 +33,9 @@ Min.init = function(formWidget)
 		{
 		this.widgets = getWidgets(formWidget);
 		}
-
+	
+	ui = this;
+	
 	};
 
 Min.generate = function(documentInterface, file)
@@ -369,9 +373,16 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	var sidebarHeight = getGothicSpring(radius, width, height) - allowance
 			- this.getFloat("FrameCBarWidth") / 2
 			- this.getFloat("WeldLugHoleWidth") / 2;
-
+	var rad = radius-allowance;
+	
+//print("Outer arc frame c radius "+rad)
+	
 	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
 			height, allowance);
+
+//rad = radius-(allowance + this.getFloat("FrameCBarWidth"));
+//print("Outer arc frame c radius "+rad);
+
 
 	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
 			height, allowance + this.getFloat("FrameCBarWidth"));
@@ -386,7 +397,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	// allowance+this.getFloat("WeldLugInset")));
 
 	var insetStartHole = true;
-	var insetEndHole = false;
+	var insetEndHole = true;
 
 	this.createWeldTabHoleLine(documentInterface, addOperation, pos
 			.operator_add(new RVector(allowance, allowance
@@ -448,6 +459,29 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 					- 75)), 75, this.getFloat("FrameCBarWidth"), NORTH,
 			insetStartHole, insetEndHole);
 
+	// Create arc of weld tab holes
+
+	var arc = new WeldTabHoleArc(
+			pos.operator_add(new RVector(
+					width-radius,
+					getGothicSpring(radius, width, height)
+					)
+			
+			),
+			radius-allowance-this.getFloat("FrameCBarWidth")/2,
+			0,
+			getGothicAngle(radius-allowance,width-2*allowance),
+			true,
+			true,
+			Math.PI/36
+			);
+	
+	arc.render(documentInterface, addOperation);
+	
+	// stash the arc so we can retrieve its parameters for the side bars
+	
+	this.holeArc = arc;
+	
 	// var t_allowance = this.getFloat("TopBarRelativeWidth") / 2 +
 	// this.getFloat("Allowance"); // 6+2.5
 	// var sidebarHeight = this.getFloat("MasonsOpeningWidth") - 2 *
@@ -568,16 +602,48 @@ Min.createFullSideBar = function(di, ao, pos)
 	var lugWidth = this.getFloat("LugWidth");
 	var lugHoleOffset = this.getFloat("LugHoleOffset");
 
-	var insetStartTab = false;
+	var insetStartTab = true;
 	var insetEndTab = true;
-
+	var suppressTop = true;
+	
 	createSidebar(di, ao, pos, sidebarHeight, sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset, insetStartTab, insetEndTab)
+			lugHoleOffset, insetStartTab, insetEndTab,suppressTop);
+	var holeArcRadius = radius-allowance-this.getFloat("FrameCBarWidth") / 2;
+	var barWidth=this.getFloat("TopBarWidth");
+	var holeSpaceAngle=this.holeArc.getAngularSpacing(); // Ten degrees of arc
+	var holeArcWidth=width-2*allowance-this.getFloat("FrameCBarWidth");
+	
+	createArcBar(di, ao, pos.operator_add(new RVector(0, sidebarHeight)),holeArcWidth,holeArcRadius,barWidth,holeSpaceAngle, weldLugWidth, weldLugDepth,sidebarWidth);
+	
+	// Add some plastic holes
+	
+	var BarHoles = new HoleArray();
 
+	var StartPos = pos.operator_add(new RVector(-barWidth+this.getFloat("HoledBarMargin"),sidebarHeight+this.getFloat("HoledBarBottomInset")));
+	var EndPos = pos.operator_add(new RVector(-barWidth+this.getFloat("HoledBarMargin"),sidebarHeight+getGothicArchLength(holeArcRadius,holeArcWidth)-this.getFloat("HoledBarTopInset")));
+
+
+	BarHoles.autospace(StartPos,EndPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	BarHoles.render(di,ao);
+
+	
+	
+	
+	// Alternative method for drawing tabs
+	
+	var tabLine = new WeldTabbedLine(new RVector(0,0),new RVector(500,0),true,true);
+	tabLine.setSpacing(this.holeArc.getLinearSpacing());
+	tabLine.render(di,ao);
+	
+	// Add dimensions
+	
+	
+	
 	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0,
-			sidebarHeight)), pos.operator_add(new RVector(-40,
+			sidebarHeight+getGothicArchLength(holeArcRadius,holeArcWidth))), pos.operator_add(new RVector(-40,
 			sidebarHeight / 2)));
 	};
 
@@ -655,8 +721,22 @@ Min.createSplitSideBar = function(di, ao, pos)
 	
 	createArcBar(di, ao, pos.operator_add(new RVector(0, sidebarHeight)),holeArcWidth,holeArcRadius,barWidth,holeSpaceAngle, weldLugWidth, weldLugDepth,sidebarWidth);
 	
+// Add some plastic holes
+	
+	var BarHoles = new HoleArray();
+
+	var StartPos = pos.operator_add(new RVector(-barWidth+this.getFloat("HoledBarMargin"),sidebarHeight+this.getFloat("HoledBarBottomInset")));
+	var EndPos = pos.operator_add(new RVector(-barWidth+this.getFloat("HoledBarMargin"),sidebarHeight+getGothicArchLength(holeArcRadius,holeArcWidth)-this.getFloat("HoledBarTopInset")));
+
+
+	BarHoles.autospace(StartPos,EndPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	BarHoles.render(di,ao);
+
+// And some dimensions
+	
 	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0,
-			sidebarHeight)), pos.operator_add(new RVector(-40,
+			sidebarHeight+getGothicArchLength(holeArcRadius,holeArcWidth))), pos.operator_add(new RVector(-40,
 			sidebarHeight / 2)));
 	}
 
@@ -836,6 +916,7 @@ Min.createMasonsOpeningDimensions = function(documentInterface, addOperation,
 // Support functions
 //
 // ********************************************************************************************************************
+
 
 Min.createWeldTabHoleLine = function(documentInterface, addOperation, pos,
 		length, width, orientation, insetStartHole, insetEndHole)
