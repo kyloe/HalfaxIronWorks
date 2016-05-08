@@ -111,7 +111,8 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		mountingLugInset, mountingLugMinSpacing, weldLugInset, weldLugWidth,
 		weldLugDepth, weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter,
-		lugWidth, lugHoleOffset, insetStartTab, insetEndTab, suppressTop)
+		lugWidth, lugHoleOffset, insetStartTab, insetEndTab, suppressTop,
+		mirror)
 	{
 	// ********************************************************************************************************************
 	//
@@ -141,24 +142,35 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		}
 
 	var tabLength = sidebarHeight;
+	//
+	// if (insetStartTab)
+	// {
+	// tabLength = tabLength - weldLugInset;
+	// }
+	//
+	// if (insetEndTab)
+	// {
+	// tabLength = tabLength - weldLugInset;
+	// }
+	//
+	// if (insetStartTab)
+	// {
+	// v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
+	// }
+	//
 
-	if (insetStartTab)
-		{
-		tabLength = tabLength - weldLugInset;
-		}
+	var endPos = v;
 
-	if (insetEndTab)
-		{
-		tabLength = tabLength - weldLugInset;
-		}
+	var startPos = v.operator_add(new RVector(0, -sidebarHeight));
 
-	if (insetStartTab)
-		{
-		v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
-		}
+	var tabLine = new WeldTabbedLine(startPos, endPos, insetStartTab,
+			insetEndTab);
+	tabLine.setMirror(mirror);
+	tabLine.render(di, ao);
 
-	v = createTabbedLine(di, ao, v, tabLength, weldLugMinSpacing,
-			weldLugMaxSpacing, SOUTH, weldLugWidth, weldLugDepth);
+	//	
+	// v = createTabbedLine(di, ao, v, tabLength, weldLugMinSpacing,
+	// weldLugMaxSpacing, SOUTH, weldLugWidth, weldLugDepth);
 
 	if (insetEndTab)
 		{
@@ -334,7 +346,9 @@ function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
 	// For each lug
 	// plot lug and if not last lug - join with a line
 
-	var length = barLength + 2 * weldLugHoleClearance;
+	// var length = barLength + 2 * weldLugHoleClearance;
+
+	var length = barLength;
 
 	if (insetStartHole)
 		{
@@ -679,12 +693,23 @@ function createArcBar(di, ao, pos, holeArcWidth, holeArcRadius, barWidth,
 	// get spacing for angle on that length
 	var spacing = getArcLength(holeArcRadius, holeSpaceAngle);
 	// plot tabs
-	createTabbedLine(di, ao, pos.operator_add(new RVector(0, length)), length,
-			spacing, spacing, SOUTH, weldLugWidth, weldLugDepth);
+	// createTabbedLine(di, ao, pos.operator_add(new RVector(0, length)),
+	// length,
+	// spacing, spacing, SOUTH, weldLugWidth, weldLugDepth);
 	corner = line(di, ao, pos.operator_add(new RVector(-sidebarWidth, 0)), pos
 			.operator_add(new RVector(-barWidth, 0)));
 	corner = line(di, ao, corner, corner.operator_add(new RVector(0, length)));
 	corner = line(di, ao, corner, corner.operator_add(new RVector(barWidth, 0)));
+
+	// Alternative method for drawing tabs
+
+	//
+
+	var tabLine = new WeldTabbedLine(pos, pos.operator_add(new RVector(0,
+			length)), false, false);
+	tabLine.setSpacing(ui.holeArc.getLinearSpacing());
+	tabLine.setMirror(true);
+	tabLine.render(di, ao);
 
 	// cap it
 	// and back home
@@ -858,127 +883,6 @@ Group.prototype.rotate = function(angle)
 	}
 
 //
-// Class: Weld Tabbed Line
-//
-
-function WeldTabbedLine(startPos, endPos, insetStart, insetEnd)
-	{
-	this.create(startPos, endPos, insetStart, insetEnd);
-	};
-
-WeldTabbedLine.prototype.create = function(startPos, endPos, insetStart,
-		insetEnd)
-	{
-	//
-	// createRectangle: creates a simple rectangle based on width & height
-	// 'pos' is the bottom left corner of the rectangle
-	//
-
-	this.startPos = startPos;
-	this.endPos = endPos;
-	this.insetStart = insetStart;
-	this.insetEnd = insetEnd;
-	this.spacing = 0;
-	};
-
-WeldTabbedLine.prototype.setSpacing = function(spacing)
-	{
-	this.spacing = spacing; // center to center
-	}
-
-WeldTabbedLine.prototype.render = function(di, ao)
-	{
-	var weldLugInset = ui.getFloat("WeldLugInset");
-	var weldLugMinSpacing = ui.getFloat("WeldLugMinSpacing");
-	var weldLugMaxSpacing = ui.getFloat("WeldLugMaxSpacing");
-	var weldLugWidth = ui.getFloat("WeldLugWidth");
-	var weldLugDepth = ui.getFloat("WeldLugDepth");
-
-	// determine spacing
-
-	if (this.spacing == 0)
-		{
-		// Calculate spacing
-		var l = this.startPos.getDistanceTo2d(this.endPos);
-		if (this.insetStart)
-			{
-			l = l - weldLugInset;
-			}
-
-		if (this.insetEnd)
-			{
-			l = l - weldLugInset;
-			}
-
-		this.tabCount = calcWeldTabCount(l, weldLugMinSpacing, 2); // at least
-		// 2 lugs
-		this.spacing = l / this.tabCount;
-		}
-	else
-		{
-		var len = this.startPos.getDistanceTo2d(this.endPos);
-		this.tabCount = (len - len % this.spacing) / this.spacing - 1;
-		}
-
-	// assemble a string of items by default running west to east, teeth down,
-
-	tabbedLine = new Group(this.startPos.operator_add(new RVector(50, 50)));
-
-	var zero = new RVector(0, 0);
-
-	// Inset
-	var l = new Line(zero, zero.operator_add(new RVector(ui
-			.getFloat("WeldLugInset")
-			- ui.getFloat("WeldLugWidth") / 2, 0)))
-	tabbedLine.add(l);
-
-	// Tab 1
-	l = new Line(l.getEnd(), l.getEnd().operator_add(
-			new RVector(0, ui.getFloat("WeldLugDepth"))));
-	tabbedLine.add(l);
-	l = new Line(l.getEnd(), l.getEnd().operator_add(
-			new RVector(ui.getFloat("WeldLugWidth"), 0)));
-	tabbedLine.add(l);
-	l = new Line(l.getEnd(), l.getEnd().operator_add(
-			new RVector(0, -ui.getFloat("WeldLugDepth"))));
-	tabbedLine.add(l);
-
-	for (var i = 0; i < this.tabCount; i++)
-		{
-		// Joiner
-		l = new Line(l.getEnd(), l.getEnd().operator_add(
-				new RVector(this.spacing - ui.getFloat("WeldLugWidth"), 0)));
-		tabbedLine.add(l);
-		// Tab
-		l = new Line(l.getEnd(), l.getEnd().operator_add(
-				new RVector(0, ui.getFloat("WeldLugDepth"))));
-		tabbedLine.add(l);
-		l = new Line(l.getEnd(), l.getEnd().operator_add(
-				new RVector(ui.getFloat("WeldLugWidth"), 0)));
-		tabbedLine.add(l);
-		l = new Line(l.getEnd(), l.getEnd().operator_add(
-				new RVector(0, -ui.getFloat("WeldLugDepth"))));
-		tabbedLine.add(l);
-		}
-
-	// Inset
-	// l = new Line(l.getEnd(),l.getEnd().operator_add(new
-	// RVector(ui.getFloat("WeldLugInset")-ui.getFloat("WeldLugWidth")/2,0)));
-	l = new Line(l.getEnd(), this.endPos);
-	tabbedLine.add(l);
-
-	tabbedLine.rotate(0);
-
-	tabbedLine.render(di, ao);
-
-	// them flip and rotate as required.
-	// makes for much simpler maths :)
-
-	// plot optional inset
-
-	}
-
-//
 // Class: Rectangle
 //
 
@@ -1023,15 +927,21 @@ Rectangle.prototype.centre = function(centre)
 
 Rectangle.prototype.rotate = function(angle)
 	{
+
 	this.angle = angle;
 	};
 
 Rectangle.prototype.render = function(di, ao)
 	{
 	this.renderRel(di, ao, new RVector(0, 0));
-	}
+	};
 
 Rectangle.prototype.renderRel = function(di, ao, root)
+	{
+	this.renderRelRot(di, ao, 0, root);
+	}
+
+Rectangle.prototype.renderRelRot = function(di, ao, angle, root)
 	{
 
 	if (this.centred)
@@ -1063,8 +973,9 @@ Rectangle.prototype.renderRel = function(di, ao, root)
 
 	for (var i = 0; i < va.length; ++i)
 		{
-		var v1 = va[i].operator_add(offset);
-		var v2 = va[(i + 1) % va.length].operator_add(offset);
+		var v1 = va[i].operator_add(offset).rotate(angle, root);
+		var v2 = va[(i + 1) % va.length].operator_add(offset).rotate(angle,
+				root);
 		var lineData = new RLineData(v1, v2);
 		var line = new RLineEntity(di.getDocument(), lineData);
 
@@ -1088,6 +999,7 @@ WeldTabHole.prototype.create = function(pos, width, height, clearance)
 	this.width = width;
 	this.height = height;
 	this.clearance = clearance;
+	this.angle = 0;
 	};
 
 WeldTabHole.prototype.rotate = function(angle)
@@ -1097,9 +1009,18 @@ WeldTabHole.prototype.rotate = function(angle)
 
 WeldTabHole.prototype.render = function(di, ao)
 	{
-	var rectangle = new Rectangle(this.pos.operator_add(new RVector(
-			-this.clearance, -this.clearance)),
-			this.width + 2 * this.clearance, this.height + 2 * this.clearance);
+	this.renderRel(di, ao, new RVector(0, 0));
+	};
+
+WeldTabHole.prototype.renderRel = function(di, ao, root)
+	{
+	this.renderRelRot(di, ao, 0, root);
+	}
+
+WeldTabHole.prototype.renderRelRot = function(di, ao, angle, root)
+	{
+	var rectangle = new Rectangle(this.pos, this.width + 2 * this.clearance,
+			this.height + 2 * this.clearance);
 
 	rectangle.centre(true);
 
@@ -1108,8 +1029,281 @@ WeldTabHole.prototype.render = function(di, ao)
 		rectangle.rotate(this.angle);
 		}
 
-	rectangle.render(di, ao);
+	rectangle.renderRelRot(di, ao, angle, root);
 	};
+
+//
+// Class: Weld Tabbed Line
+//
+
+function WeldTabbedLine(startPos, endPos, insetStart, insetEnd)
+	{
+	this.create(startPos, endPos, insetStart, insetEnd);
+	};
+
+WeldTabbedLine.prototype.create = function(startPos, endPos, insetStart,
+		insetEnd)
+	{
+	//
+	// createRectangle: creates a simple rectangle based on width & height
+	// 'pos' is the bottom left corner of the rectangle
+	//
+
+	this.startPos = startPos;
+	this.endPos = endPos;
+	this.insetStart = insetStart;
+	this.insetEnd = insetEnd;
+	this.spacing = 0;
+	this.mirror = false;
+	};
+
+WeldTabbedLine.prototype.setSpacing = function(spacing)
+	{
+	this.spacing = spacing; // center to center
+	}
+
+WeldTabbedLine.prototype.setMirror = function(mirror)
+	{
+	this.mirror = mirror; // center to center
+	}
+
+WeldTabbedLine.prototype.render = function(di, ao)
+	{
+
+	var weldLugInset = ui.getFloat("WeldLugInset");
+	var weldLugMinSpacing = ui.getFloat("WeldLugMinSpacing");
+	var weldLugMaxSpacing = ui.getFloat("WeldLugMaxSpacing");
+	var weldLugWidth = ui.getFloat("WeldLugWidth");
+	var weldLugDepth = ui.getFloat("WeldLugDepth");
+
+	// determine spacing centre to centre
+
+	var total_len = this.startPos.getDistanceTo2d(this.endPos);
+	if (this.insetStart)
+		{
+		total_len = total_len - weldLugInset;
+		}
+
+	if (this.insetEnd)
+		{
+		total_len = total_len - weldLugInset;
+		}
+
+	total_len = total_len - ui.getFloat("WeldLugWidth"); // so we dont run
+	// off the end
+
+	if (this.spacing == 0)
+		{
+		// Calculate spacing
+
+		this.tabCount = calcWeldTabCount(total_len, weldLugMinSpacing, 2); // at
+		// least
+		// 2 lugs
+		this.spacing = total_len / (this.tabCount - 1);
+		}
+	else
+		{
+		this.tabCount = ((total_len - total_len % this.spacing) / this.spacing) + 1;
+		}
+
+	// assemble a string of items by default running west to east, teeth down,
+
+	tabbedLine = new Group(this.startPos);
+
+	var zero = new RVector(0, 0);
+	var depth = ui.getFloat("WeldLugDepth");
+	if (this.mirror)
+		{
+		depth = -depth;
+		}
+	// Inset
+	var l = new Line(zero, zero);
+
+	if (this.insetStart)
+		{
+		l = new Line(zero, zero.operator_add(new RVector(ui
+				.getFloat("WeldLugInset")
+				- ui.getFloat("WeldLugWidth") / 2, 0)))
+		tabbedLine.add(l);
+		}
+
+	// Tab 1
+	l = new Line(l.getEnd(), l.getEnd().operator_add(new RVector(0, depth)));
+	tabbedLine.add(l);
+	l = new Line(l.getEnd(), l.getEnd().operator_add(
+			new RVector(ui.getFloat("WeldLugWidth"), 0)));
+	tabbedLine.add(l);
+	l = new Line(l.getEnd(), l.getEnd().operator_add(new RVector(0, -depth)));
+	tabbedLine.add(l);
+
+	for (var i = 0; i < this.tabCount - 1; i++)
+		{
+		// Joiner
+		l = new Line(l.getEnd(), l.getEnd().operator_add(
+				new RVector(this.spacing - ui.getFloat("WeldLugWidth"), 0)));
+		tabbedLine.add(l);
+		// Tab
+		l = new Line(l.getEnd(), l.getEnd().operator_add(new RVector(0, depth)));
+		tabbedLine.add(l);
+		l = new Line(l.getEnd(), l.getEnd().operator_add(
+				new RVector(ui.getFloat("WeldLugWidth"), 0)));
+		tabbedLine.add(l);
+		l = new Line(l.getEnd(), l.getEnd()
+				.operator_add(new RVector(0, -depth)));
+		tabbedLine.add(l);
+		}
+
+	// Inset
+	// l = new Line(l.getEnd(),l.getEnd().operator_add(new
+	// RVector(ui.getFloat("WeldLugInset")-ui.getFloat("WeldLugWidth")/2,0)));
+	l = new Line(l.getEnd(), new RVector(this.startPos
+			.getDistanceTo2d(this.endPos), 0));
+	tabbedLine.add(l);
+
+	tabbedLine.rotate(this.startPos.getAngleTo(this.endPos));
+
+	tabbedLine.render(di, ao);
+
+	// them flip and rotate as required.
+	// makes for much simpler maths :)
+
+	// plot optional inset
+
+	}
+
+//
+// Class: WeldTabHoleArc
+//
+// Start is the edge of the first hole.
+// i.e. when the cleranc is added, line length will grow by 2*clearance
+// all spacing is centre to centre
+
+function WeldTabHoleLine(startPos, endPos, insetStart, insetEnd)
+	{
+	this.create(startPos, endPos, insetStart, insetEnd);
+	};
+
+WeldTabHoleLine.prototype.create = function(startPos, endPos, insetStart,
+		insetEnd)
+	{
+	this.startPos = startPos;
+	this.endPos = endPos;
+	this.insetStart = insetStart;
+	this.insetEnd = insetEnd;
+	this.angle = 0;
+	this.spacing = 0;
+	};
+
+WeldTabHoleLine.prototype.setSpacing = function(spacing)
+	{
+	this.spacing = spacing;
+	}
+
+WeldTabHoleLine.prototype.getSpacing = function()
+	{
+	return this.spacing;
+	}
+
+WeldTabHoleLine.prototype.render = function(di, ao)
+	{
+	var weldLugInset = ui.getFloat("WeldLugInset");
+	var weldLugMinSpacing = ui.getFloat("WeldLugMinSpacing");
+	var weldLugWidth = ui.getFloat("WeldLugWidth");
+	var weldLugHoleWidth = ui.getFloat("WeldLugHoleWidth");
+	var weldLugHoleClearance = ui.getFloat("WeldLugHoleClearance");
+
+	// determine spacing centre to centre
+
+	var total_len = this.startPos.getDistanceTo2d(this.endPos);
+
+	total_len = total_len - ui.getFloat("WeldLugWidth"); // so we dont run
+
+	if (this.insetStart)
+		{
+		total_len = total_len - weldLugInset;
+		}
+	else
+		{
+
+		}
+
+	if (this.insetEnd)
+		{
+		total_len = total_len - weldLugInset;
+		}
+
+	if (this.spacing == 0)
+		{
+		// Calculate spacing
+		this.tabCount = calcWeldTabCount(total_len, weldLugMinSpacing, 2);
+		this.spacing = total_len / (this.tabCount - 1);
+		}
+	else
+		{
+		this.tabCount = ((total_len - total_len % this.spacing) / this.spacing) + 1;
+		}
+
+	// assemble a string of items by default running west to east
+
+	holedLine = new Group(this.startPos);
+
+	var holePos = new RVector(0, 0);
+
+	if (this.insetStart)
+		{
+		holePos = holePos.operator_add(new RVector(weldLugInset, 0));
+		}
+	else
+		{
+		holePos = holePos.operator_add(new RVector(weldLugWidth / 2, 0)); // allows
+		// for
+		// the
+		// fact
+		// that
+		// lug
+		// root
+		// is
+		// at
+		// one
+		// end
+		// -
+		// holes
+		// are
+		// in
+		// the
+		// middle
+		}
+
+	// Hole 1
+	hole = new WeldTabHole(holePos, weldLugWidth, weldLugHoleWidth,
+			weldLugHoleClearance);
+	holedLine.add(hole);
+	holePos = holePos.operator_add(new RVector(this.spacing, 0));
+
+	for (var i = 0; i < this.tabCount - 1; i++)
+		{
+
+		hole = new WeldTabHole(holePos, weldLugWidth, weldLugHoleWidth,
+				weldLugHoleClearance);
+		holedLine.add(hole);
+		holePos = holePos.operator_add(new RVector(this.spacing, 0));
+		}
+
+	holedLine.rotate(this.startPos.getAngleTo(this.endPos));
+
+	holedLine.render(di, ao);
+
+	// them flip and rotate as required.
+	// makes for much simpler maths :)
+
+	// plot optional inset
+
+	};
+
+WeldTabHoleLine.prototype.getLinearSpacing = function()
+	{
+	return this.getSpacing();
+	}
 
 //
 // Class: WeldTabHoleArc
@@ -1132,26 +1326,59 @@ WeldTabHoleArc.prototype.create = function(pos, radius, startAngle, endAngle,
 	this.insetStart = insetStart;
 	this.insetEnd = insetEnd;
 	this.angularSpacing = angularSpacing;
+	this.reverse = false;
 	};
 
 WeldTabHoleArc.prototype.render = function(di, ao)
 	{
 
-	createHole(di, ao, this.pos, 10);
+	// inset is currently ignored
+	// however need to rotote the whole shbang so that the edge of the first
+	// hole is flush with the spring ... minus clerance
+	// i.e. rotate by angle of 5.5/2 mm on arc
 
-	for (var angle = this.startAngle; angle < this.endAngle; angle += this.angularSpacing)
+	// Circle = Math.PI*2*radius
+	// angle = Math.PI*2*len/(Math.PI*2*radius)
+	// angle = len/radius + ui.getFloat("WeldLugWidth")
+	// this.radius
+
+	var ang = ui.getFloat("WeldLugWidth") / (2 * this.radius);
+
+	if (this.reverse)
 		{
-		var w = new WeldTabHole(this.pos.operator_add(RVector.createPolar(
-				this.radius, angle)), ui.getFloat("WeldLugHoleWidth"), ui
-				.getFloat("WeldLugWidth"), ui.getFloat("WeldLugHoleClearance"));
-		// var r = new
-		// Rectangle(this.pos.operator_add(RVector.createPolar(this.radius,angle)),ui.getFloat("WeldLugWidth"),ui.getFloat("WeldLugHoleWidth")
-		// );
-		w.rotate(angle);
-		w.render(di, ao);
+		for (var angle = this.startAngle - ang; angle > this.endAngle - ang; angle -= this.angularSpacing)
+			{
+			var w = new WeldTabHole(this.pos.operator_add(RVector.createPolar(
+					this.radius, angle)), ui.getFloat("WeldLugHoleWidth"), ui
+					.getFloat("WeldLugWidth"), ui
+					.getFloat("WeldLugHoleClearance"));
 
+			// var r = new
+			// Rectangle(this.pos.operator_add(RVector.createPolar(this.radius,angle)),ui.getFloat("WeldLugWidth"),ui.getFloat("WeldLugHoleWidth")
+			// );
+			w.rotate(angle);
+			w.render(di, ao);
+
+			}
 		}
+	else
+		{
 
+		for (var angle = this.startAngle + ang; angle < this.endAngle + ang; angle += this.angularSpacing)
+			{
+			var w = new WeldTabHole(this.pos.operator_add(RVector.createPolar(
+					this.radius, angle)), ui.getFloat("WeldLugHoleWidth"), ui
+					.getFloat("WeldLugWidth"), ui
+					.getFloat("WeldLugHoleClearance"));
+
+			// var r = new
+			// Rectangle(this.pos.operator_add(RVector.createPolar(this.radius,angle)),ui.getFloat("WeldLugWidth"),ui.getFloat("WeldLugHoleWidth")
+			// );
+			w.rotate(angle);
+			w.render(di, ao);
+
+			}
+		}
 	};
 
 WeldTabHoleArc.prototype.getAngularSpacing = function()
@@ -1159,8 +1386,14 @@ WeldTabHoleArc.prototype.getAngularSpacing = function()
 	return this.angularSpacing;
 	}
 
+WeldTabHoleArc.prototype.setReverse = function(reverse)
+	{
+	this.reverse = reverse;
+	}
+
 WeldTabHoleArc.prototype.getLinearSpacing = function()
 	{
+
 	var arc = new RArc(this.pos, this.radius, 0, this.angularSpacing, false);
 	return arc.getLength();
 	}
