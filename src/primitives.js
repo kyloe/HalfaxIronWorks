@@ -142,22 +142,6 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		}
 
 	var tabLength = sidebarHeight;
-	//
-	// if (insetStartTab)
-	// {
-	// tabLength = tabLength - weldLugInset;
-	// }
-	//
-	// if (insetEndTab)
-	// {
-	// tabLength = tabLength - weldLugInset;
-	// }
-	//
-	// if (insetStartTab)
-	// {
-	// v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
-	// }
-	//
 
 	var endPos = v;
 
@@ -177,6 +161,7 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
 		}
 	}
+
 
 function createMountingLug(documentInterface, addOperation, pos, angle,
 		lugHoleDiameter, lugWidth, lugHoleOffset)
@@ -662,7 +647,7 @@ function createGothicArchTop(documentInterface, addOperation, pos, radius,
 	true // Reversed
 	);
 
-	createHole(documentInterface, addOperation, arc.getCenter(), 5);
+	//createHole(documentInterface, addOperation, arc.getCenter(), 5);
 
 	var arcData = new RArcData(arc);
 	var arcEntity = new RArcEntity(documentInterface.getDocument(), arcData);
@@ -676,7 +661,7 @@ function createGothicArchTop(documentInterface, addOperation, pos, radius,
 	getGothicAngle(radius, width), // End angle
 	false // Reversed
 	);
-	createHole(documentInterface, addOperation, arc2.getCenter(), 5);
+	//createHole(documentInterface, addOperation, arc2.getCenter(), 5);
 
 	var arcData2 = new RArcData(arc2);
 	var arcEntity2 = new RArcEntity(documentInterface.getDocument(), arcData2);
@@ -696,8 +681,13 @@ function createArcBar(di, ao, pos, holeArcWidth, holeArcRadius, barWidth,
 	// createTabbedLine(di, ao, pos.operator_add(new RVector(0, length)),
 	// length,
 	// spacing, spacing, SOUTH, weldLugWidth, weldLugDepth);
+	
+	// Quick change to add a radius in 
 	corner = line(di, ao, pos.operator_add(new RVector(-sidebarWidth, 0)), pos
-			.operator_add(new RVector(-barWidth, 0)));
+			.operator_add(new RVector(-barWidth+3, 0)));
+	var centre = corner.operator_add(new RVector(0,3));
+	arc(di, ao, centre, 3, SOUTH, WEST, true);
+	corner = corner.operator_add(new RVector(-3,3));
 	corner = line(di, ao, corner, corner.operator_add(new RVector(0, length)));
 	corner = line(di, ao, corner, corner.operator_add(new RVector(barWidth, 0)));
 
@@ -1305,6 +1295,16 @@ WeldTabHoleLine.prototype.getLinearSpacing = function()
 	return this.getSpacing();
 	}
 
+WeldTabHoleLine.prototype.getStartPos = function()
+{
+return this.startPos;
+}
+WeldTabHoleLine.prototype.getLength = function()
+{
+return this.startPos.getDistanceTo2d(this.endPos);
+}
+
+
 //
 // Class: WeldTabHoleArc
 //
@@ -1470,4 +1470,165 @@ HoleArray.prototype.render = function(di, ao)
 		currentPos = currentPos.operator_add(this.offset);
 		}
 
+	};
+
+function HingeAssembly(startPos, endPos, hingeCount)
+	{
+	this.create(startPos, endPos, hingeCount);
+	};
+
+HingeAssembly.prototype.create = function(startPos, endPos, hingeCount)
+	{
+	this.startPos = startPos;
+	this.endPos = endPos;
+	this.hingeCount = hingeCount;
+	};
+
+HingeAssembly.prototype.build = function()
+	{
+	var inset = ui.getFloat("HingeInset");
+	this.topHingeCentre = this.endPos.operator_add(new RVector(0, -inset));
+	this.middleHingeCentre = this.startPos.operator_add(new RVector(0,
+			this.startPos.getDistanceTo2d(this.endPos)/2));
+
+	this.bottomHingeCentre = this.startPos.operator_add(new RVector(0, inset));
+
+	};
+
+// Hinge centres are relative to root of hinge assembly 
+
+HingeAssembly.prototype.getTopHingeCentre= function()
+	{
+	return this.topHingeCentre;
 	}
+
+
+HingeAssembly.prototype.getMiddleHingeCentre= function()
+	{
+	return this.middleHingeCentre;
+	}
+
+HingeAssembly.prototype.getBottomHingeCentre= function()
+	{
+	return this.bottomHingeCentre;
+	}
+
+
+HingeAssembly.prototype.getTopHingeTop= function()
+	{
+	return this.startPos.operator_add(this.topHingeCentre.operator_add(new RVector(0, ui.getFloat("HingeMountLength")
+			/ 2 + ui.getFloat("HingeMountRadius"))));
+	}
+
+HingeAssembly.prototype.getTopHingeBottom = function()
+	{
+	return this.startPos.operator_add(this.topHingeCentre.operator_add(new RVector(0, -ui.getFloat("HingeMountLength")
+			/ 2 - ui.getFloat("HingeMountRadius"))));
+	}
+
+HingeAssembly.prototype.getMiddleHingeTop = function()
+	{
+	return this.startPos.operator_add(this.middleHingeCentre.operator_add(new RVector(0, ui
+			.getFloat("HingeMountLength")
+			/ 2 + ui.getFloat("HingeMountRadius"))));
+	}
+
+HingeAssembly.prototype.getMiddleHingeBottom = function()
+	{
+	return this.startPos.operator_add(this.middleHingeCentre.operator_add(new RVector(0, -ui
+			.getFloat("HingeMountLength")
+			/ 2 - ui.getFloat("HingeMountRadius"))));
+	}
+
+HingeAssembly.prototype.getBottomHingeTop = function()
+	{
+	return this.startPos.operator_add(this.bottomHingeCentre.operator_add(new RVector(0, ui
+			.getFloat("HingeMountLength")
+			/ 2 + ui.getFloat("HingeMountRadius"))));
+	}
+
+HingeAssembly.prototype.getBottomHingeBottom = function()
+	{
+	return this.startPos.operator_add(this.bottomHingeCentre.operator_add(new RVector(0, -ui
+			.getFloat("HingeMountLength")
+			/ 2 - ui.getFloat("HingeMountRadius"))));
+	}
+
+HingeAssembly.prototype.renderTabs = function(di, ao, pos)
+	{
+	this.build();
+	this.renderTab(di, ao, pos.operator_add(this.topHingeCentre));
+	this.renderTab(di, ao, pos.operator_add(this.middleHingeCentre));
+	this.renderTab(di, ao, pos.operator_add(this.bottomHingeCentre));
+	// Joining lines
+	line(di,ao,
+			pos.operator_add(this.getTopHingeTop()),
+			pos.operator_add(this.endPos)
+			);
+	line(di,ao,
+			pos.operator_add(this.getTopHingeBottom()),
+			pos.operator_add(this.getMiddleHingeTop())
+			);
+	line(di,ao,
+			pos.operator_add(this.getBottomHingeTop()),
+			pos.operator_add(this.getMiddleHingeBottom())
+			);
+	line(di,ao,
+			pos.operator_add(this.getBottomHingeBottom()),
+			pos.operator_add(this.startPos)
+			);
+	};
+HingeAssembly.prototype.renderTab = function(di, ao, centre)
+	{
+
+	var length = ui.getFloat("HingeMountLength");
+	var width = ui.getFloat("HingeMountWidth");
+	var r = ui.getFloat("HingeMountRadius");
+	var d = ui.getFloat("HingeMountHoleDia");
+	var pos = centre.operator_add(new RVector(0, -(length / 2 + r)));
+
+	arc(di, ao, pos.operator_add(new RVector(r, 0)), r, WEST, NORTH, true);
+	line(di, ao, pos.operator_add(new RVector(r, r)), pos
+			.operator_add(new RVector(width - r, r)));
+	arc(di, ao, pos.operator_add(new RVector(width - r, 2 * r)), r, SOUTH,
+			EAST, false);
+	line(di, ao, pos.operator_add(new RVector(width, 2 * r)), pos
+			.operator_add(new RVector(width, length)));
+	arc(di, ao, pos.operator_add(new RVector(width - r, length)), r, EAST,
+			NORTH, false);
+	line(di, ao, pos.operator_add(new RVector(width - r, length + r)), pos
+			.operator_add(new RVector(r, length + r)));
+	arc(di, ao, pos.operator_add(new RVector(r, length + 2 * r)), r, SOUTH,
+			WEST, true);
+	
+	
+	// Holes
+	createHole(di, ao, pos.operator_add(new RVector(10, 6.5 + r)), d);
+	createHole(di, ao, pos.operator_add(new RVector(-2, length / 2 + r)), d);
+	createHole(di, ao, pos.operator_add(new RVector(10, length + r - 6.5)), d);
+	return pos.operator_add(new RVector(0, length + 2 * r));
+	}
+HingeAssembly.prototype.renderHoles = function(di, ao, pos)
+{
+this.build();
+this.renderHole(di, ao, pos.operator_add(this.topHingeCentre));
+this.renderHole(di, ao, pos.operator_add(this.middleHingeCentre));
+this.renderHole(di, ao, pos.operator_add(this.bottomHingeCentre));
+}
+
+HingeAssembly.prototype.renderHole = function(di, ao, pos)
+	{
+
+	var length = ui.getFloat("HingeMountLength");
+	var width = ui.getFloat("HingeMountWidth");
+	var r = ui.getFloat("HingeMountRadius");
+	var d = ui.getFloat("HingeMountHoleDia");
+
+	createHole(di, ao, pos.operator_add(new RVector(-17, 17 / 2)), d);
+
+	createHole(di, ao, pos.operator_add(new RVector(-17, -17 / 2)), d);
+
+	return pos.operator_add(new RVector(0, length + 2 * r));
+	}
+
+

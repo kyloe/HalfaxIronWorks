@@ -523,6 +523,34 @@
         </property>
        </widget>
       </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_57">
+        <property name="text">
+         <string>Hinge Hole Clearance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="HingeHoleClearance">
+        <property name="text">
+         <string>15</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_58">
+        <property name="text">
+         <string>Hinge Inset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLineEdit" name="HingeInset">
+        <property name="text">
+         <string>105</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </widget>
@@ -904,7 +932,7 @@
       <item row="3" column="1">
        <widget class="QLineEdit" name="MountingLugInset">
         <property name="text">
-         <string>25</string>
+         <string>20</string>
         </property>
        </widget>
       </item>
@@ -997,7 +1025,7 @@
       <item row="2" column="1">
        <widget class="QLineEdit" name="WeldLugHoleClearance">
         <property name="text">
-         <string>.125</string>
+         <string>0</string>
         </property>
        </widget>
       </item>
