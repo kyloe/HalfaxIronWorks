@@ -1,3 +1,5 @@
+// Only objects here from now on
+
 // Math.PI/2 = Lugs West
 // Math.PI = Lugs South
 // 3*Math.PI/2 = Lugs East
