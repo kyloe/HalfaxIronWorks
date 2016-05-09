@@ -792,9 +792,30 @@ function offset(vector, dist, n)
 	return vector.operator_add(new RVector(n * (dist + 50), 0));
 	}
 
+
+
 // Class definitions - this is how this sh*t sould be done - just converting as
 // I go
 //
+
+
+// Class Lug
+function Lug(startPos)
+{
+this.create(startPos);
+};
+
+Lug.prototype.create = function(startPos)
+{
+this.startPos = startPos;
+}
+
+Lug.prototype.setRotate = function(rotate)
+{
+// Local rotate
+this.rotate = rotate;
+}
+
 
 // Class Line
 //
@@ -1247,23 +1268,7 @@ WeldTabHoleLine.prototype.render = function(di, ao)
 		}
 	else
 		{
-		holePos = holePos.operator_add(new RVector(weldLugWidth / 2, 0)); // allows
-		// for
-		// the
-		// fact
-		// that
-		// lug
-		// root
-		// is
-		// at
-		// one
-		// end
-		// -
-		// holes
-		// are
-		// in
-		// the
-		// middle
+		holePos = holePos.operator_add(new RVector(weldLugWidth / 2, 0)); 
 		}
 
 	// Hole 1
