@@ -239,20 +239,83 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 			.getFloat("PlasticHoleDiameter"), 100);
 	leftBarHoles.render(documentInterface, addOperation);
 
+	
 	var rightBarHoles = new HoleArray();
 
 	var rhstartPos = frameARoot.operator_add(new RVector(width + 2 * allowance
 			- this.getFloat("PlasticHoleMargin"), this.getFloat("CutoutHeight")
 			+ this.getFloat("PlasticHoleInset")));
 
-	var rhendPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+	var rhendPos = frameARoot.operator_add(
+			new RVector(
+					width + 2 * allowance - this.getFloat("PlasticHoleMargin"), 
+					this.hingeAssembly.bottomHingeCentre.getY()-this.getFloat("PlasticHoleInset")
+					)
+			);
+
+	rightBarHoles.autospace(rhstartPos, rhendPos, this
+			.getFloat("PlasticHoleDiameter"), 100);
+	rightBarHoles.render(documentInterface, addOperation);
+
+	
+	
+	if (ui.widgets["ThirdHinge"].checked)
+		{
+		// Need 4 runs of holes
+
+		rhstartPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+				- this.getFloat("PlasticHoleMargin"), this.hingeAssembly.bottomHingeCentre.getY()+this.getFloat("HingeHoleClearance")+this.getFloat("PlasticHoleInset")));
+
+		rhendPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+				- this.getFloat("PlasticHoleMargin"), this.hingeAssembly.middleHingeCentre.getY()-this.getFloat("PlasticHoleInset")));
+
+		rightBarHoles.autospace(rhstartPos, rhendPos, this
+				.getFloat("PlasticHoleDiameter"), 100);
+		rightBarHoles.render(documentInterface, addOperation);
+
+		
+		
+		rhstartPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+				- this.getFloat("PlasticHoleMargin"), this.hingeAssembly.middleHingeCentre.getY()+this.getFloat("HingeHoleClearance")+this.getFloat("PlasticHoleInset")));
+
+		rhendPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+				- this.getFloat("PlasticHoleMargin"), this.hingeAssembly.topHingeCentre.getY()-this.getFloat("PlasticHoleInset")));
+
+		rightBarHoles.autospace(rhstartPos, rhendPos, this
+				.getFloat("PlasticHoleDiameter"), 100);
+		rightBarHoles.render(documentInterface, addOperation);
+
+		
+		}
+	else
+		{
+		// Need three runs of holes
+		var rightBarHoles = new HoleArray();
+
+		rhstartPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+				- this.getFloat("PlasticHoleMargin"), this.hingeAssembly.bottomHingeCentre.getY()+this.getFloat("HingeHoleClearance")+this.getFloat("PlasticHoleInset")));
+
+		rhendPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+				- this.getFloat("PlasticHoleMargin"), this.hingeAssembly.topHingeCentre.getY()-this.getFloat("PlasticHoleInset")));
+
+		rightBarHoles.autospace(rhstartPos, rhendPos, this
+				.getFloat("PlasticHoleDiameter"), 100);
+		rightBarHoles.render(documentInterface, addOperation);
+		
+		}
+	
+	
+	rhstartPos = frameARoot.operator_add(new RVector(width + 2 * allowance
+			- this.getFloat("PlasticHoleMargin"), this.hingeAssembly.topHingeCentre.getY()+this.getFloat("HingeHoleClearance")+this.getFloat("PlasticHoleInset")));
+
+	rhendPos = frameARoot.operator_add(new RVector(width + 2 * allowance
 			- this.getFloat("PlasticHoleMargin"), spring + allowance
 			- this.getFloat("PlasticHoleInset")));
 
 	rightBarHoles.autospace(rhstartPos, rhendPos, this
 			.getFloat("PlasticHoleDiameter"), 100);
 	rightBarHoles.render(documentInterface, addOperation);
-
+	
 	};
 
 // This bit is quite complex - pulled out into its own methid just to maike it a bit more tractable to understand	
@@ -313,7 +376,7 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 
 	createPolyLine(documentInterface, addOperation, topRight);
 
-	// Build hinge assembley
+	// Build hinge assembly
 	
 	this.hingeAssembly = new HingeAssembly(new RVector(0,0),new RVector(0,spring-this.getFloat("BendSlotHeight")-cutoutHeight));
 	this.hingeAssembly.renderTabs(documentInterface, addOperation,pos.operator_add(new RVector(width+ 2 * allowance, cutoutHeight)));
@@ -355,12 +418,13 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 	};
 
 Min.createFrameC = function(documentInterface, addOperation, pos)
-// ********************************************************************************************************************
-//
-// 'Frame C' - cut and holed frame with no bends
-//
-// ********************************************************************************************************************
 	{
+	// ********************************************************************************************************************
+	//
+	// 'Frame C' - cut and holed frame with no bends
+	//
+	// ********************************************************************************************************************
+
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
 	var height = this.getFloat("MasonsOpeningHeight");
@@ -440,6 +504,48 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	this.holesBarRBottom = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
 	this.holesBarRBottom.render(documentInterface, addOperation);
 
+	if (ui.widgets["ThirdHinge"].checked)
+		{
+		insetStartHole = false;
+		insetEndHole = false;
+
+		
+		startPos = endPos.operator_add(
+				new RVector(0,this.getFloat("HingeHoleClearance")*2)
+					);
+		
+		endPos = startPos.operator_add(new RVector(
+										0,		
+										this.hingeAssembly.getMiddleHingeCentre().getY()
+										-this.getFloat("HingeInset")
+										-2*this.getFloat("HingeHoleClearance")
+										));
+			
+
+		this.holesBarRLower = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
+		this.holesBarRLower.render(documentInterface, addOperation);
+		
+
+		insetStartHole = false;
+		insetEndHole = false;
+
+		
+		startPos = endPos.operator_add(
+				new RVector(0,this.getFloat("HingeHoleClearance")*2)
+					);
+		
+		endPos = startPos.operator_add(new RVector(
+										0,		
+										this.hingeAssembly.getMiddleHingeCentre().getY()
+										-this.getFloat("HingeInset")
+										-2*this.getFloat("HingeHoleClearance")
+										));
+			
+		this.holesBarRUpper = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
+		this.holesBarRUpper.render(documentInterface, addOperation);
+		}
+	else
+	{
 	insetStartHole = false;
 	insetEndHole = false;
 
@@ -450,32 +556,18 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	
 	endPos = startPos.operator_add(new RVector(
 									0,		
-									this.hingeAssembly.getMiddleHingeCentre().getY()
+									2*(this.hingeAssembly.getMiddleHingeCentre().getY()
 									-this.getFloat("HingeInset")
-									-2*this.getFloat("HingeHoleClearance")
+									-this.getFloat("HingeHoleClearance"))
 									));
 		
-	this.holesBarRLower = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
-	this.holesBarRLower.render(documentInterface, addOperation);
-	
 
-	insetStartHole = false;
-	insetEndHole = false;
-
-	
-	startPos = endPos.operator_add(
-			new RVector(0,this.getFloat("HingeHoleClearance")*2)
-				);
-	
-	endPos = startPos.operator_add(new RVector(
-									0,		
-									this.hingeAssembly.getMiddleHingeCentre().getY()
-									-this.getFloat("HingeInset")
-									-2*this.getFloat("HingeHoleClearance")
-									));
-		
 	this.holesBarRUpper = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
 	this.holesBarRUpper.render(documentInterface, addOperation);
+
+	}
+	
+
 	
 	insetStartHole = false;
 	insetEndHole = true;
@@ -725,25 +817,55 @@ Min.createSplitSideBar = function(di, ao, pos)
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
 			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror,lugOption);
 
-	insetStartTab = false;
-	insetEndTab = false;
+	
+	if(ui.widgets["ThirdHinge"].checked)
+		{
+		insetStartTab = false;
+		insetEndTab = false;
 
+		
+		createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRLower.getStartPos().getY()), this.holesBarRLower.getLength(),sidebarWidth, mountingLugInset,
+				mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
+				weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
+				lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar3Lugs"));
+
+		insetStartTab = false;
+		insetEndTab = false;
+
+		createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRUpper.getStartPos().getY()),this.holesBarRUpper.getLength(), 
+				sidebarWidth, mountingLugInset, mountingLugMinSpacing,
+				weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
+				weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
+				insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar2Lugs"));
+
+				
+		}
+	else
+		{
+//		insetStartTab = false;
+//		insetEndTab = false;
+//
+//		
+//		createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRLower.getStartPos().getY()), this.holesBarRLower.getLength(),sidebarWidth, mountingLugInset,
+//				mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
+//				weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
+//				lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar3Lugs"));
+
+		insetStartTab = false;
+		insetEndTab = false;
+
+		createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRUpper.getStartPos().getY()),this.holesBarRUpper.getLength(), 
+				sidebarWidth, mountingLugInset, mountingLugMinSpacing,
+				weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
+				weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
+				insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar2Lugs"));
+
+		
+
+		}
 	
 	
-	createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRLower.getStartPos().getY()), this.holesBarRLower.getLength(),sidebarWidth, mountingLugInset,
-			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
-			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar3Lugs"));
-
-	insetStartTab = false;
-	insetEndTab = false;
-
-	createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRUpper.getStartPos().getY()),this.holesBarRUpper.getLength(), 
-			sidebarWidth, mountingLugInset, mountingLugMinSpacing,
-			weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
-			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
-			insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar2Lugs"));
-
+	
 	insetStartTab = false;
 	insetEndTab = true;
 	suppressTop = true;
