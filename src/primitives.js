@@ -10,7 +10,7 @@ var WEST = Math.PI;
 
 function createLuggedLine(documentInterface, addOperation, pos, length,
 		minSpacing, minObjects, orientation, lugHoleDiameter, lugWidth,
-		lugHoleOffset)
+		lugHoleOffset, lugCountOption)
 	{
 
 	// Math.PI/2 = Lugs West
@@ -24,9 +24,17 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 
 	// For each lug
 	// plot lug and if not last lug - join with a line
+	var lugCount
 
-	var lugCount = calcWeldTabCount(length, minSpacing, minObjects);
-
+if (lugCountOption == "Auto")
+	{
+	lugCount = calcWeldTabCount(length, minSpacing, minObjects);
+	}
+else
+	{
+	lugCount = lugCountOption;
+	}
+	
 	var joinerOffset;
 	var lastPoint;
 
@@ -112,7 +120,7 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		mountingLugInset, mountingLugMinSpacing, weldLugInset, weldLugWidth,
 		weldLugDepth, weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter,
 		lugWidth, lugHoleOffset, insetStartTab, insetEndTab, suppressTop,
-		mirror)
+		mirror,lugCountOption)
 	{
 	// ********************************************************************************************************************
 	//
@@ -130,7 +138,7 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 	v = line(di, ao, v, v.operator_add(new RVector(0, mountingLugInset)));
 	v = createLuggedLine(di, ao, v, sidebarHeight - 2 * mountingLugInset,
 			mountingLugMinSpacing, 1, NORTH, lugHoleDiameter, lugWidth,
-			lugHoleOffset);
+			lugHoleOffset,lugCountOption);
 	v = line(di, ao, v, v.operator_add(new RVector(0, mountingLugInset)));
 	if (!suppressTop)
 		{
@@ -305,9 +313,9 @@ function createTabbedLine(documentInterface, addOperation, pos, length,
 function createWeldLug(documentInterface, addOperation, pos, weldLugWidth,
 		weldLugDepth, orientation)
 	{
-	v2 = pos.operator_add(new RVector(0, weldLugDepth));
-	v3 = v2.operator_add(new RVector(weldLugWidth, 0));
-	v4 = v3.operator_add(new RVector(0, -weldLugDepth));
+	var v2 = pos.operator_add(new RVector(0, weldLugDepth));
+	var v3 = v2.operator_add(new RVector(weldLugWidth, 0));
+	var v4 = v3.operator_add(new RVector(0, -weldLugDepth));
 
 	v2 = v2.rotate(orientation, pos);
 	v3 = v3.rotate(orientation, pos);
@@ -421,6 +429,9 @@ function createRectangleArray(documentInterface, addOperation, pos, width,
 	//
 	// Create an array of rectangles based on a count and offset var tPos = pos;
 	//
+	
+	var tPos;
+	
 	for (var i = 0; i < count; i++)
 		{
 		FullFrameSet.createRectangle(documentInterface, addOperation, tPos,
@@ -683,18 +694,18 @@ function createArcBar(di, ao, pos, holeArcWidth, holeArcRadius, barWidth,
 	// spacing, spacing, SOUTH, weldLugWidth, weldLugDepth);
 	
 	// Quick change to add a radius in 
-	corner = line(di, ao, pos.operator_add(new RVector(-sidebarWidth, 0)), pos
+	var corner = line(di, ao, pos.operator_add(new RVector(-sidebarWidth, 0)), pos
 			.operator_add(new RVector(-barWidth+3, 0)));
 	var centre = corner.operator_add(new RVector(0,3));
 	arc(di, ao, centre, 3, SOUTH, WEST, true);
 	corner = corner.operator_add(new RVector(-3,3));
-	corner = line(di, ao, corner, corner.operator_add(new RVector(0, length)));
+	corner = line(di, ao, corner, corner.operator_add(new RVector(0, length-3)));// minus 3 to allow for arc
 	corner = line(di, ao, corner, corner.operator_add(new RVector(barWidth, 0)));
 
 	// Alternative method for drawing tabs
 
 	//
-
+	
 	var tabLine = new WeldTabbedLine(pos, pos.operator_add(new RVector(0,
 			length)), false, false);
 	tabLine.setSpacing(ui.holeArc.getLinearSpacing());
@@ -1333,7 +1344,7 @@ WeldTabHoleArc.prototype.render = function(di, ao)
 	{
 
 	// inset is currently ignored
-	// however need to rotote the whole shbang so that the edge of the first
+	// however need to rotote the whole shebang so that the edge of the first
 	// hole is flush with the spring ... minus clerance
 	// i.e. rotate by angle of 5.5/2 mm on arc
 
@@ -1342,29 +1353,41 @@ WeldTabHoleArc.prototype.render = function(di, ao)
 	// angle = len/radius + ui.getFloat("WeldLugWidth")
 	// this.radius
 
+	// calculate the angle of 75mm for spacing
+	
+	debugger;
 	var ang = ui.getFloat("WeldLugWidth") / (2 * this.radius);
 
+	var l = (this.startAngle-this.endAngle-2*ang)*this.radius;
+	
+	var count = Math.floor(l/75);
+	
+
+	
 	if (this.reverse)
 		{
-		for (var angle = this.startAngle - ang; angle > this.endAngle - ang; angle -= this.angularSpacing)
+		this.newAngularSpacing = (this.startAngle-this.endAngle+2*ang)/count;
+	
+		for (var angle = this.startAngle - ang; angle > this.endAngle - ang; angle -=this.newAngularSpacing)
 			{
 			var w = new WeldTabHole(this.pos.operator_add(RVector.createPolar(
 					this.radius, angle)), ui.getFloat("WeldLugHoleWidth"), ui
-					.getFloat("WeldLugWidth"), ui
-					.getFloat("WeldLugHoleClearance"));
-
+				.getFloat("WeldLugWidth"), ui
+				.getFloat("WeldLugHoleClearance"));
+			
 			// var r = new
 			// Rectangle(this.pos.operator_add(RVector.createPolar(this.radius,angle)),ui.getFloat("WeldLugWidth"),ui.getFloat("WeldLugHoleWidth")
 			// );
 			w.rotate(angle);
 			w.render(di, ao);
-
+			
 			}
 		}
 	else
 		{
+		this.newAngularSpacing = (this.startAngle-this.endAngle-2*ang)/count;
 
-		for (var angle = this.startAngle + ang; angle < this.endAngle + ang; angle += this.angularSpacing)
+		for (var angle = this.startAngle + ang; angle < this.endAngle + ang; angle += 	this.newAngularSpacing)
 			{
 			var w = new WeldTabHole(this.pos.operator_add(RVector.createPolar(
 					this.radius, angle)), ui.getFloat("WeldLugHoleWidth"), ui
@@ -1378,7 +1401,10 @@ WeldTabHoleArc.prototype.render = function(di, ao)
 			w.render(di, ao);
 
 			}
+		
 		}
+	
+	
 	};
 
 WeldTabHoleArc.prototype.getAngularSpacing = function()

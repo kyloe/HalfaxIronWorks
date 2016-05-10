@@ -642,10 +642,13 @@ Min.createFullSideBar = function(di, ao, pos)
 	var insetEndTab = true;
 	var suppressTop = true;
 	var mirror = true;
+
+	var lugCountOption = ui.getCombo("LeftBarLugs");
+	
 	createSidebar(di, ao, pos, sidebarHeight, sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror);
+			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror,lugCountOption);
 	var holeArcRadius = radius-allowance-this.getFloat("FrameCBarWidth") / 2;
 	var barWidth=this.getFloat("TopBarWidth");
 	var holeSpaceAngle=this.holeArc.getAngularSpacing(); // Ten degrees of arc
@@ -712,13 +715,15 @@ Min.createSplitSideBar = function(di, ao, pos)
 	var suppressTop = false;
 	var mirror = true;
 	var length = ui.getFloat("HingeInset")-ui.getFloat("HingeHoleClearance") - this.getFloat("FrameCBarWidth") / 2 - this.getFloat("WeldLugHoleWidth") / 2;
-	
+
 	var root = new RVector(pos.getX(),this.holesBarRBottom.getStartPos().getY());
+	
+	var lugOption = ui.getCombo("RightBar4Lugs");
 	
 	createSidebar(di, ao, root ,this.holesBarRBottom.getLength(), sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror);
+			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror,lugOption);
 
 	insetStartTab = false;
 	insetEndTab = false;
@@ -728,7 +733,7 @@ Min.createSplitSideBar = function(di, ao, pos)
 	createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRLower.getStartPos().getY()), this.holesBarRLower.getLength(),sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror);
+			lugHoleOffset, insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar3Lugs"));
 
 	insetStartTab = false;
 	insetEndTab = false;
@@ -737,16 +742,16 @@ Min.createSplitSideBar = function(di, ao, pos)
 			sidebarWidth, mountingLugInset, mountingLugMinSpacing,
 			weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
 			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
-			insetStartTab, insetEndTab,suppressTop,mirror);
+			insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar2Lugs"));
 
 	insetStartTab = false;
 	insetEndTab = true;
 	suppressTop = true;
-	debugger;
+ 
 	createSidebar(di, ao, new RVector(pos.getX(),this.holesBarRTop.getStartPos().getY()),this.holesBarRTop.getLength(), sidebarWidth, mountingLugInset, mountingLugMinSpacing,
 			weldLugInset, weldLugWidth, weldLugDepth, weldLugMinSpacing,
 			weldLugMaxSpacing, lugHoleDiameter, lugWidth, lugHoleOffset,
-			insetStartTab, insetEndTab,suppressTop,mirror);
+			insetStartTab, insetEndTab,suppressTop,mirror,ui.getCombo("RightBar1Lugs"));
 
 	var holeArcRadius = radius-allowance-this.getFloat("FrameCBarWidth") / 2;
 	var barWidth=this.getFloat("TopBarWidth");
@@ -808,7 +813,7 @@ Min.createBottomBar = function(di, ao, pos)
 	createSidebar(di, ao, pos, sidebarHeight, sidebarWidth, mountingLugInset,
 			mountingLugMinSpacing, weldLugInset, weldLugWidth, weldLugDepth,
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
-			lugHoleOffset, insetStartTab, insetEndTab,false,true);
+			lugHoleOffset, insetStartTab, insetEndTab,false,true,ui.getCombo("BottomBarLugs"));
 
 	this.addDimensions(di, ao, pos, pos.operator_add(new RVector(0,
 			sidebarHeight)), pos.operator_add(new RVector(-40,
@@ -1055,6 +1060,7 @@ Min.addDimensions = function(documentInterface, addOperation, p1, p2, pDim)
 
 Min.getText = function(label)
 	{
+	
 	if (this.hasOwnProperty(label))
 		{
 		return this[label];
@@ -1069,6 +1075,21 @@ Min.getText = function(label)
 		}
 
 	}
+
+Min.getCombo = function(label)
+	{
+		
+	if (this.widgets[label])
+		{
+		return this.widgets[label].currentText;
+		}
+	else
+		{
+		return label.concat(": not defined");
+		}
+
+	}
+
 
 Min.getFloat = function(label)
 	{
@@ -1161,8 +1182,8 @@ Min.setValues = function()
 			10);
 	this.mountingLugMinSpacing = parseFloat(
 			this.widgets["MountingLugMinSpacing"].text, 10);
-	this.mountingLugMaxSpacing = parseFloat(
-			this.widgets["MountingLugMaxSpacing"].text, 10);
+//	this.mountingLugMaxSpacing = parseFloat(
+//			this.widgets["MountingLugMaxSpacing"].text, 10);
 
 	this.sidebarWidth = parseFloat(this.widgets["SidebarWidth"].text, 10);
 	this.sidebarRelativeHeight = parseFloat(
