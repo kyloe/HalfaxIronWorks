@@ -800,6 +800,10 @@ function offset(vector, dist, n)
 
 
 // Class Lug
+// by default root pos is bottom left of lug assuming drawn
+// with basline on x axis and lug hole uppermost
+// if centred, pos in center of baseline. not CofG
+
 function Lug(startPos)
 {
 this.create(startPos);
@@ -808,12 +812,80 @@ this.create(startPos);
 Lug.prototype.create = function(startPos)
 {
 this.startPos = startPos;
+this.rotate = 0;
+this.centred = false;
+this.mirror = false;
+}
+
+Lug.prototype.setCentred = function(centred)
+{
+// Local rotate
+this.centred = centred;
 }
 
 Lug.prototype.setRotate = function(rotate)
 {
 // Local rotate
 this.rotate = rotate;
+}
+
+Lug.prototype.render = function(di, ao)
+{
+this.renderRel(di, ao, new RVector(0, 0));
+}
+
+Lug.prototype.renderRel = function(di, ao, root)
+{
+this.renderRelRot(di, ao, 0, root);
+}
+
+Lug.prototype.renderRelRot = function(di, ao, angle, root)
+{
+
+this.endpos = this.startPos.operator_add(new RVector(ui.getFloat("LugWith"),0));
+this.holeCentre = this.startPos.operator_add(new RVector(ui.getFloat("LugWith")/2,ui.getFloat("LugHoleOffset")));
+
+var v1 = new RVector(0, 0);
+var v2 = new RVector(lugWidth / 4, lugHoleOffset * 1.155);
+var v3 = new RVector(3 * lugWidth / 4, lugHoleOffset * 1.155);
+var v4 = new RVector(lugWidth, 0);
+var v5 = new RVector(lugHoleOffset, lugHoleOffset);
+
+// var root = pos.operator_add(new RVector(FullFrameSet.lugWidth/2,0));
+var root = pos;
+
+v1 = v1.operator_add(root);
+v2 = v2.operator_add(root);
+v3 = v3.operator_add(root);
+v4 = v4.operator_add(root);
+v5 = v5.operator_add(root);
+
+// No point rotating v1 round itself
+v2 = v2.rotate(angle, v1);
+v3 = v3.rotate(angle, v1);
+v4 = v4.rotate(angle, v1);
+v5 = v5.rotate(angle, v1);
+
+var lineData = new RLineData(v1, v2);
+var line = new RLineEntity(documentInterface.getDocument(), lineData);
+addOperation.addObject(line, false);
+
+var lineData2 = new RLineData(v3, v4);
+var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
+addOperation.addObject(line2, false);
+
+createHole(documentInterface, addOperation, v5, lugHoleDiameter);
+
+var arc = RArc.createFrom2PBulge(v2, v3, -0.89);
+var arcData = new RArcData(arc);
+var arcEnt = new RArcEntity(documentInterface.getDocument(), arcData);
+
+addOperation.addObject(arcEnt, false);
+
+return v4; // start point for next object
+
+
+return this.endPos;
 }
 
 
