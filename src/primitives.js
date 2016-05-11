@@ -806,6 +806,48 @@ function offset(vector, dist, n)
 // I go
 //
 
+// Class Text
+// A block of text placed on a layer at a pos, size and angle
+
+function Text(text,startPos,size,angle)
+	{
+	this.create(text,startPos,size,angle)
+	};
+
+Text.prototype.create = function(text,startPos,size,angle)
+	{
+	this.text = text;
+	this.startPos = startPos;
+	this.size =  size;
+	this.angle = angle;
+	}
+
+Text.prototype.rotate = function(angle)
+	{
+	this.angle = angle;
+	}
+
+Text.prototype.render = function(di, ao)
+{
+this.renderRel(di, ao, new RVector(0, 0));
+}
+
+Text.prototype.renderRel = function(di, ao, root)
+{
+this.renderRelRot(di, ao, 0, root);
+}
+
+Text.prototype.renderRelRot = function(di, ao, angle, root)
+{
+var lineData = new RLineData(this.startPos.operator_add(root).rotate(angle,
+		root), this.endPos.operator_add(root).rotate(angle, root));
+var line = new RLineEntity(di.getDocument(), lineData);
+ao.addObject(line, false);
+return this.endPos;
+}
+
+
+
 // Class Line
 //
 
