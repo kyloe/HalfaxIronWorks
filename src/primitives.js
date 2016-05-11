@@ -1353,17 +1353,19 @@ WeldTabHoleArc.prototype.render = function(di, ao)
 	// angle = len/radius + ui.getFloat("WeldLugWidth")
 	// this.radius
 
-	// calculate the angle of 75mm for spacing
-
+	debugger;
 	var ang = ui.getFloat("WeldLugWidth") / (2 * this.radius);
 
-	var l = (this.startAngle - this.endAngle - 2 * ang) * this.radius;
+	var l = (Math.abs(this.startAngle - this.endAngle) - 7 * ang) * this.radius;
 
 	var count = Math.floor(l / 75);
 
 	if (this.reverse)
 		{
-		this.newAngularSpacing = (this.startAngle - this.endAngle + 2 * ang)
+		// Left hand arc
+		// calculate the angle of 75mm for spacing
+
+		this.newAngularSpacing = (this.startAngle - this.endAngle - 7 * ang)
 				/ count;
 
 		for (var angle = this.startAngle - ang; angle > this.endAngle - ang; angle -= this.newAngularSpacing)
@@ -1383,7 +1385,8 @@ WeldTabHoleArc.prototype.render = function(di, ao)
 		}
 	else
 		{
-		this.newAngularSpacing = (this.startAngle - this.endAngle - 2 * ang)
+		// Right hand arc
+		this.newAngularSpacing = (this.endAngle - this.startAngle - 7 * ang)
 				/ count;
 
 		for (var angle = this.startAngle + ang; angle < this.endAngle + ang; angle += this.newAngularSpacing)
