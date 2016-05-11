@@ -806,6 +806,65 @@ function offset(vector, dist, n)
 // I go
 //
 
+// Class Text
+// A block of text placed on a layer at a pos, size and angle
+
+function Text(text,startPos,height,width,angle,layer)
+	{
+	if (layer === "undefined")
+		{
+		layer = "Text";
+		}
+	this.create(text,startPos,height,width,angle,layer)
+	};
+
+Text.prototype.create = function(text,startPos,height,width,angle,layer)
+	{
+	this.text = text;
+	this.startPos = startPos;
+	this.height =  height;
+	this.width = width;
+	this.angle = angle;
+	this.layer = layer;	
+	}
+
+Text.prototype.rotate = function(angle)
+	{
+	this.angle = angle;
+	}
+
+Text.prototype.render = function(di, ao)
+{
+this.renderRel(di, ao, new RVector(0, 0));
+}
+
+Text.prototype.renderRel = function(di, ao, root)
+{
+this.renderRelRot(di, ao, 0, root);
+}
+
+Text.prototype.renderRelRot = function(di, ao, angle, root)
+{
+
+var currentLayerId = di.getDocument().getCurrentLayerId();
+di.setCurrentLayer(this.layer);
+var textData = new RTextData();
+textData.setText(this.text);
+textData.setTextHeight(this.height);
+textData.setTextWidth(this.width);
+textData.setAngle(this.angle);
+textData.setPosition(this.startPos.operator_add(root));
+textData.move(this.startPos.operator_add(root));
+
+
+var textEntity = new RTextEntity(di.getDocument(), textData);
+ao.addObject(textEntity,false);
+ao.apply(di.getDocument());
+di.getDocument().setCurrentLayer(currentLayerId);
+}
+
+
+
 // Class Line
 //
 

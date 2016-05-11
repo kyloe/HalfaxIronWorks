@@ -119,52 +119,120 @@ Min.create = function(documentInterface)
 
 	documentInterface.setCurrentLayer("Text");
 
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 0),
-			"Masons opening as measured");
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 1),
-			"Frame A");
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 2),
-			"Frame C");
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 3),
-			"Capped Arch");
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 4),
-			"Full Side Bar");
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 5),
-			"Split Side Bar");
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 6),
-			"Bottom Bar");
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 7),
-			"Simple Bars");
+	var txt = new Text("Masons opening as measured",offset(this.root, maxWidth, 0),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
 	
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 3).operator_add(new RVector(0,1000)),
-	"Hole centre spacing on arc "+this.holeArc.getLinearSpacing());
+	txt = new Text("Frame A",offset(this.root, maxWidth, 1),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
+	txt = new Text("Frame C",offset(this.root, maxWidth, 2),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
+	txt = new Text("Capped Arch",offset(this.root, maxWidth, 3),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
+	txt = new Text("Full Sidebar",offset(this.root, maxWidth, 4),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
+	txt = new Text("Split Sidebar",offset(this.root, maxWidth, 5),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
+	txt = new Text("Bottom Bar",offset(this.root, maxWidth, 6),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
+	txt = new Text("Simple Bars",offset(this.root, maxWidth, 7),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
 
-
-
-	addOperation.apply(documentInterface.getDocument());
-
+	txt = new Text("Hole centre spacing on arc "+this.holeArc.getLinearSpacing(),
+			offset(this.root, maxWidth, 3).operator_add(new RVector(0,1000)),8,4,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
 	// and add some Etchings
 
-	documentInterface.setCurrentLayer("Etching");
 
 	// Frame A
-	
-	createText(documentInterface, addOperation, offset(this.root, maxWidth, 1).operator_add(new RVector(100,20)),
-			"JOB Ref: "+ui.getText("CustomerName"));
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 1).operator_add(new RVector(100,20)),8,4,0,"Etching");
+	txt.render(documentInterface,addOperation);
+//
+//	
+//	createText(documentInterface, addOperation, offset(this.root, maxWidth, 1).operator_add(new RVector(100,20)),
+//			"JOB Ref: "+ui.getText("CustomerName"));
 
 	// Frame C
 	
-	createText(
-			documentInterface, 
-			addOperation, 
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 2).operator_add(
-					new RVector(100,ui.getFloat("FrameCRelativeWidth")+5)
-			),
-			"JOB Ref: "+ui.getText("CustomerName"));
+					new RVector(100,ui.getFloat("FrameCRelativeWidth")+5)),8,4,0,"Etching");
+	txt.render(documentInterface,addOperation);
 	
-	
-	addOperation.apply(documentInterface.getDocument());
+	// Capped arch
 
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 3).operator_add(
+					new RVector(-10,10)),4,2,0.95*Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	//Full side bar
+	
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 4).operator_add(
+					new RVector(-10,10)),4,2,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+	//	Split side bars	
+	
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 5).operator_add(
+					new RVector(-10,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 5).operator_add(
+					new RVector(-10,ui.hingeAssembly.getBottomHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),4,2,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 5).operator_add(
+					new RVector(-10,ui.hingeAssembly.getMiddleHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),4,2,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 5).operator_add(
+					new RVector(-10,ui.hingeAssembly.getTopHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),3,1.5,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	// Bottom Bar
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 6).operator_add(
+					new RVector(-10,15+ui.getFloat("FrameCBarWidth")/2)),4,2,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	// Simple Bars
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 7).operator_add(
+					new RVector(10,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 7).operator_add(
+					new RVector(40,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 7).operator_add(
+					new RVector(70,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+			offset(this.root, maxWidth, 7).operator_add(
+					new RVector(100,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
+	txt.render(documentInterface,addOperation);
+
+	
 	//
 	// Return the addOperation to the library insert wrapper
 	// so it will be copied to the main document
