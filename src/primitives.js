@@ -809,16 +809,17 @@ function offset(vector, dist, n)
 // Class Text
 // A block of text placed on a layer at a pos, size and angle
 
-function Text(text,startPos,size,angle)
+function Text(text,startPos,height,width,angle)
 	{
-	this.create(text,startPos,size,angle)
+	this.create(text,startPos,height,width,angle)
 	};
 
-Text.prototype.create = function(text,startPos,size,angle)
+Text.prototype.create = function(text,startPos,height,width,angle)
 	{
 	this.text = text;
 	this.startPos = startPos;
-	this.size =  size;
+	this.height =  height;
+	this.width = width;
 	this.angle = angle;
 	}
 
@@ -839,11 +840,17 @@ this.renderRelRot(di, ao, 0, root);
 
 Text.prototype.renderRelRot = function(di, ao, angle, root)
 {
-var lineData = new RLineData(this.startPos.operator_add(root).rotate(angle,
-		root), this.endPos.operator_add(root).rotate(angle, root));
-var line = new RLineEntity(di.getDocument(), lineData);
-ao.addObject(line, false);
-return this.endPos;
+var textData = new RTextData();
+textData.setText(this.text);
+textData.setTextHeight(this.height);
+textData.setTextWidth(this.width);
+textData.setAngle(this.angle);
+textData.setPosition(this.startPos.operator_add(root));
+textData.move(this.startPos.operator_add(root));
+
+
+var textEntity = new RTextEntity(di.getDocument(), textData);
+ao.addObject(textEntity,false);
 }
 
 

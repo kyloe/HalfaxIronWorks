@@ -119,6 +119,9 @@ Min.create = function(documentInterface)
 
 	documentInterface.setCurrentLayer("Text");
 
+	var txt = new Text("Hello World",this.root,20,10,Math.PI/4);
+	txt.render(documentInterface,addOperation);
+	
 	createText(documentInterface, addOperation, offset(this.root, maxWidth, 0),
 			"Masons opening as measured");
 	createText(documentInterface, addOperation, offset(this.root, maxWidth, 1),
