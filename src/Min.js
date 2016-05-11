@@ -1176,8 +1176,13 @@ Min.createIcon = function(documentInterface)
 	createRectangle(documentInterface, addOperation, new RVector(0, 0), 10, 12);
 	createRectangle(documentInterface, addOperation, new RVector(1, 1), 8, 10);
 
-	createText(documentInterface, addOperation, new RVector(0, 0), "MN");
-	createText(documentInterface, addOperation, new RVector(3, 7), "00");
+	txt = new Text("GW",new RVector(3, 10),3,1.5,0,"Text");
+	txt.render(documentInterface,addOperation);
+	txt = new Text("03",new RVector(3, 6),3,1.5,0,"Text");
+	txt.render(documentInterface,addOperation);
+	
+//	createText(documentInterface, addOperation, new RVector(0, 0), "GW");
+//	createText(documentInterface, addOperation, new RVector(3, 7), "03");
 
 	return addOperation;
 	};
