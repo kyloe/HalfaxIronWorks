@@ -38,7 +38,7 @@ Min.init = function(formWidget)
 	
 	};
 
-Min.generate = function(documentInterface, file)
+Min.generate = function(di, file)
 
 //
 // Main function to generate the frames
@@ -47,36 +47,36 @@ Min.generate = function(documentInterface, file)
 	{
 
 	this.setValues();
-	return this.create(documentInterface);
+	return this.create(di);
 	};
 
-Min.generatePreview = function(documentInterface, iconSize)
+Min.generatePreview = function(di, iconSize)
 	{
 	//
 	// Function to generate the frames icon
 	//
 
-	return this.createIcon(documentInterface);
+	return this.createIcon(di);
 
 	};
 
-Min.create = function(documentInterface)
+Min.create = function(di)
 	{
 
 	// First create all the required layers
 
 	var layers = ["Laser Cutting", "Text", "Etching", "Dimensions"];
-	this.createLayers(documentInterface, layers);
+	this.createLayers(di, layers);
 
 	var blocks = ["Masons Opening", "Frame A", "Frame C", "Arch Piece",
 			"Full Side Bar", "Split Side Bar"];
-	this.createBlocks(documentInterface, blocks);
+	this.createBlocks(di, blocks);
 
 	// Then add the items to each layer
 	// empty layers will not be displayed
 	// As the copy process in QCAD ignores them
 
-	var addOperation = new RAddObjectsOperation(false);
+	var ao = new RAddObjectsOperation(false);
 
 	// Create a reference point which all others will be spaced from
 
@@ -86,66 +86,66 @@ Min.create = function(documentInterface)
 	// This is where the actual creation stuff is done
 	// 
 
-	documentInterface.setCurrentLayer("Laser Cutting");
+	di.setCurrentLayer("Laser Cutting");
 
-	this.createMasonsOpening(documentInterface, addOperation, this.root);
-	// this.createFrameC(documentInterface, addOperation,
+	this.createMasonsOpening(di, ao, this.root);
+	// this.createFrameC(di, ao,
 	// this.root.operator_add(new
 	// RVector(this.getFloat("MasonsOpeningWidth")+100,0)));
-	this.createFrameA(documentInterface, addOperation, offset(this.root,
+	this.createFrameA(di, ao, offset(this.root,
 			maxWidth, 1));
 
-	this.createFrameC(documentInterface, addOperation, offset(this.root,
+	this.createFrameC(di, ao, offset(this.root,
 			maxWidth, 2));
 
-	this.createCappedArch(documentInterface, addOperation, offset(this.root,
+	this.createCappedArch(di, ao, offset(this.root,
 			maxWidth, 3));
 
-	this.createFullSideBar(documentInterface, addOperation, offset(this.root,
+	this.createFullSideBar(di, ao, offset(this.root,
 			maxWidth, 4));
 
-	this.createSplitSideBar(documentInterface, addOperation, offset(this.root,
+	this.createSplitSideBar(di, ao, offset(this.root,
 			maxWidth, 5));
 
-	this.createBottomBar(documentInterface, addOperation, offset(this.root,
+	this.createBottomBar(di, ao, offset(this.root,
 			maxWidth, 6));
 
-	this.createSimpleBars(documentInterface, addOperation, offset(this.root,
+	this.createSimpleBars(di, ao, offset(this.root,
 			maxWidth, 7));
 
-	addOperation.apply(documentInterface.getDocument());
+	ao.apply(di.getDocument());
 
 	// and add some labels
 
-	documentInterface.setCurrentLayer("Text");
+	di.setCurrentLayer("Text");
 
 	var txt = new Text("Masons opening as measured",offset(this.root, maxWidth, 0),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	txt = new Text("Frame A",offset(this.root, maxWidth, 1),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	txt = new Text("Frame C",offset(this.root, maxWidth, 2),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	txt = new Text("Capped Arch",offset(this.root, maxWidth, 3),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	txt = new Text("Full Sidebar",offset(this.root, maxWidth, 4),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	txt = new Text("Split Sidebar",offset(this.root, maxWidth, 5),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	txt = new Text("Bottom Bar",offset(this.root, maxWidth, 6),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	txt = new Text("Simple Bars",offset(this.root, maxWidth, 7),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	txt = new Text("Hole centre spacing on arc "+this.holeArc.getLinearSpacing(),
 			offset(this.root, maxWidth, 3).operator_add(new RVector(0,1000)),8,4,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	// and add some Etchings
 
@@ -154,10 +154,10 @@ Min.create = function(documentInterface)
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 1).operator_add(new RVector(100,20)),8,4,0,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 //
 //	
-//	createText(documentInterface, addOperation, offset(this.root, maxWidth, 1).operator_add(new RVector(100,20)),
+//	createText(di, ao, offset(this.root, maxWidth, 1).operator_add(new RVector(100,20)),
 //			"JOB Ref: "+ui.getText("CustomerName"));
 
 	// Frame C
@@ -165,14 +165,14 @@ Min.create = function(documentInterface)
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 2).operator_add(
 					new RVector(100,ui.getFloat("FrameCRelativeWidth")+5)),8,4,0,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
 	// Capped arch
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 3).operator_add(
 					new RVector(-10,10)),4,2,0.95*Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	//Full side bar
 	
@@ -180,69 +180,69 @@ Min.create = function(documentInterface)
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 4).operator_add(
 					new RVector(-10,10)),4,2,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	//	Split side bars	
 	
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
 					new RVector(-10,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
 					new RVector(-10,ui.hingeAssembly.getBottomHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),4,2,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
 					new RVector(-10,ui.hingeAssembly.getMiddleHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),4,2,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
 					new RVector(-10,ui.hingeAssembly.getTopHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),3,1.5,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	// Bottom Bar
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 6).operator_add(
 					new RVector(-10,15+ui.getFloat("FrameCBarWidth")/2)),4,2,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	// Simple Bars
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 7).operator_add(
 					new RVector(10,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 7).operator_add(
 					new RVector(40,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 7).operator_add(
 					new RVector(70,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 7).operator_add(
 					new RVector(100,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 
 	
 	//
-	// Return the addOperation to the library insert wrapper
+	// Return the ao to the library insert wrapper
 	// so it will be copied to the main document
 	//
 
-	return addOperation;
+	return ao;
 
 	};
 
-Min.createFrameA = function(documentInterface, addOperation, pos)
+Min.createFrameA = function(di, ao, pos)
 // ********************************************************************************************************************
 //
 // 'Frame A' - cut and holed frame with no bends
@@ -259,10 +259,10 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 	// Create the two parts of the top arch
 	// inner part is a full Gothic opening
 	
-	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
+	createGothicArchRel(di, ao, pos, radius, width,
 			height, this.getFloat("ArchBarWidth") + allowance);
 
-	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
+	createGothicArchRel(di, ao, pos, radius, width,
 			height, allowance, topOnly);
 
 	// Caculate a few reference points
@@ -273,7 +273,7 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 	// Draw the outer complex lines
 	
-	this.createFrameAOutline(documentInterface, addOperation, frameARoot,
+	this.createFrameAOutline(di, ao, frameARoot,
 			width, spring + allowance);
 
 	// Create Plastic holes as hole arrays
@@ -291,7 +291,7 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 	bottomBarHoles.autospace(startPos, endPos, this
 			.getFloat("PlasticHoleDiameter"), 100);
-	bottomBarHoles.render(documentInterface, addOperation)
+	bottomBarHoles.render(di, ao)
 
 	var leftBarHoles = new HoleArray();
 
@@ -305,7 +305,7 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 	leftBarHoles.autospace(lhstartPos, lhendPos, this
 			.getFloat("PlasticHoleDiameter"), 100);
-	leftBarHoles.render(documentInterface, addOperation);
+	leftBarHoles.render(di, ao);
 
 	
 	var rightBarHoles = new HoleArray();
@@ -323,7 +323,7 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 	rightBarHoles.autospace(rhstartPos, rhendPos, this
 			.getFloat("PlasticHoleDiameter"), 100);
-	rightBarHoles.render(documentInterface, addOperation);
+	rightBarHoles.render(di, ao);
 
 	
 	
@@ -339,7 +339,7 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 		rightBarHoles.autospace(rhstartPos, rhendPos, this
 				.getFloat("PlasticHoleDiameter"), 100);
-		rightBarHoles.render(documentInterface, addOperation);
+		rightBarHoles.render(di, ao);
 
 		
 		
@@ -351,7 +351,7 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 		rightBarHoles.autospace(rhstartPos, rhendPos, this
 				.getFloat("PlasticHoleDiameter"), 100);
-		rightBarHoles.render(documentInterface, addOperation);
+		rightBarHoles.render(di, ao);
 
 		
 		}
@@ -368,7 +368,7 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 		rightBarHoles.autospace(rhstartPos, rhendPos, this
 				.getFloat("PlasticHoleDiameter"), 100);
-		rightBarHoles.render(documentInterface, addOperation);
+		rightBarHoles.render(di, ao);
 		
 		}
 	
@@ -382,13 +382,13 @@ Min.createFrameA = function(documentInterface, addOperation, pos)
 
 	rightBarHoles.autospace(rhstartPos, rhendPos, this
 			.getFloat("PlasticHoleDiameter"), 100);
-	rightBarHoles.render(documentInterface, addOperation);
+	rightBarHoles.render(di, ao);
 	
 	};
 
 // This bit is quite complex - pulled out into its own methid just to maike it a bit more tractable to understand	
 	
-Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
+Min.createFrameAOutline = function(di, ao, pos, width,
 		spring)
 	{
 	var height = this.getFloat("MasonsOpeningHeight")
@@ -427,7 +427,7 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 
 	);
 
-	createPolyLine(documentInterface, addOperation, leftHand);
+	createPolyLine(di, ao, leftHand);
 
 	var topRight = new Array(pos.operator_add(new RVector(width + 2 * allowance
 			- this.getFloat("FrameABarWidth") + this.getFloat("ArchBarWidth"),
@@ -442,19 +442,19 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 			.operator_add(new RVector(width + 2 * allowance, spring
 					- this.getFloat("BendSlotHeight"))));
 
-	createPolyLine(documentInterface, addOperation, topRight);
+	createPolyLine(di, ao, topRight);
 
 	// Build hinge assembly
 	
 	this.hingeAssembly = new HingeAssembly(new RVector(0,0),new RVector(0,spring-this.getFloat("BendSlotHeight")-cutoutHeight));
-	this.hingeAssembly.renderTabs(documentInterface, addOperation,pos.operator_add(new RVector(width+ 2 * allowance, cutoutHeight)));
+	this.hingeAssembly.renderTabs(di, ao,pos.operator_add(new RVector(width+ 2 * allowance, cutoutHeight)));
 
 		
 	var bottomRight = new Array(pos.operator_add(new RVector(width + 2 * allowance,
 			cutoutHeight)), pos.operator_add(new RVector(width + 2 * allowance
 			- cutoutWidth + bendReliefSlotWidth, cutoutHeight)));
 
-	createPolyLine(documentInterface, addOperation, bottomRight);
+	createPolyLine(di, ao, bottomRight);
 
 	var bottom = new Array(pos.operator_add(new RVector(width + 2 * allowance
 			- cutoutWidth, cutoutHeight)), pos.operator_add(new RVector(width
@@ -462,7 +462,7 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 			cutoutWidth, 0)), pos.operator_add(new RVector(cutoutWidth,
 			cutoutHeight)));
 	
-	createPolyLine(documentInterface, addOperation, bottom);
+	createPolyLine(di, ao, bottom);
 
 	// Now insert the bend reliefs
 
@@ -470,11 +470,11 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 	var slotWidth = this.getFloat("BendReliefSlotWidth");
 	var slotLength = this.getFloat("BendReliefSlotLength");
 
-	createVBendRelief(documentInterface, addOperation, pos
+	createVBendRelief(di, ao, pos
 			.operator_add(new RVector(cutoutWidth - bendReliefSlotWidth,
 					cutoutHeight)), 1, 1, diameter, slotWidth, slotLength);
 		
-	createVBendRelief(documentInterface, addOperation, pos
+	createVBendRelief(di, ao, pos
 			.operator_add(new RVector(width + 2 * allowance - cutoutWidth,
 					cutoutHeight)), 1, -1, diameter, slotWidth, slotLength);
 
@@ -485,7 +485,7 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 	
 	};
 
-Min.createFrameC = function(documentInterface, addOperation, pos)
+Min.createFrameC = function(di, ao, pos)
 	{
 	// ********************************************************************************************************************
 	//
@@ -505,14 +505,14 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	
 //print("Outer arc frame c radius "+rad)
 	
-	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
+	createGothicArchRel(di, ao, pos, radius, width,
 			height, allowance);
 
 //rad = radius-(allowance + this.getFloat("FrameCBarWidth"));
 //print("Outer arc frame c radius "+rad);
 
 
-	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
+	createGothicArchRel(di, ao, pos, radius, width,
 			height, allowance + this.getFloat("FrameCBarWidth"));
 //special case so have to set up inset ourselves
 	var weldTabBarHeight = getGothicSpring(radius, width, height) - allowance
@@ -540,7 +540,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	// Left hand tab holes
 	
 	var holesBarL = new WeldTabHoleLine(startPos,endPos,true,true);
-	holesBarL.render(documentInterface, addOperation);
+	holesBarL.render(di, ao);
 
 	
 	// Right hand tab holes		
@@ -570,7 +570,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	//print ("Length of holes "+startPos.getDistanceTo2d(endPos));
 	
 	this.holesBarRBottom = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
-	this.holesBarRBottom.render(documentInterface, addOperation);
+	this.holesBarRBottom.render(di, ao);
 
 	if (ui.widgets["ThirdHinge"].checked)
 		{
@@ -591,7 +591,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 			
 
 		this.holesBarRLower = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
-		this.holesBarRLower.render(documentInterface, addOperation);
+		this.holesBarRLower.render(di, ao);
 		
 
 		insetStartHole = false;
@@ -610,7 +610,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 										));
 			
 		this.holesBarRUpper = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
-		this.holesBarRUpper.render(documentInterface, addOperation);
+		this.holesBarRUpper.render(di, ao);
 		}
 	else
 	{
@@ -631,7 +631,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 		
 
 	this.holesBarRUpper = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
-	this.holesBarRUpper.render(documentInterface, addOperation);
+	this.holesBarRUpper.render(di, ao);
 
 	}
 	
@@ -653,7 +653,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 									));
 		
 	this.holesBarRTop = new WeldTabHoleLine(startPos,endPos,insetStartHole,insetEndHole);
-	this.holesBarRTop.render(documentInterface, addOperation);
+	this.holesBarRTop.render(di, ao);
 	
 	
 
@@ -675,7 +675,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 			Math.PI/18
 			);
 	
-	arc.render(documentInterface, addOperation);
+	arc.render(di, ao);
 	
 	
 	var arc2 = new WeldTabHoleArc(
@@ -693,7 +693,7 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 			Math.PI/18
 			);
 	arc2.setReverse(true);
-	arc2.render(documentInterface, addOperation);
+	arc2.render(di, ao);
 	
 	// stash the arc so we can retrieve its parameters for the side bars
 	
@@ -728,23 +728,23 @@ Min.createFrameC = function(documentInterface, addOperation, pos)
 	var insetStartHole = false;
 	var insetEndHole = false;
 //
-//	this.createWeldTabHoleLine(documentInterface, addOperation, startPos,
+//	this.createWeldTabHoleLine(di, ao, startPos,
 //			w_tab_width, this.getFloat("FrameCBarWidth"), EAST, insetStartHole,
 //			insetEndHole);
 
 	var holesBarB = new WeldTabHoleLine(startPos,endPos,insetStartHole, insetEndHole);
-	holesBarB.render(documentInterface, addOperation);
+	holesBarB.render(di, ao);
 
 	
 // Hinge mount holes
 
-	this.hingeAssembly.renderHoles(documentInterface, addOperation,pos.operator_add(new RVector(width-allowance,allowance+1)));
+	this.hingeAssembly.renderHoles(di, ao,pos.operator_add(new RVector(width-allowance,allowance+1)));
 	
 
 
 	}
 
-Min.createCappedArch = function(documentInterface, addOperation, pos)
+Min.createCappedArch = function(di, ao, pos)
 
 // ********************************************************************************************************************
 //
@@ -758,10 +758,10 @@ Min.createCappedArch = function(documentInterface, addOperation, pos)
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
 			+ this.getFloat("Allowance")+this.getFloat("FrameCBarWidth"); // TODO - work out why this is
 	// 10
-	createCappedGothicArch(documentInterface, addOperation, pos, radius-allowance, width
+	createCappedGothicArch(di, ao, pos, radius-allowance, width
 			- 2 * allowance, 20);
 
-	this.addDimensions(documentInterface, addOperation, pos
+	this.addDimensions(di, ao, pos
 			.operator_add(new RVector(0, 0)), pos.operator_add(new RVector(
 			width - 2 * allowance, 0)), pos.operator_add(new RVector(0, -50)));
 
@@ -1075,7 +1075,7 @@ Min.createSimpleBars = function(di, ao, pos)
 
 	};
 
-Min.createMasonsOpening = function(documentInterface, addOperation, pos)
+Min.createMasonsOpening = function(di, ao, pos)
 
 // ********************************************************************************************************************
 //
@@ -1084,29 +1084,29 @@ Min.createMasonsOpening = function(documentInterface, addOperation, pos)
 // ********************************************************************************************************************
 
 	{
-	block = new RBlock(documentInterface.getDocument(), "Masons Opening", pos);
+	block = new RBlock(di.getDocument(), "Masons Opening", pos);
 
-	documentInterface.setCurrentBlock("Masons Opening");
+	di.setCurrentBlock("Masons Opening");
 
-	this.createMasonsOpeningOutline(documentInterface, addOperation, pos);
-	this.createMasonsOpeningArch(documentInterface, addOperation, pos);
-	addOperation.apply(documentInterface.getDocument());
-	documentInterface.setCurrentBlock("");
+	this.createMasonsOpeningOutline(di, ao, pos);
+	this.createMasonsOpeningArch(di, ao, pos);
+	ao.apply(di.getDocument());
+	di.setCurrentBlock("");
 
-	this.createMasonsOpeningDimensions(documentInterface, addOperation, pos);
+	this.createMasonsOpeningDimensions(di, ao, pos);
 	};
 
-Min.createMasonsOpeningArch = function(documentInterface, addOperation, pos)
+Min.createMasonsOpeningArch = function(di, ao, pos)
 	{
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
 	var height = this.getFloat("MasonsOpeningHeight")
 
-	createGothicArchRel(documentInterface, addOperation, pos, radius, width,
+	createGothicArchRel(di, ao, pos, radius, width,
 			height, 0);
 	}
 
-Min.createMasonsOpeningOutline = function(documentInterface, addOperation, pos)
+Min.createMasonsOpeningOutline = function(di, ao, pos)
 	{
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
@@ -1120,21 +1120,21 @@ Min.createMasonsOpeningOutline = function(documentInterface, addOperation, pos)
 			pos.operator_add(new RVector(width, getGothicSpring(radius, width,
 					height)))];
 
-	createPolyLine(documentInterface, addOperation, outerLines);
+	createPolyLine(di, ao, outerLines);
 	};
 
-Min.createMasonsOpeningDimensions = function(documentInterface, addOperation,
+Min.createMasonsOpeningDimensions = function(di, ao,
 		pos)
 	{
 	var width = this.getFloat("MasonsOpeningWidth");
 	var height = this.getFloat("MasonsOpeningHeight")
 
-	this.addDimensions(documentInterface, addOperation, pos
+	this.addDimensions(di, ao, pos
 			.operator_add(new RVector(width / 2, 0)), pos
 			.operator_add(new RVector(width / 2, height)), pos
 			.operator_add(new RVector(-25, height / 2)));
 
-	this.addDimensions(documentInterface, addOperation, pos, pos
+	this.addDimensions(di, ao, pos, pos
 			.operator_add(new RVector(width, 0)), pos.operator_add(new RVector(
 			0, -50)));
 
@@ -1147,7 +1147,7 @@ Min.createMasonsOpeningDimensions = function(documentInterface, addOperation,
 // ********************************************************************************************************************
 
 
-Min.createWeldTabHoleLine = function(documentInterface, addOperation, pos,
+Min.createWeldTabHoleLine = function(di, ao, pos,
 		length, width, orientation, insetStartHole, insetEndHole)
 	{
 	// Convenience wrapper to save getting the standard dims every time
@@ -1161,33 +1161,33 @@ Min.createWeldTabHoleLine = function(documentInterface, addOperation, pos,
 	var weldLugHoleClearance = this.getFloat("WeldLugHoleClearance");
 	var weldLugInset = this.getFloat("WeldLugInset");
 
-	createWeldTabHoleLine(documentInterface, addOperation, pos, length, width,
+	createWeldTabHoleLine(di, ao, pos, length, width,
 			minSpacing, maxSpacing, orientation, weldLugWidth,
 			weldLugHoleWidth, weldLugHoleClearance, weldLugInset,
 			insetStartHole, insetEndHole);
 
 	}
 
-Min.createIcon = function(documentInterface)
+Min.createIcon = function(di)
 	{
 
-	var addOperation = new RAddObjectsOperation(false);
+	var ao = new RAddObjectsOperation(false);
 
-	createRectangle(documentInterface, addOperation, new RVector(0, 0), 10, 12);
-	createRectangle(documentInterface, addOperation, new RVector(1, 1), 8, 10);
+	createRectangle(di, ao, new RVector(0, 0), 10, 12);
+	createRectangle(di, ao, new RVector(1, 1), 8, 10);
 
 	txt = new Text("GW",new RVector(3, 10),3,1.5,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	txt = new Text("03",new RVector(3, 6),3,1.5,0,"Text");
-	txt.render(documentInterface,addOperation);
+	txt.render(di,ao);
 	
-//	createText(documentInterface, addOperation, new RVector(0, 0), "GW");
-//	createText(documentInterface, addOperation, new RVector(3, 7), "03");
+//	createText(di, ao, new RVector(0, 0), "GW");
+//	createText(di, ao, new RVector(3, 7), "03");
 
-	return addOperation;
+	return ao;
 	};
 
-Min.createLayers = function(documentInterface, layers)
+Min.createLayers = function(di, layers)
 
 //
 // createLayers: adds a number of layers from an array of text labels
@@ -1199,17 +1199,17 @@ Min.createLayers = function(documentInterface, layers)
 	for (i = 0; i < layers.length; i++)
 		{
 		addLayerOperation
-				.addObject(new RLayer(documentInterface.getDocument(),
-						layers[i], false, false, documentInterface
-								.getCurrentColor(), documentInterface
+				.addObject(new RLayer(di.getDocument(),
+						layers[i], false, false, di
+								.getCurrentColor(), di
 								.getCurrentLinetypeId(), RLineweight.Weight005));
 		}
 
-	addLayerOperation.apply(documentInterface.getDocument());
+	addLayerOperation.apply(di.getDocument());
 
 	};
 
-Min.createBlocks = function(documentInterface, blocks)
+Min.createBlocks = function(di, blocks)
 
 //
 // createLayers: adds a number of layers from an array of text labels
@@ -1220,23 +1220,23 @@ Min.createBlocks = function(documentInterface, blocks)
 
 	for (i = 0; i < blocks.length; i++)
 		{
-		addBlockOperation.addObject(new RBlock(documentInterface.getDocument(),
+		addBlockOperation.addObject(new RBlock(di.getDocument(),
 				blocks[i], new RVector(0, 0)));
 		}
 
-	addBlockOperation.apply(documentInterface.getDocument());
+	addBlockOperation.apply(di.getDocument());
 
 	};
 
-Min.addDimensions = function(documentInterface, addOperation, p1, p2, pDim)
+Min.addDimensions = function(di, ao, p1, p2, pDim)
 // Add dimension lines, from p1 to p2 with dimensions at pDim
 	{
 	// Stash teh layer we're using presently
-	currentLayerId = documentInterface.getDocument().getCurrentLayerId();
+	currentLayerId = di.getDocument().getCurrentLayerId();
 
-	addOperation.apply(documentInterface.getDocument());
+	ao.apply(di.getDocument());
 	// Change to dimensions layer
-	documentInterface.getDocument().setCurrentLayer("Dimensions");
+	di.getDocument().setCurrentLayer("Dimensions");
 
 	var dim = new RDimAlignedData();
 
@@ -1244,13 +1244,13 @@ Min.addDimensions = function(documentInterface, addOperation, p1, p2, pDim)
 	dim.setExtensionPoint2(p2);
 	dim.setDefinitionPoint(pDim);
 
-	var dimEnt = new RDimAlignedEntity(documentInterface.getDocument(), dim);
+	var dimEnt = new RDimAlignedEntity(di.getDocument(), dim);
 
-	addOperation.addObject(dimEnt, false);
-	addOperation.apply(documentInterface.getDocument());
+	ao.addObject(dimEnt, false);
+	ao.apply(di.getDocument());
 
 	// Back to our previous layer
-	documentInterface.getDocument().setCurrentLayer(currentLayerId);
+	di.getDocument().setCurrentLayer(currentLayerId);
 	}
 
 Min.getText = function(label)

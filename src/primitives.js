@@ -8,7 +8,7 @@ var SOUTH = 3 * Math.PI / 2;
 var NORTH = Math.PI / 2;
 var WEST = Math.PI;
 
-function createLuggedLine(documentInterface, addOperation, pos, length,
+function createLuggedLine(di, ao, pos, length,
 		minSpacing, minObjects, orientation, lugHoleDiameter, lugWidth,
 		lugHoleOffset, lugCountOption)
 	{
@@ -62,13 +62,13 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 			joinerOffset = new RVector(0, -l);
 			}
 
-		var lugStart = line(documentInterface, addOperation, pos, pos
+		var lugStart = line(di, ao, pos, pos
 				.operator_add(joinerOffset));
 
-		var lastLineStart = createMountingLug(documentInterface, addOperation,
+		var lastLineStart = createMountingLug(di, ao,
 				lugStart, orientation, lugHoleDiameter, lugWidth, lugHoleOffset);
 
-		lastPoint = line(documentInterface, addOperation, lastLineStart,
+		lastPoint = line(di, ao, lastLineStart,
 				lastLineStart.operator_add(joinerOffset));
 
 		}
@@ -97,15 +97,15 @@ function createLuggedLine(documentInterface, addOperation, pos, length,
 
 		// create lug one
 		var lugStart;
-		var lineStart = createMountingLug(documentInterface, addOperation, pos,
+		var lineStart = createMountingLug(di, ao, pos,
 				orientation, lugHoleDiameter, lugWidth, lugHoleOffset);
 
 		for (var i = 0; i < lugCount - 1; i++)
 			{
 			// plot lugs and joining lines
-			lugStart = line(documentInterface, addOperation, lineStart,
+			lugStart = line(di, ao, lineStart,
 					lineStart.operator_add(joinerOffset));
-			lineStart = createMountingLug(documentInterface, addOperation,
+			lineStart = createMountingLug(di, ao,
 					lugStart, orientation, lugHoleDiameter, lugWidth,
 					lugHoleOffset);
 			}
@@ -170,7 +170,7 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		}
 	}
 
-function createMountingLug(documentInterface, addOperation, pos, angle,
+function createMountingLug(di, ao, pos, angle,
 		lugHoleDiameter, lugWidth, lugHoleOffset)
 	{
 	// Creates one mounting lug, slope sided tab with round end and concentric
@@ -199,26 +199,26 @@ function createMountingLug(documentInterface, addOperation, pos, angle,
 	v5 = v5.rotate(angle, v1);
 
 	var lineData = new RLineData(v1, v2);
-	var line = new RLineEntity(documentInterface.getDocument(), lineData);
-	addOperation.addObject(line, false);
+	var line = new RLineEntity(di.getDocument(), lineData);
+	ao.addObject(line, false);
 
 	var lineData2 = new RLineData(v3, v4);
-	var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
-	addOperation.addObject(line2, false);
+	var line2 = new RLineEntity(di.getDocument(), lineData2);
+	ao.addObject(line2, false);
 
-	createHole(documentInterface, addOperation, v5, lugHoleDiameter);
+	createHole(di, ao, v5, lugHoleDiameter);
 
 	var arc = RArc.createFrom2PBulge(v2, v3, -0.89);
 	var arcData = new RArcData(arc);
-	var arcEnt = new RArcEntity(documentInterface.getDocument(), arcData);
+	var arcEnt = new RArcEntity(di.getDocument(), arcData);
 
-	addOperation.addObject(arcEnt, false);
+	ao.addObject(arcEnt, false);
 
 	return v4; // start point for next object
 
 	}
 
-function createPolyLine(documentInterface, addOperation, vectors)
+function createPolyLine(di, ao, vectors)
 	{
 	//
 	// Given an array of vectors ... join the dots (do not close the shape)
@@ -228,8 +228,8 @@ function createPolyLine(documentInterface, addOperation, vectors)
 		var v1 = vectors[i];
 		var v2 = vectors[(i + 1)];
 		var lineData = new RLineData(v1, v2);
-		var line = new RLineEntity(documentInterface.getDocument(), lineData);
-		addOperation.addObject(line, false);
+		var line = new RLineEntity(di.getDocument(), lineData);
+		ao.addObject(line, false);
 		}
 	}
 
@@ -252,7 +252,7 @@ function calcWeldTabCount(length, minSpacing, minLugs)
 
 	}
 
-function createTabbedLine(documentInterface, addOperation, pos, length,
+function createTabbedLine(di, ao, pos, length,
 		minSpacing, maxSpacing, orientation, weldLugWidth, weldLugDepth)
 	{
 	// Math.PI/2 = Lugs West
@@ -294,22 +294,22 @@ function createTabbedLine(documentInterface, addOperation, pos, length,
 
 	// create lug one
 	var lugStart;
-	var lineStart = createWeldLug(documentInterface, addOperation, pos,
+	var lineStart = createWeldLug(di, ao, pos,
 			weldLugWidth, weldLugDepth, orientation);
 
 	for (var i = 0; i < count; i++)
 		{
 		// plot lugs and joining lines
-		lugStart = line(documentInterface, addOperation, lineStart, lineStart
+		lugStart = line(di, ao, lineStart, lineStart
 				.operator_add(joinerOffset));
-		lineStart = createWeldLug(documentInterface, addOperation, lugStart,
+		lineStart = createWeldLug(di, ao, lugStart,
 				weldLugWidth, weldLugDepth, orientation);
 		}
 
 	return lineStart;
 	}
 
-function createWeldLug(documentInterface, addOperation, pos, weldLugWidth,
+function createWeldLug(di, ao, pos, weldLugWidth,
 		weldLugDepth, orientation)
 	{
 	var v2 = pos.operator_add(new RVector(0, weldLugDepth));
@@ -320,14 +320,14 @@ function createWeldLug(documentInterface, addOperation, pos, weldLugWidth,
 	v3 = v3.rotate(orientation, pos);
 	v4 = v4.rotate(orientation, pos);
 
-	line(documentInterface, addOperation, pos, v2);
-	line(documentInterface, addOperation, v2, v3);
-	line(documentInterface, addOperation, v3, v4);
+	line(di, ao, pos, v2);
+	line(di, ao, v2, v3);
+	line(di, ao, v3, v4);
 
 	return v4;
 	}
 
-function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
+function createWeldTabHoleLine(di, ao, pos, barLength,
 		barWidth, minSpacing, maxSpacing, orientation, weldLugWidth,
 		weldLugHoleWidth, weldLugHoleClearance, weldLugInset, insetStartHole,
 		insetEndHole)
@@ -409,20 +409,20 @@ function createWeldTabHoleLine(documentInterface, addOperation, pos, barLength,
 
 	// create lug one
 	var lugStart;
-	var lineStart = createRectangle(documentInterface, addOperation, startPos,
+	var lineStart = createRectangle(di, ao, startPos,
 			x, y);
 
 	for (var i = 0; i < count; i++)
 		{
 		// plot lugs and joining lines
 		lugStart = lineStart.operator_add(joinerOffset);
-		lineStart = createRectangle(documentInterface, addOperation, lugStart,
+		lineStart = createRectangle(di, ao, lugStart,
 				x, y);
 		}
 
 	}
 
-function createRectangleArray(documentInterface, addOperation, pos, width,
+function createRectangleArray(di, ao, pos, width,
 		height, count, offset)
 	{
 	//
@@ -433,14 +433,14 @@ function createRectangleArray(documentInterface, addOperation, pos, width,
 
 	for (var i = 0; i < count; i++)
 		{
-		FullFrameSet.createRectangle(documentInterface, addOperation, tPos,
+		FullFrameSet.createRectangle(di, ao, tPos,
 				width, height);
 		tPos = tPos.operator_add(offset);
 		};
 
 	}
 
-function createRectangle(documentInterface, addOperation, pos, x, y)
+function createRectangle(di, ao, pos, x, y)
 	{
 	//
 	// createRectangle: creates a simple rectangle based on width & height
@@ -453,35 +453,35 @@ function createRectangle(documentInterface, addOperation, pos, x, y)
 		var v1 = va[i].operator_add(pos);
 		var v2 = va[(i + 1) % va.length].operator_add(pos);
 		var lineData = new RLineData(v1, v2);
-		var line = new RLineEntity(documentInterface.getDocument(), lineData);
+		var line = new RLineEntity(di.getDocument(), lineData);
 
-		addOperation.addObject(line, false);
+		ao.addObject(line, false);
 		}
 
 	return v2;
 	}
 
-function line(documentInterface, addOperation, start, end)
+function line(di, ao, start, end)
 	{
 	var lineData = new RLineData(start, end);
-	var line = new RLineEntity(documentInterface.getDocument(), lineData);
-	addOperation.addObject(line, false);
+	var line = new RLineEntity(di.getDocument(), lineData);
+	ao.addObject(line, false);
 	return end;
 	}
 
-function createHole(documentInterface, addOperation, pos, diameter)
+function createHole(di, ao, pos, diameter)
 	{
 	//
 	// createHole: creates a simple hole based on pos and diameter
 	//
 
 	var circleData = new RCircleData(pos, diameter / 2);
-	var circle = new RCircleEntity(documentInterface.getDocument(), circleData);
-	addOperation.addObject(circle, false);
+	var circle = new RCircleEntity(di.getDocument(), circleData);
+	ao.addObject(circle, false);
 	return pos;
 	}
 
-function createVBendRelief(documentInterface, addOperation, pos, vorientation,
+function createVBendRelief(di, ao, pos, vorientation,
 		horientation, diameter, slotWidth, slotLength)
 	{
 
@@ -502,7 +502,7 @@ function createVBendRelief(documentInterface, addOperation, pos, vorientation,
 		lineData = new RLineData(pos, v2.operator_add(new RVector(0,
 				vorientation * -1 * diameter / 2)));
 		}
-	var line = new RLineEntity(documentInterface.getDocument(), lineData);
+	var line = new RLineEntity(di.getDocument(), lineData);
 
 	var lineData2;
 	if (horientation == 1)
@@ -514,10 +514,10 @@ function createVBendRelief(documentInterface, addOperation, pos, vorientation,
 		{
 		lineData2 = new RLineData(v3, v4);
 		}
-	var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
+	var line2 = new RLineEntity(di.getDocument(), lineData2);
 
-	addOperation.addObject(line, false);
-	addOperation.addObject(line2, false);
+	ao.addObject(line, false);
+	ao.addObject(line2, false);
 
 	// var arc = RArc.createFrom3Points( v2, pos.operator_add(new
 	// RVector(slotWidth/2,vorientation*(slotLength+diameter))),v4 );
@@ -536,13 +536,13 @@ function createVBendRelief(documentInterface, addOperation, pos, vorientation,
 		}
 
 	var keyHoleData = new RArcData(arc);
-	var keyHole = new RArcEntity(documentInterface.getDocument(), keyHoleData);
+	var keyHole = new RArcEntity(di.getDocument(), keyHoleData);
 
-	addOperation.addObject(keyHole, false);
+	ao.addObject(keyHole, false);
 
 	}
 
-//function createText(documentInterface, addOperation, pos, text)
+//function createText(di, ao, pos, text)
 //	{
 //	//
 //	// createText: creates a text label at the specified position
@@ -554,11 +554,11 @@ function createVBendRelief(documentInterface, addOperation, pos, vorientation,
 //	textData.setPosition(pos);
 //	textData.move(pos);
 //
-//	var textEntity = new RTextEntity(documentInterface.getDocument(), textData);
-//	addOperation.addObject(textEntity, false);
+//	var textEntity = new RTextEntity(di.getDocument(), textData);
+//	ao.addObject(textEntity, false);
 //	}
 
-function createGothicArchRel(documentInterface, addOperation, pos, radius,
+function createGothicArchRel(di, ao, pos, radius,
 		width, height, allowance, topOnly)
 	{
 	//
@@ -578,11 +578,11 @@ function createGothicArchRel(documentInterface, addOperation, pos, radius,
 	var newHeight = (getGothicSpring(radius, width, height) - allowance)
 			+ getGothicApex(newRadius, newWidth);
 
-	createGothicArch(documentInterface, addOperation, newPos, newRadius,
+	createGothicArch(di, ao, newPos, newRadius,
 			newWidth, newHeight, topOnly);
 	}
 
-function createCappedGothicArch(documentInterface, addOperation, pos, radius,
+function createCappedGothicArch(di, ao, pos, radius,
 		width, barWidth)
 	{
 
@@ -590,10 +590,10 @@ function createCappedGothicArch(documentInterface, addOperation, pos, radius,
 	// params
 	// Create two arcs
 
-	createGothicArchTop(documentInterface, addOperation, pos, radius, width,
+	createGothicArchTop(di, ao, pos, radius, width,
 			getGothicApex(radius, width));
 
-	createGothicArchTop(documentInterface, addOperation, pos
+	createGothicArchTop(di, ao, pos
 			.operator_add(new RVector(-barWidth, 0)), radius + barWidth, width
 			+ 2 * barWidth, getGothicApex(radius + barWidth, width + 2
 			* barWidth));
@@ -601,16 +601,16 @@ function createCappedGothicArch(documentInterface, addOperation, pos, radius,
 
 	var lineData = new RLineData(pos, pos
 			.operator_add(new RVector(-barWidth, 0)));
-	var line = new RLineEntity(documentInterface.getDocument(), lineData);
-	addOperation.addObject(line, false);
+	var line = new RLineEntity(di.getDocument(), lineData);
+	ao.addObject(line, false);
 
 	var lineData2 = new RLineData(pos.operator_add(new RVector(width, 0)), pos
 			.operator_add(new RVector(width + barWidth, 0)));
-	var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
-	addOperation.addObject(line2, false);
+	var line2 = new RLineEntity(di.getDocument(), lineData2);
+	ao.addObject(line2, false);
 	}
 
-function createGothicArch(documentInterface, addOperation, pos, radius, width,
+function createGothicArch(di, ao, pos, radius, width,
 		height, topOnly)
 	{
 	// creates the arc-ed top for a gothic arch. Root (pos) is bottom left
@@ -622,7 +622,7 @@ function createGothicArch(documentInterface, addOperation, pos, radius, width,
 		topOnly = false;
 		}
 
-	createGothicArchTop(documentInterface, addOperation, pos, radius, width,
+	createGothicArchTop(di, ao, pos, radius, width,
 			height)
 
 	if (!topOnly)
@@ -635,18 +635,18 @@ function createGothicArch(documentInterface, addOperation, pos, radius, width,
 				pos.operator_add(new RVector(width, getGothicSpring(radius,
 						width, height)))];
 
-		createPolyLine(documentInterface, addOperation, outerLines);
+		createPolyLine(di, ao, outerLines);
 
 		}
 
 	// print ("Arch root "+pos.operator_add(new RVector(-radius,0)).getX()+"
 	// "+pos.operator_add(new RVector(-radius,0)).getY());
 
-	return addOperation;
+	return ao;
 
 	}
 
-function createGothicArchTop(documentInterface, addOperation, pos, radius,
+function createGothicArchTop(di, ao, pos, radius,
 		width, height)
 	{
 	var arc = new RArc(pos.operator_add(new RVector(radius, getGothicSpring(
@@ -657,12 +657,12 @@ function createGothicArchTop(documentInterface, addOperation, pos, radius,
 	true // Reversed
 	);
 
-	// createHole(documentInterface, addOperation, arc.getCenter(), 5);
+	// createHole(di, ao, arc.getCenter(), 5);
 
 	var arcData = new RArcData(arc);
-	var arcEntity = new RArcEntity(documentInterface.getDocument(), arcData);
+	var arcEntity = new RArcEntity(di.getDocument(), arcData);
 
-	addOperation.addObject(arcEntity, false);
+	ao.addObject(arcEntity, false);
 
 	var arc2 = new RArc(pos.operator_add(new RVector(width - radius,
 			getGothicSpring(radius, width, height))), // Center
@@ -671,12 +671,12 @@ function createGothicArchTop(documentInterface, addOperation, pos, radius,
 	getGothicAngle(radius, width), // End angle
 	false // Reversed
 	);
-	// createHole(documentInterface, addOperation, arc2.getCenter(), 5);
+	// createHole(di, ao, arc2.getCenter(), 5);
 
 	var arcData2 = new RArcData(arc2);
-	var arcEntity2 = new RArcEntity(documentInterface.getDocument(), arcData2);
+	var arcEntity2 = new RArcEntity(di.getDocument(), arcData2);
 
-	addOperation.addObject(arcEntity2, false);
+	ao.addObject(arcEntity2, false);
 	}
 
 function createArcBar(di, ao, pos, holeArcWidth, holeArcRadius, barWidth,
