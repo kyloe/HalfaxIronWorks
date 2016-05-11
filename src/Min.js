@@ -350,7 +350,8 @@ Min.createFrameAOutline = function(documentInterface, addOperation, pos, width,
 
 	// Create hinge assembly and stash so we can refer to it in Frame C
 	
-
+var x = new Lug(new RVector(100,100));
+x.render(documentInterface, addOperation);
 	
 	};
 

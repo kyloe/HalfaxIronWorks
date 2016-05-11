@@ -842,47 +842,26 @@ this.renderRelRot(di, ao, 0, root);
 Lug.prototype.renderRelRot = function(di, ao, angle, root)
 {
 
-this.endpos = this.startPos.operator_add(new RVector(ui.getFloat("LugWith"),0));
-this.holeCentre = this.startPos.operator_add(new RVector(ui.getFloat("LugWith")/2,ui.getFloat("LugHoleOffset")));
+this.endPos = this.startPos.operator_add(new RVector(ui.getFloat("LugWidth"),0));
+this.holeCentre = this.startPos.operator_add(new RVector(ui.getFloat("LugWidth")/2,ui.getFloat("LugHoleOffset")));
 
-var v1 = new RVector(0, 0);
-var v2 = new RVector(lugWidth / 4, lugHoleOffset * 1.155);
-var v3 = new RVector(3 * lugWidth / 4, lugHoleOffset * 1.155);
-var v4 = new RVector(lugWidth, 0);
-var v5 = new RVector(lugHoleOffset, lugHoleOffset);
 
-// var root = pos.operator_add(new RVector(FullFrameSet.lugWidth/2,0));
-var root = pos;
+var hyp = Math.sqrt(200);
+var ang = Math.asin(6/hyp);
+var theta = ang+Math.PI/4;
+var r = Math.sqrt(200-36);
 
-v1 = v1.operator_add(root);
-v2 = v2.operator_add(root);
-v3 = v3.operator_add(root);
-v4 = v4.operator_add(root);
-v5 = v5.operator_add(root);
+var tanLeft = RVector.createPolar(r,theta).operator_add(this.startPos);
+var tanRight = RVector.createPolar(r,Math.PI-theta).operator_add(this.endPos);
 
-// No point rotating v1 round itself
-v2 = v2.rotate(angle, v1);
-v3 = v3.rotate(angle, v1);
-v4 = v4.rotate(angle, v1);
-v5 = v5.rotate(angle, v1);
+line(di,ao,this.startPos,tanLeft);
+line(di,ao,this.endPos,tanRight);
 
-var lineData = new RLineData(v1, v2);
-var line = new RLineEntity(documentInterface.getDocument(), lineData);
-addOperation.addObject(line, false);
-
-var lineData2 = new RLineData(v3, v4);
-var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
-addOperation.addObject(line2, false);
-
-createHole(documentInterface, addOperation, v5, lugHoleDiameter);
-
-var arc = RArc.createFrom2PBulge(v2, v3, -0.89);
+var arc = RArc.createFrom3Points(tanLeft,this.startPos.operator_add(new RVector(10,16)),tanRight);
 var arcData = new RArcData(arc);
-var arcEnt = new RArcEntity(documentInterface.getDocument(), arcData);
-
-addOperation.addObject(arcEnt, false);
-
-return v4; // start point for next object
+var arcEnt = new RArcEntity(di.getDocument(), arcData);
+ao.addObject(arcEnt, false);
+createHole(di,ao,this.startPos.operator_add(new RVector(10,10)),4.2);
 
 
 return this.endPos;
