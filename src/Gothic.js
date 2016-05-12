@@ -10,8 +10,7 @@ include("./primitives.js");
 
 //
 // Create main object
-// Ready to go 
-//
+// 
 
 var ui;
 
@@ -37,7 +36,10 @@ Gothic.init = function(formWidget)
 		this.widgets = getWidgets(formWidget);
 		}
 	
-	ui = this;
+	// this is done simply to aid readability of the code and to make 
+	// some utils available in other areas till I get the scoping fixed
+	
+	ui = this; 
 	
 	};
 
