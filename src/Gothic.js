@@ -1,6 +1,8 @@
+
 // Gothic.js
 // library.js contains some convenience functions like 'isNull':
 // This source is now managed under GIT
+// This program creates laser cutting layout for gothic windows
 
 include("scripts/library.js");
 include("scripts/WidgetFactory.js");
