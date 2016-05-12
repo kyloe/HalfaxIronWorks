@@ -1,4 +1,4 @@
-// Min.js
+// Gothic.js
 // library.js contains some convenience functions like 'isNull':
 // This source is now managed under GIT
 
@@ -12,7 +12,7 @@ include("./primitives.js");
 
 var ui;
 
-function Min()
+function Gothic()
 	{
 	};
 
@@ -22,7 +22,7 @@ function Min()
 //
 // ********************************************************************************************************************
 
-Min.init = function(formWidget)
+Gothic.init = function(formWidget)
 	{
 
 	//
@@ -38,7 +38,7 @@ Min.init = function(formWidget)
 	
 	};
 
-Min.generate = function(di, file)
+Gothic.generate = function(di, file)
 
 //
 // Main function to generate the frames
@@ -50,7 +50,7 @@ Min.generate = function(di, file)
 	return this.create(di);
 	};
 
-Min.generatePreview = function(di, iconSize)
+Gothic.generatePreview = function(di, iconSize)
 	{
 	//
 	// Function to generate the frames icon
@@ -60,7 +60,7 @@ Min.generatePreview = function(di, iconSize)
 
 	};
 
-Min.create = function(di)
+Gothic.create = function(di)
 	{
 
 	// First create all the required layers
@@ -242,7 +242,7 @@ Min.create = function(di)
 
 	};
 
-Min.createFrameA = function(di, ao, pos)
+Gothic.createFrameA = function(di, ao, pos)
 // ********************************************************************************************************************
 //
 // 'Frame A' - cut and holed frame with no bends
@@ -388,7 +388,7 @@ Min.createFrameA = function(di, ao, pos)
 
 // This bit is quite complex - pulled out into its own methid just to maike it a bit more tractable to understand	
 	
-Min.createFrameAOutline = function(di, ao, pos, width,
+Gothic.createFrameAOutline = function(di, ao, pos, width,
 		spring)
 	{
 	var height = this.getFloat("MasonsOpeningHeight")
@@ -481,12 +481,11 @@ Min.createFrameAOutline = function(di, ao, pos, width,
 
 	// Create hinge assembly and stash so we can refer to it in Frame C
 	
-var x = new Lug(new RVector(100,100));
-x.render(documentInterface, addOperation);
+
 	
 	};
 
-Min.createFrameC = function(di, ao, pos)
+Gothic.createFrameC = function(di, ao, pos)
 	{
 	// ********************************************************************************************************************
 	//
@@ -745,7 +744,7 @@ Min.createFrameC = function(di, ao, pos)
 
 	}
 
-Min.createCappedArch = function(di, ao, pos)
+Gothic.createCappedArch = function(di, ao, pos)
 
 // ********************************************************************************************************************
 //
@@ -768,7 +767,7 @@ Min.createCappedArch = function(di, ao, pos)
 
 	}
 
-Min.createFullSideBar = function(di, ao, pos)
+Gothic.createFullSideBar = function(di, ao, pos)
 // ********************************************************************************************************************
 //
 // Full side bar
@@ -840,7 +839,7 @@ Min.createFullSideBar = function(di, ao, pos)
 			sidebarHeight / 2)));
 	};
 
-Min.createSplitSideBar = function(di, ao, pos)
+Gothic.createSplitSideBar = function(di, ao, pos)
 // ********************************************************************************************************************
 //
 // Split side bar
@@ -970,7 +969,7 @@ Min.createSplitSideBar = function(di, ao, pos)
 			sidebarHeight / 2)));
 	}
 
-Min.createBottomBar = function(di, ao, pos)
+Gothic.createBottomBar = function(di, ao, pos)
 // ********************************************************************************************************************
 //
 // Bottom bar
@@ -1011,7 +1010,7 @@ Min.createBottomBar = function(di, ao, pos)
 			sidebarHeight / 2)));
 	}
 
-Min.createSimpleBars = function(di, ao, pos)
+Gothic.createSimpleBars = function(di, ao, pos)
 // ********************************************************************************************************************
 //
 // Simple bars
@@ -1076,7 +1075,7 @@ Min.createSimpleBars = function(di, ao, pos)
 
 	};
 
-Min.createMasonsOpening = function(di, ao, pos)
+Gothic.createMasonsOpening = function(di, ao, pos)
 
 // ********************************************************************************************************************
 //
@@ -1097,7 +1096,7 @@ Min.createMasonsOpening = function(di, ao, pos)
 	this.createMasonsOpeningDimensions(di, ao, pos);
 	};
 
-Min.createMasonsOpeningArch = function(di, ao, pos)
+Gothic.createMasonsOpeningArch = function(di, ao, pos)
 	{
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
@@ -1107,7 +1106,7 @@ Min.createMasonsOpeningArch = function(di, ao, pos)
 			height, 0);
 	}
 
-Min.createMasonsOpeningOutline = function(di, ao, pos)
+Gothic.createMasonsOpeningOutline = function(di, ao, pos)
 	{
 	var radius = this.getFloat("Radius");
 	var width = this.getFloat("MasonsOpeningWidth");
@@ -1124,7 +1123,7 @@ Min.createMasonsOpeningOutline = function(di, ao, pos)
 	createPolyLine(di, ao, outerLines);
 	};
 
-Min.createMasonsOpeningDimensions = function(di, ao,
+Gothic.createMasonsOpeningDimensions = function(di, ao,
 		pos)
 	{
 	var width = this.getFloat("MasonsOpeningWidth");
@@ -1148,7 +1147,7 @@ Min.createMasonsOpeningDimensions = function(di, ao,
 // ********************************************************************************************************************
 
 
-Min.createWeldTabHoleLine = function(di, ao, pos,
+Gothic.createWeldTabHoleLine = function(di, ao, pos,
 		length, width, orientation, insetStartHole, insetEndHole)
 	{
 	// Convenience wrapper to save getting the standard dims every time
@@ -1169,7 +1168,7 @@ Min.createWeldTabHoleLine = function(di, ao, pos,
 
 	}
 
-Min.createIcon = function(di)
+Gothic.createIcon = function(di)
 	{
 
 	var ao = new RAddObjectsOperation(false);
@@ -1188,7 +1187,7 @@ Min.createIcon = function(di)
 	return ao;
 	};
 
-Min.createLayers = function(di, layers)
+Gothic.createLayers = function(di, layers)
 
 //
 // createLayers: adds a number of layers from an array of text labels
@@ -1210,7 +1209,7 @@ Min.createLayers = function(di, layers)
 
 	};
 
-Min.createBlocks = function(di, blocks)
+Gothic.createBlocks = function(di, blocks)
 
 //
 // createLayers: adds a number of layers from an array of text labels
@@ -1229,7 +1228,7 @@ Min.createBlocks = function(di, blocks)
 
 	};
 
-Min.addDimensions = function(di, ao, p1, p2, pDim)
+Gothic.addDimensions = function(di, ao, p1, p2, pDim)
 // Add dimension lines, from p1 to p2 with dimensions at pDim
 	{
 	// Stash teh layer we're using presently
@@ -1254,7 +1253,7 @@ Min.addDimensions = function(di, ao, p1, p2, pDim)
 	di.getDocument().setCurrentLayer(currentLayerId);
 	}
 
-Min.getText = function(label)
+Gothic.getText = function(label)
 	{
 	
 	if (this.hasOwnProperty(label))
@@ -1272,7 +1271,7 @@ Min.getText = function(label)
 
 	}
 
-Min.getCombo = function(label)
+Gothic.getCombo = function(label)
 	{
 		
 	if (this.widgets[label])
@@ -1287,7 +1286,7 @@ Min.getCombo = function(label)
 	}
 
 
-Min.getFloat = function(label)
+Gothic.getFloat = function(label)
 	{
 
 	if (this.hasOwnProperty(label))
@@ -1305,7 +1304,7 @@ Min.getFloat = function(label)
 		}
 	}
 
-Min.getBoolean = function(label)
+Gothic.getBoolean = function(label)
 	{
 	if (this.hasOwnProperty(label))
 		{
@@ -1321,7 +1320,7 @@ Min.getBoolean = function(label)
 		}
 	}
 
-Min.setValues = function()
+Gothic.setValues = function()
 	{
 
 	//
@@ -1409,7 +1408,7 @@ Min.setValues = function()
 
 	};
 
-Min.setDerivedValues = function()
+Gothic.setDerivedValues = function()
 	{
 
 	//
