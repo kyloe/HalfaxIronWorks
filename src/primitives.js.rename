@@ -822,7 +822,7 @@ Text.prototype.create = function(text,startPos,height,width,angle,layer)
 
 Text.prototype.rotate = function(angle)
 	{
-	this.angle = angle; 
+	this.angle = angle;
 	}
 
 Text.prototype.render = function(di, ao)
