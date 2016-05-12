@@ -534,21 +534,21 @@ function createVBendRelief(documentInterface, addOperation, pos, vorientation,
 
 	}
 
-function createText(documentInterface, addOperation, pos, text)
-	{
-	//
-	// createText: creates a text label at the specified position
-	// width and height are fixed for an Icon
-	var textData = new RTextData();
-	textData.setText(text);
-	textData.setTextHeight(4);
-	textData.setTextWidth(2);
-	textData.setPosition(pos);
-	textData.move(pos);
-
-	var textEntity = new RTextEntity(documentInterface.getDocument(), textData);
-	addOperation.addObject(textEntity, false);
-	}
+//function createText(documentInterface, addOperation, pos, text)
+//	{
+//	//
+//	// createText: creates a text label at the specified position
+//	// width and height are fixed for an Icon
+//	var textData = new RTextData();
+//	textData.setText(text);
+//	textData.setTextHeight(4);
+//	textData.setTextWidth(2);
+//	textData.setPosition(pos);
+//	textData.move(pos);
+//
+//	var textEntity = new RTextEntity(documentInterface.getDocument(), textData);
+//	addOperation.addObject(textEntity, false);
+//	}
 
 function createGothicArchRel(documentInterface, addOperation, pos, radius,
 		width, height, allowance, topOnly)
