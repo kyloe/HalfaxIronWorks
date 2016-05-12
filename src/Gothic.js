@@ -8,6 +8,7 @@ include("./primitives.js");
 
 //
 // Create main object
+// Ready to go 
 //
 
 var ui;
