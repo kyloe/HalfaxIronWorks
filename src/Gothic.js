@@ -93,6 +93,14 @@ Gothic.create = function(di)
 
 	di.setCurrentLayer("Laser Cutting");
 
+	var glassTemplate = new GothicOutline(
+			this.getFloat("MasonsOpeningWidth"),
+			this.getFloat("MasonsOpeningHeight"),
+			this.getFloat("Radius"),
+			this.getFloat("Allowance")+this.getFloat("FrameCRelativeWidth")/2+this.getFloat("FrameCBarWidth")-this.getFloat("GlassOverlap"),
+			offset(this.root,maxWidth, -1));
+	glassTemplate.render(di,ao);
+	
 	this.createMasonsOpening(di, ao, this.root);
 	// this.createFrameC(di, ao,
 	// this.root.operator_add(new
@@ -124,6 +132,14 @@ Gothic.create = function(di)
 
 	di.setCurrentLayer("Text");
 
+	var txt = new Text("Glass Template",offset(this.root, maxWidth, -1),8,4,0,"Text");
+	txt.render(di,ao);
+
+	var txt = new Text("Glass Template DO NOT CUT",offset(this.root, maxWidth, -1).operator_add(new RVector(maxWidth*0.3,200))
+			,20,10,Math.PI/2,"Laser Cutting");
+	txt.render(di,ao);
+
+	
 	var txt = new Text("Masons opening as measured",offset(this.root, maxWidth, 0),8,4,0,"Text");
 	txt.render(di,ao);
 	
