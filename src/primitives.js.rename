@@ -174,6 +174,28 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		{
 		v = line(di, ao, v, v.operator_add(new RVector(0, -weldLugInset)));
 		}
+	
+	
+	// Add rubber seal holes
+	
+	
+	var fullSidebarHoles = new HoleArray();
+
+	var startPos = pos.operator_add(
+			new RVector(-ui.getFloat("SidebarWidth")/2,
+			ui.getFloat("PlasticHoleInset") )
+				);
+
+	var endPos = pos.operator_add(
+			new RVector(-ui.getFloat("SidebarWidth")/2,
+			sidebarHeight-ui.getFloat("PlasticHoleInset")) 
+					);
+
+	fullSidebarHoles.autospace(startPos, endPos, ui
+			.getFloat("PlasticHoleDiameter"),ui.getFloat("SidebarSealHoleSpacing"));
+	
+	fullSidebarHoles.render(di, ao);
+	
 	}
 
 
@@ -718,7 +740,29 @@ function createArcBar(di, ao, pos, holeArcWidth, holeArcRadius, barWidth,
 	// cap it
 	// and back home
 	// then add holes
+
+	
+	var arcSidebarHoles = new HoleArray();
+
+	var startPos = pos.operator_add(
+			new RVector(-ui.getFloat("SidebarWidth")/2,
+			ui.getFloat("PlasticHoleInset") )
+				);
+
+	var endPos = pos.operator_add(
+			new RVector(-ui.getFloat("SidebarWidth")/2,
+			length-ui.getFloat("PlasticHoleInset")) 
+					);
+
+	arcSidebarHoles.autospace(startPos, endPos, ui
+			.getFloat("PlasticHoleDiameter"),ui.getFloat("SidebarSealHoleSpacing"));
+	
+	arcSidebarHoles.render(di, ao);
+	
 	}
+
+
+
 
 function getGothicArchLength(radius, width)
 	{
@@ -826,7 +870,7 @@ GothicOutline.prototype.create = function(width,height,radius,allowance,startPos
 
 	
 	// Now need to do some preparatory geometry
-	debugger;
+
 	this.arcLeft = new RArc(this.startPos.operator_add(
 						new RVector(
 								this.radius, 

@@ -41,8 +41,9 @@ Gothic.init = function(formWidget)
 	// some utils available in other areas till I get the scoping fixed
 	
 	ui = this; 
-	this.versionNumber = "09";
+
 	this.twoLetterCode = "GW";
+	this.versionNumber = "09";
 	
 	};
 
