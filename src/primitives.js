@@ -1767,29 +1767,34 @@ HingeAssembly.prototype.getBottomHingeBottom = function()
 	}
 
 HingeAssembly.prototype.renderTabs = function(di, ao, pos)
+{
+this.build();
+this.renderTab(di, ao, pos.operator_add(this.topHingeCentre));
+if (ui.widgets["ThirdHinge"].checked)
 	{
-	this.build();
-	this.renderTab(di, ao, pos.operator_add(this.topHingeCentre));
 	this.renderTab(di, ao, pos.operator_add(this.middleHingeCentre));
-	this.renderTab(di, ao, pos.operator_add(this.bottomHingeCentre));
-	// Joining lines
-	line(di,ao,
-			pos.operator_add(this.getTopHingeTop()),
-			pos.operator_add(this.endPos)
-			);
-	line(di,ao,
-			pos.operator_add(this.getTopHingeBottom()),
-			pos.operator_add(this.getMiddleHingeTop())
-			);
-	line(di,ao,
-			pos.operator_add(this.getBottomHingeTop()),
-			pos.operator_add(this.getMiddleHingeBottom())
-			);
-	line(di,ao,
-			pos.operator_add(this.getBottomHingeBottom()),
-			pos.operator_add(this.startPos)
-			);
-	};
+	}
+this.renderTab(di, ao, pos.operator_add(this.bottomHingeCentre));
+// Joining lines
+line(di, ao, pos.operator_add(this.getTopHingeTop()), pos
+		.operator_add(this.endPos));
+if (ui.widgets["ThirdHinge"].checked)
+	{
+
+	line(di, ao, pos.operator_add(this.getTopHingeBottom()), pos
+			.operator_add(this.getMiddleHingeTop()));
+	line(di, ao, pos.operator_add(this.getBottomHingeTop()), pos
+			.operator_add(this.getMiddleHingeBottom()));
+	}
+else
+	{
+	line(di, ao, pos.operator_add(this.getTopHingeBottom()), pos
+			.operator_add(this.getBottomHingeTop()));
+	}
+line(di, ao, pos.operator_add(this.getBottomHingeBottom()), pos
+		.operator_add(this.startPos));
+};
+	
 HingeAssembly.prototype.renderTab = function(di, ao, centre)
 	{
 
@@ -1820,13 +1825,18 @@ HingeAssembly.prototype.renderTab = function(di, ao, centre)
 	createHole(di, ao, pos.operator_add(new RVector(10, length + r - 6.5)), d);
 	return pos.operator_add(new RVector(0, length + 2 * r));
 	}
+
 HingeAssembly.prototype.renderHoles = function(di, ao, pos)
-{
-this.build();
-this.renderHole(di, ao, pos.operator_add(this.topHingeCentre));
-this.renderHole(di, ao, pos.operator_add(this.middleHingeCentre));
-this.renderHole(di, ao, pos.operator_add(this.bottomHingeCentre));
-}
+	{
+	this.build();
+	this.renderHole(di, ao, pos.operator_add(this.topHingeCentre));
+	if (ui.widgets["ThirdHinge"].checked)
+		{
+
+		this.renderHole(di, ao, pos.operator_add(this.middleHingeCentre));
+		}
+	this.renderHole(di, ao, pos.operator_add(this.bottomHingeCentre));
+	}
 
 HingeAssembly.prototype.renderHole = function(di, ao, pos)
 	{
