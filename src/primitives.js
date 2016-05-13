@@ -1,5 +1,9 @@
 // Only objects here from now on
 
+// Gothic.js
+// Version 004
+// released to steve
+
 // Math.PI/2 = Lugs West
 // Math.PI = Lugs South
 // 3*Math.PI/2 = Lugs East
