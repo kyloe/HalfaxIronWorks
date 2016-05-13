@@ -1,5 +1,8 @@
 
 // Gothic.js
+// Version 004
+// released to steve
+
 // library.js contains some convenience functions like 'isNull':
 // This source is now managed under GIT
 // This program creates laser cutting layout for gothic windows
@@ -40,6 +43,8 @@ Gothic.init = function(formWidget)
 	// some utils available in other areas till I get the scoping fixed
 	
 	ui = this; 
+	this.versionNumber = "05";
+	this.twoLetterCode = "GW";
 	
 	};
 
@@ -73,9 +78,9 @@ Gothic.create = function(di)
 	var layers = ["Laser Cutting", "Text", "Etching", "Dimensions"];
 	this.createLayers(di, layers);
 
-	var blocks = ["Masons Opening", "Frame A", "Frame C", "Arch Piece",
-			"Full Side Bar", "Split Side Bar"];
-	this.createBlocks(di, blocks);
+//	var blocks = ["Masons Opening", "Frame A", "Frame C", "Arch Piece",
+//			"Full Side Bar", "Split Side Bar"];
+//	this.createBlocks(di, blocks);
 
 	// Then add the items to each layer
 	// empty layers will not be displayed
@@ -1197,9 +1202,9 @@ Gothic.createIcon = function(di)
 	createRectangle(di, ao, new RVector(0, 0), 10, 12);
 	createRectangle(di, ao, new RVector(1, 1), 8, 10);
 
-	txt = new Text("GW",new RVector(3, 10),3,1.5,0,"Text");
+	txt = new Text(this.twoLetterCode,new RVector(3, 10),3,1.5,0,"Text");
 	txt.render(di,ao);
-	txt = new Text("03",new RVector(3, 6),3,1.5,0,"Text");
+	txt = new Text(this.versionNumber,new RVector(3, 6),3,1.5,0,"Text");
 	txt.render(di,ao);
 	
 //	createText(di, ao, new RVector(0, 0), "GW");

@@ -203,37 +203,37 @@ Gothic.create = function(di)
 	//Full side bar
 	
 
-	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+	txt = new Text(ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 4).operator_add(
-					new RVector(-10,10)),4,2,Math.PI/2,"Etching");
+					new RVector(-10,-10+ui.getFloat("FrameCBarWidth")/2)),2,1,Math.PI/2,"Etching");
 	txt.render(di,ao);
 	//	Split side bars	
 	
-	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+	txt = new Text(ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
-					new RVector(-10,15+ui.getFloat("FrameCBarWidth")/2)),3,1.5,Math.PI/2,"Etching");
+					new RVector(-10,15+ui.getFloat("FrameCBarWidth")/2)),2,1,Math.PI/2,"Etching");
 	txt.render(di,ao);
 
-	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+	txt = new Text(ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
-					new RVector(-10,ui.hingeAssembly.getBottomHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),4,2,Math.PI/2,"Etching");
+					new RVector(-10,ui.hingeAssembly.getBottomHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),2,1,Math.PI/2,"Etching");
 	txt.render(di,ao);
 
-	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+	txt = new Text(ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
-					new RVector(-10,ui.hingeAssembly.getMiddleHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),4,2,Math.PI/2,"Etching");
+					new RVector(-10,ui.hingeAssembly.getMiddleHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),2,1,Math.PI/2,"Etching");
 	txt.render(di,ao);
 
-	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+	txt = new Text(ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 5).operator_add(
-					new RVector(-10,ui.hingeAssembly.getTopHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),3,1.5,Math.PI/2,"Etching");
+					new RVector(-10,ui.hingeAssembly.getTopHingeCentre().getY()+ui.getFloat("HingeHoleClearance")+15)),2,1,Math.PI/2,"Etching");
 	txt.render(di,ao);
 
 	// Bottom Bar
 
-	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
+	txt = new Text(ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 6).operator_add(
-					new RVector(-10,15+ui.getFloat("FrameCBarWidth")/2)),4,2,Math.PI/2,"Etching");
+					new RVector(-10,-10+ui.getFloat("FrameCBarWidth")/2)),2,1,Math.PI/2,"Etching");
 	txt.render(di,ao);
 
 	// Simple Bars
@@ -317,7 +317,7 @@ Gothic.createFrameA = function(di, ao, pos)
 
 	bottomBarHoles.autospace(startPos, endPos, this
 			.getFloat("PlasticHoleDiameter"), 100);
-	bottomBarHoles.render(di, ao)
+	bottomBarHoles.render(di, ao);
 
 	var leftBarHoles = new HoleArray();
 

@@ -1,0 +1,3 @@
+cp Gothic.js Gothic.js.rename
+cp Gothic.ui Gothic.ui.rename
+cp primitives.js primitives.js.rename
