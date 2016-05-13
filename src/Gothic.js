@@ -43,7 +43,7 @@ Gothic.init = function(formWidget)
 	ui = this; 
 
 	this.twoLetterCode = "GW";
-	this.versionNumber = "09";
+	this.versionNumber = "10";
 	
 	};
 
