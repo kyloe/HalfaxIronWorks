@@ -1,7 +1,5 @@
 
 // Gothic.js
-// Version 008
-// released to steve
 
 // library.js contains some convenience functions like 'isNull':
 // This source is now managed under GIT
@@ -43,7 +41,7 @@ Gothic.init = function(formWidget)
 	// some utils available in other areas till I get the scoping fixed
 	
 	ui = this; 
-	this.versionNumber = "08";
+	this.versionNumber = "09";
 	this.twoLetterCode = "GW";
 	
 	};
@@ -190,7 +188,7 @@ Gothic.create = function(di)
 	
 	txt = new Text("JOB Ref: "+ui.getText("CustomerName"),
 			offset(this.root, maxWidth, 2).operator_add(
-					new RVector(100,ui.getFloat("FrameCRelativeWidth")+5)),8,4,0,"Etching");
+					new RVector(100,ui.getFloat("FrameCRelativeWidth")+7)),6,3,0,"Etching");
 	txt.render(di,ao);
 	
 	// Capped arch
