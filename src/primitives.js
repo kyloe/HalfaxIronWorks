@@ -14,9 +14,9 @@ var SOUTH = 3 * Math.PI / 2;
 var NORTH = Math.PI / 2;
 var WEST = Math.PI;
 
-function createLuggedLine(di, ao, pos, length,
+function createLuggedLine(documentInterface, addOperation, pos, length,
 		minSpacing, minObjects, orientation, lugHoleDiameter, lugWidth,
-		lugHoleOffset)
+		lugHoleOffset, lugCountOption)
 	{
 
 	// Math.PI/2 = Lugs West
@@ -30,8 +30,16 @@ function createLuggedLine(di, ao, pos, length,
 
 	// For each lug
 	// plot lug and if not last lug - join with a line
+	var lugCount
 
-	var lugCount = calcWeldTabCount(length, minSpacing, minObjects);
+	if (lugCountOption == "Auto")
+		{
+		lugCount = calcWeldTabCount(length, minSpacing, minObjects);
+		}
+	else
+		{
+		lugCount = lugCountOption;
+		}
 
 	var joinerOffset;
 	var lastPoint;
@@ -60,13 +68,13 @@ function createLuggedLine(di, ao, pos, length,
 			joinerOffset = new RVector(0, -l);
 			}
 
-		var lugStart = line(di, ao, pos, pos
+		var lugStart = line(documentInterface, addOperation, pos, pos
 				.operator_add(joinerOffset));
 
-		var lastLineStart = createMountingLug(di, ao,
+		var lastLineStart = createMountingLug(documentInterface, addOperation,
 				lugStart, orientation, lugHoleDiameter, lugWidth, lugHoleOffset);
 
-		lastPoint = line(di, ao, lastLineStart,
+		lastPoint = line(documentInterface, addOperation, lastLineStart,
 				lastLineStart.operator_add(joinerOffset));
 
 		}
@@ -95,15 +103,15 @@ function createLuggedLine(di, ao, pos, length,
 
 		// create lug one
 		var lugStart;
-		var lineStart = createMountingLug(di, ao, pos,
+		var lineStart = createMountingLug(documentInterface, addOperation, pos,
 				orientation, lugHoleDiameter, lugWidth, lugHoleOffset);
 
 		for (var i = 0; i < lugCount - 1; i++)
 			{
 			// plot lugs and joining lines
-			lugStart = line(di, ao, lineStart,
+			lugStart = line(documentInterface, addOperation, lineStart,
 					lineStart.operator_add(joinerOffset));
-			lineStart = createMountingLug(di, ao,
+			lineStart = createMountingLug(documentInterface, addOperation,
 					lugStart, orientation, lugHoleDiameter, lugWidth,
 					lugHoleOffset);
 			}
@@ -118,7 +126,7 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 		mountingLugInset, mountingLugMinSpacing, weldLugInset, weldLugWidth,
 		weldLugDepth, weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter,
 		lugWidth, lugHoleOffset, insetStartTab, insetEndTab, suppressTop,
-		mirror)
+		mirror, lugCountOption)
 	{
 	// ********************************************************************************************************************
 	//
@@ -136,7 +144,7 @@ function createSidebar(di, ao, pos, sidebarHeight, sidebarWidth,
 	v = line(di, ao, v, v.operator_add(new RVector(0, mountingLugInset)));
 	v = createLuggedLine(di, ao, v, sidebarHeight - 2 * mountingLugInset,
 			mountingLugMinSpacing, 1, NORTH, lugHoleDiameter, lugWidth,
-			lugHoleOffset);
+			lugHoleOffset, lugCountOption);
 	v = line(di, ao, v, v.operator_add(new RVector(0, mountingLugInset)));
 	if (!suppressTop)
 		{
