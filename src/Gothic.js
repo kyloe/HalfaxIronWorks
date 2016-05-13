@@ -73,9 +73,9 @@ Gothic.create = function(di)
 	var layers = ["Laser Cutting", "Text", "Etching", "Dimensions"];
 	this.createLayers(di, layers);
 
-	var blocks = ["Masons Opening", "Frame A", "Frame C", "Arch Piece",
-			"Full Side Bar", "Split Side Bar"];
-	this.createBlocks(di, blocks);
+//	var blocks = ["Masons Opening", "Frame A", "Frame C", "Arch Piece",
+//			"Full Side Bar", "Split Side Bar"];
+//	this.createBlocks(di, blocks);
 
 	// Then add the items to each layer
 	// empty layers will not be displayed

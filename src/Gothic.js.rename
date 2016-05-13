@@ -1,6 +1,8 @@
+
 // Gothic.js
 // library.js contains some convenience functions like 'isNull':
 // This source is now managed under GIT
+// This program creates laser cutting layout for gothic windows
 
 include("scripts/library.js");
 include("scripts/WidgetFactory.js");
@@ -8,7 +10,7 @@ include("./primitives.js");
 
 //
 // Create main object
-//
+// 
 
 var ui;
 
@@ -34,7 +36,10 @@ Gothic.init = function(formWidget)
 		this.widgets = getWidgets(formWidget);
 		}
 	
-	ui = this;
+	// this is done simply to aid readability of the code and to make 
+	// some utils available in other areas till I get the scoping fixed
+	
+	ui = this; 
 	
 	};
 
@@ -88,6 +93,14 @@ Gothic.create = function(di)
 
 	di.setCurrentLayer("Laser Cutting");
 
+	var glassTemplate = new GothicOutline(
+			this.getFloat("MasonsOpeningWidth"),
+			this.getFloat("MasonsOpeningHeight"),
+			this.getFloat("Radius"),
+			this.getFloat("Allowance")+this.getFloat("FrameCRelativeWidth")/2+this.getFloat("FrameCBarWidth")-this.getFloat("GlassOverlap"),
+			offset(this.root,maxWidth, -1));
+	glassTemplate.render(di,ao);
+	
 	this.createMasonsOpening(di, ao, this.root);
 	// this.createFrameC(di, ao,
 	// this.root.operator_add(new
@@ -119,6 +132,14 @@ Gothic.create = function(di)
 
 	di.setCurrentLayer("Text");
 
+	var txt = new Text("Glass Template",offset(this.root, maxWidth, -1),8,4,0,"Text");
+	txt.render(di,ao);
+
+	var txt = new Text("Glass Template DO NOT CUT",offset(this.root, maxWidth, -1).operator_add(new RVector(maxWidth*0.3,200))
+			,20,10,Math.PI/2,"Laser Cutting");
+	txt.render(di,ao);
+
+	
 	var txt = new Text("Masons opening as measured",offset(this.root, maxWidth, 0),8,4,0,"Text");
 	txt.render(di,ao);
 	
