@@ -690,7 +690,7 @@ function createArcBar(di, ao, pos, holeArcWidth, holeArcRadius, barWidth,
 	var centre = corner.operator_add(new RVector(0,3));
 	arc(di, ao, centre, 3, SOUTH, WEST, true);
 	corner = corner.operator_add(new RVector(-3,3));
-	corner = line(di, ao, corner, corner.operator_add(new RVector(0, length)));
+	corner = line(di, ao, corner, corner.operator_add(new RVector(0, length-3)));
 	corner = line(di, ao, corner, corner.operator_add(new RVector(barWidth, 0)));
 
 	// Alternative method for drawing tabs
