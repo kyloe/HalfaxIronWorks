@@ -1,6 +1,6 @@
 
 // Gothic.js
-// Version 004
+// Version 008
 // released to steve
 
 // library.js contains some convenience functions like 'isNull':
@@ -43,7 +43,7 @@ Gothic.init = function(formWidget)
 	// some utils available in other areas till I get the scoping fixed
 	
 	ui = this; 
-	this.versionNumber = "05";
+	this.versionNumber = "08";
 	this.twoLetterCode = "GW";
 	
 	};
