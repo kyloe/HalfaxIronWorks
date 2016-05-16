@@ -25,10 +25,10 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>30</y>
+     <x>50</x>
+     <y>50</y>
      <width>701</width>
-     <height>581</height>
+     <height>691</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -177,270 +177,272 @@
        <x>9</x>
        <y>9</y>
        <width>681</width>
-       <height>563</height>
+       <height>569</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_8">
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
       </property>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_18">
         <property name="text">
          <string>Relative Height (mm)</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="QLineEdit" name="FrameARelativeHeight">
         <property name="text">
          <string>26</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_23">
         <property name="text">
          <string>Relative Width (mm)</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QLineEdit" name="FrameARelativeWidth">
         <property name="text">
          <string>19</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Cutout width</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QLineEdit" name="CutoutWidth">
         <property name="text">
          <string>22</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Cutout height</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QLineEdit" name="CutoutHeight">
         <property name="text">
          <string>19</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_50">
         <property name="text">
          <string>Arch Bar Width</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="QLineEdit" name="ArchBarWidth">
         <property name="text">
          <string>25</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Bar Width</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="6" column="1">
        <widget class="QLineEdit" name="FrameABarWidth">
         <property name="text">
          <string>44</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Bar Height</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="7" column="1">
        <widget class="QLineEdit" name="FrameABarHeight">
         <property name="text">
          <string>44</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="label_21">
         <property name="text">
          <string>Plastic Hole Spacing</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="QLineEdit" name="FrameAPlasticHoleSpacing">
         <property name="text">
          <string>200</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <widget class="QLabel" name="label_26">
         <property name="text">
          <string>Plastic Hole Dia.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="9" column="1">
        <widget class="QLineEdit" name="PlasticHoleDiameter">
         <property name="text">
          <string>4.2</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+      <item row="10" column="0">
        <widget class="QLabel" name="label_52">
         <property name="text">
          <string>Plastic Hole Inset</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+      <item row="10" column="1">
        <widget class="QLineEdit" name="PlasticHoleInset">
         <property name="text">
          <string>40</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+      <item row="11" column="0">
        <widget class="QLabel" name="PlasticHoleMarginLabel">
         <property name="text">
          <string>Plastic Hole Margin</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="11" column="1">
        <widget class="QLineEdit" name="PlasticHoleMargin">
         <property name="text">
          <string>5</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
+      <item row="12" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Hinge Hole Dia.</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="12" column="1">
        <widget class="QLineEdit" name="HoleDiameter">
         <property name="text">
          <string>6</string>
         </property>
        </widget>
       </item>
-      <item row="14" column="0">
+      <item row="15" column="0">
        <widget class="QLabel" name="label_27">
         <property name="text">
          <string>Hinge Mount Length</string>
         </property>
        </widget>
       </item>
-      <item row="14" column="1">
+      <item row="15" column="1">
        <widget class="QLineEdit" name="HingeMountLength">
         <property name="text">
          <string>30</string>
         </property>
        </widget>
       </item>
-      <item row="15" column="0">
+      <item row="16" column="0">
        <widget class="QLabel" name="label_28">
         <property name="text">
          <string>Hinge Mount Width</string>
         </property>
        </widget>
       </item>
-      <item row="15" column="1">
+      <item row="16" column="1">
        <widget class="QLineEdit" name="HingeMountWidth">
         <property name="text">
          <string>17</string>
         </property>
        </widget>
       </item>
-      <item row="16" column="0">
+      <item row="17" column="0">
        <widget class="QLabel" name="label_36">
         <property name="text">
          <string>Hinge Mount Radius</string>
         </property>
        </widget>
       </item>
-      <item row="16" column="1">
+      <item row="17" column="1">
        <widget class="QLineEdit" name="HingeMountRadius">
         <property name="text">
          <string>2</string>
         </property>
        </widget>
       </item>
-      <item row="17" column="0">
+      <item row="18" column="0">
        <widget class="QLabel" name="label_37">
         <property name="text">
          <string>Hinge Mount Hole Dia</string>
         </property>
        </widget>
       </item>
-      <item row="17" column="1">
+      <item row="18" column="1">
        <widget class="QLineEdit" name="HingeMountHoleDia">
         <property name="text">
          <string>5.5</string>
         </property>
        </widget>
       </item>
-      <item row="18" column="0">
+      <item row="19" column="0">
        <widget class="QLabel" name="label_53">
         <property name="text">
          <string>Capped Arch Bar Width</string>
         </property>
        </widget>
       </item>
-      <item row="18" column="1">
+      <item row="19" column="1">
        <widget class="QLineEdit" name="CappedArchBarWidth">
         <property name="text">
          <string>20</string>
         </property>
        </widget>
       </item>
-      <item row="19" column="0">
+      <item row="0" column="0">
        <widget class="QLabel" name="label_66">
         <property name="text">
          <string>Cross Bar</string>
         </property>
        </widget>
       </item>
-      <item row="19" column="1">
+      <item row="0" column="1">
        <widget class="QCheckBox" name="FrameACrossBar">
         <property name="text">
          <string/>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
+    <zorder>formLayoutWidget_8</zorder>
+    <zorder>FrameACrossBar</zorder>
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
@@ -452,164 +454,167 @@
        <x>10</x>
        <y>10</y>
        <width>671</width>
-       <height>331</height>
+       <height>341</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
       </property>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_22">
         <property name="text">
          <string>Relative Height (mm)</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="QLineEdit" name="FrameCRelativeHeight">
         <property name="text">
          <string>12</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_24">
         <property name="text">
          <string>Relative Width (mm)</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QLineEdit" name="FrameCRelativeWidth">
         <property name="text">
          <string>12</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Bar Width</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QLineEdit" name="FrameCBarWidth">
         <property name="text">
          <string>30</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
          <string>Bar Height</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QLineEdit" name="FrameCBarHeight">
         <property name="text">
          <string>30</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_39">
         <property name="text">
          <string>Hinge Hole Width</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="QLineEdit" name="FrameCHingeHoleWidth">
         <property name="text">
          <string>10</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_40">
         <property name="text">
          <string>Hinge Hole Height</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="6" column="1">
        <widget class="QLineEdit" name="FrameCHingeHoleHeight">
         <property name="text">
          <string>5</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="label_41">
         <property name="text">
          <string>Hinge Hole Centre W</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="label_42">
         <property name="text">
          <string>Hinge Hole Centre H</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="7" column="1">
        <widget class="QLineEdit" name="FrameCHingeHoleCentreW">
         <property name="text">
          <string>8</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="QLineEdit" name="FrameCHingeHoleCentreH">
         <property name="text">
          <string>4.5</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <widget class="QLabel" name="label_57">
         <property name="text">
          <string>Hinge Hole Clearance</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="9" column="1">
        <widget class="QLineEdit" name="HingeHoleClearance">
         <property name="text">
          <string>15</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+      <item row="10" column="0">
        <widget class="QLabel" name="label_58">
         <property name="text">
          <string>Hinge Inset</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+      <item row="10" column="1">
        <widget class="QLineEdit" name="HingeInset">
         <property name="text">
          <string>105</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_67">
+        <property name="text">
+         <string>Cross Bar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
        <widget class="QCheckBox" name="FrameCCrossBar">
         <property name="text">
          <string/>
         </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="label_67">
-        <property name="text">
-         <string>Cross Bar</string>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
