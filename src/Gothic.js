@@ -769,13 +769,7 @@ Gothic.createCappedArch = function(di, ao, pos)
 	var width = this.getFloat("MasonsOpeningWidth");
 	var allowance = this.getFloat("FrameCRelativeWidth") / 2
 			+ this.getFloat("Allowance") + this.getFloat("FrameCBarWidth"); // TODO
-	// -
-	// work
-	// out
-	// why
-	// this
-	// is
-	// 10
+	
 	createCappedGothicArch(di, ao, pos, radius - allowance, width - 2
 			* allowance, 20);
 
@@ -1061,13 +1055,8 @@ Gothic.createSimpleBars = function(di, ao, pos)
 
 	var allowance_17 = this.getFloat("FrameCRelativeWidth")
 			+ this.getFloat("Allowance") + this.getFloat("FrameCBarWidth"); // TODO
-	// -
-	// work
-	// out
-	// why
-	// this
-	// is
-	// 17mm bar fits outer arc of capped arch
+	
+	// 17 mm bar fits outer arc of capped arch
 
 	var radius_17 = this.getFloat("Radius") - allowance_17
 			+ this.getFloat("CappedArchBarWidth");
@@ -1080,7 +1069,7 @@ Gothic.createSimpleBars = function(di, ao, pos)
 			.getFloat("SimpleBarWidth"), getGothicArchLength(radius_17,
 			width_17));
 
-	// 22mm bar fits ouer arc of frame A
+	// 22mm bar fits outer arc of frame A
 	var allowance_22 = this.getFloat("Allowance")
 			- this.getFloat("FrameARelativeWidth")
 			+ this.getFloat("FrameABarWidth") - this.getFloat("ArchBarWidth"); // TODO
