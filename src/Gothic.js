@@ -1053,15 +1053,16 @@ Gothic.createSimpleBars = function(di, ao, pos)
 // ********************************************************************************************************************
 	{
 
-	var allowance_17 = this.getFloat("FrameCRelativeWidth")
+	var allowance_17 = this.getFloat("FrameCRelativeWidth")/2
 			+ this.getFloat("Allowance") + this.getFloat("FrameCBarWidth"); // TODO
 	
 	// 17 mm bar fits outer arc of capped arch
 
 	var radius_17 = this.getFloat("Radius") - allowance_17
-			+ this.getFloat("CappedArchBarWidth");
+			+ this.getFloat("CappedArchBarWidth") - this.getFloat("WeldLugHoleWidth")/2 ;
+	
 	var width_17 = this.getFloat("MasonsOpeningWidth") - 2 * allowance_17
-			+ this.getFloat("CappedArchBarWidth");
+			+ 2 * this.getFloat("CappedArchBarWidth");
 
 	createRectangle(di, ao, pos, this.getFloat("SimpleBarWidth"),
 			getGothicArchLength(radius_17, width_17));
@@ -1070,16 +1071,19 @@ Gothic.createSimpleBars = function(di, ao, pos)
 			width_17));
 
 	// 22mm bar fits outer arc of frame A
-	var allowance_22 = this.getFloat("Allowance")
-			- this.getFloat("FrameARelativeWidth")
-			+ this.getFloat("FrameABarWidth") - this.getFloat("ArchBarWidth"); // TODO
+//	var allowance_22 = this.getFloat("Allowance")
+//			- this.getFloat("FrameARelativeWidth")
+//			+ this.getFloat("FrameABarWidth") - this.getFloat("ArchBarWidth"); // TODO
+
+	var allowance_22 = this.getFloat("FrameARelativeWidth") / 2; // TODO
+
 	// -
 	// work
 	// out
 	// why
 	// this
 	// is
-	var radius_22 = this.getFloat("Radius") - allowance_22;
+	var radius_22 = this.getFloat("Radius") - allowance_22 - this.getFloat("WeldLugHoleWidth")/2;
 	var width_22 = this.getFloat("MasonsOpeningWidth") - 2 * allowance_22;
 
 	createRectangle(di, ao, pos.operator_add(new RVector(60, 0)), this
