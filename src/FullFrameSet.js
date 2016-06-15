@@ -247,7 +247,7 @@ FullFrameSet.createIcon = function(documentInterface) {
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),10,12);
     this.createRectangle(documentInterface, addOperation,new RVector(1,1),8,10);
 	this.createText(documentInterface, addOperation,new RVector(0,0),"HX");
-	this.createText(documentInterface, addOperation,new RVector(3,7),"11");
+	this.createText(documentInterface, addOperation,new RVector(3,7),"12");
 	
 	return addOperation;
 };
