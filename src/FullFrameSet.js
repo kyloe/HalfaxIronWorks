@@ -95,7 +95,16 @@ FullFrameSet.setValues = function() {
     FullFrameSet.topbarRelativeWidth = parseFloat(FullFrameSet.widgets["TopBarRelativeWidth"].text, 10);
     FullFrameSet.handleRampHolePosition = parseFloat(FullFrameSet.widgets["HandleRampHolePosition"].text, 10);
     FullFrameSet.includeRampHandle = FullFrameSet.widgets["IncludeRampHandle"].checked;
+    FullFrameSet.topOpener = FullFrameSet.widgets["TopOpener"].checked;
 
+    if (FullFrameSet.topOpener)
+    	{
+    	// Transpose W & H as quick and dirty fix
+        FullFrameSet.finishedWidth =  parseFloat(FullFrameSet.widgets["FinishedHeight"].text, 10);
+        FullFrameSet.finishedHeight =parseFloat(FullFrameSet.widgets["FinishedWidth"].text, 10);
+    	}
+    
+    
 	FullFrameSet.setDerivedValues();
 
 };
@@ -212,8 +221,11 @@ FullFrameSet.create = function(documentInterface) {
     	FullFrameSet.createFrameA(documentInterface, addOperation);
  	FullFrameSet.createFrameC(documentInterface, addOperation);
 	FullFrameSet.createSidebar(documentInterface, addOperation);
-	FullFrameSet.createTopbar(documentInterface, addOperation);
-    	FullFrameSet.createBottombar(documentInterface, addOperation);
+
+
+		FullFrameSet.createTopbar(documentInterface, addOperation);		
+    
+	FullFrameSet.createBottombar(documentInterface, addOperation);
 // debugger;
     FullFrameSet.commentBox(documentInterface, addOperation);
     
@@ -235,7 +247,7 @@ FullFrameSet.createIcon = function(documentInterface) {
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),10,12);
     this.createRectangle(documentInterface, addOperation,new RVector(1,1),8,10);
 	this.createText(documentInterface, addOperation,new RVector(0,0),"HX");
-	this.createText(documentInterface, addOperation,new RVector(3,7),"11");
+	this.createText(documentInterface, addOperation,new RVector(3,7),"12");
 	
 	return addOperation;
 };
@@ -251,8 +263,16 @@ FullFrameSet.commentBox = function(documentInterface, addOperation) {
 
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),400,80);
     this.createBigText(documentInterface, addOperation,new RVector(5,75),FullFrameSet.customerName);
-    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
-    this.createBigText(documentInterface, addOperation,new RVector(5,25),FullFrameSet.finishedWidth+"x"+FullFrameSet.finishedHeight);
+	if (FullFrameSet.topOpener)
+		{
+	    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
+	    this.createBigText(documentInterface, addOperation,new RVector(5,25),FullFrameSet.finishedHeight+"x"+FullFrameSet.finishedWidth);
+		}
+	else
+		{
+	    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
+	    this.createBigText(documentInterface, addOperation,new RVector(5,25),FullFrameSet.finishedWidth+"x"+FullFrameSet.finishedHeight);		
+		}
     
 
     return addOperation;
@@ -271,7 +291,7 @@ FullFrameSet.createFrameA = function(documentInterface, addOperation) {
 	FullFrameSet.drillFrameAHoles(documentInterface, addOperation);
 	FullFrameSet.drillPlasticHoles(documentInterface, addOperation);
 
-    if (FullFrameSet.includeRampHandle)
+    if (FullFrameSet.includeRampHandle && !FullFrameSet.topOpener)
         {
         FullFrameSet.drillFrameAHandleRampHolesVariablePosition(documentInterface, addOperation,FullFrameSet.handleRampHolePosition);
 	    }
@@ -598,6 +618,9 @@ FullFrameSet.createSidebar = function(documentInterface, addOperation) {
 
 	// Make a clone of the bar a bit to the left
 
+	 if (!FullFrameSet.topOpener)
+	    	{
+	
 	var newRoot = FullFrameSet.sidebarRoot.operator_add(new RVector(-4*FullFrameSet.sidebarWidth,0));
 
 	v = FullFrameSet.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*FullFrameSet.sidebarWidth,0)));
@@ -609,7 +632,23 @@ FullFrameSet.createSidebar = function(documentInterface, addOperation) {
 	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*FullFrameSet.weldLugInset,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,3*Math.PI/2);
 	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
 
+	    	}
+	 else
+		 {
+		 // make top style bar
 
+		var newRoot = FullFrameSet.sidebarRoot.operator_add(new RVector(-4*FullFrameSet.sidebarWidth,0));
+
+		v = FullFrameSet.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*FullFrameSet.topbarBarWidth,0)));
+		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight)));
+		    FullFrameSet.createUnLuggedLine(documentInterface, addOperation,newRoot.operator_add(new RVector(-1*FullFrameSet.sidebarWidth,FullFrameSet.mountingLugInset)),sidebarHeight-2*FullFrameSet.mountingLugInset,FullFrameSet.mountingLugMinSpacing,2,Math.PI/2);
+		//v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FullFrameSet.mountingLugInset)));
+		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(FullFrameSet.topbarBarWidth,0)));
+		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
+		v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*FullFrameSet.weldLugInset,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,3*Math.PI/2);
+		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
+		 }
+	 
 // Create seal holes -4*FullFrameSet
 
 	var length = FullFrameSet.sidebarHeight-2*20;
@@ -625,12 +664,12 @@ FullFrameSet.createSidebar = function(documentInterface, addOperation) {
 							addOperation, 
 							FullFrameSet.sidebarRoot.operator_add(new RVector(-FullFrameSet.sidebarWidth/2,20)), 
 							FullFrameSet.sidebarSealHoleDiameter);
-
+	
 	var v2 = FullFrameSet.createHole(documentInterface, 
 							addOperation, 
 							FullFrameSet.sidebarRoot.operator_add(new RVector( -4*FullFrameSet.sidebarWidth-FullFrameSet.sidebarWidth/2,20)), 
 							FullFrameSet.sidebarSealHoleDiameter);
-
+	    	
 	s--; // to allow for one we just did
 	
 	for (var i = 1; i <= s; i++) {
@@ -642,7 +681,7 @@ FullFrameSet.createSidebar = function(documentInterface, addOperation) {
 								addOperation, 
 								v2.operator_add(new RVector(0,spacing)), 
 								FullFrameSet.sidebarSealHoleDiameter);
-	}
+		    }
 
 
 
@@ -658,28 +697,36 @@ FullFrameSet.createSidebar = function(documentInterface, addOperation) {
 
 FullFrameSet.createTopbar = function(documentInterface, addOperation) {
 
+
+var x = FullFrameSet.topbarRoot.operator_add(new RVector(0,FullFrameSet.topbarBarWidth));
+x = x.operator_add(new RVector(FullFrameSet.topbarWidth,0));
+x = x.operator_add(new RVector(0,-FullFrameSet.topbarBarWidth));
+
+    FullFrameSet.createHoleLine(documentInterface, addOperation,
+    	new RVector(
+    		x.getX()+FullFrameSet.weldLugHoleClearance,
+    		FullFrameSet.frameCRoot.getY()+FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance),
+    	FullFrameSet.topbarWidth,
+    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
+    	Math.PI);
+
+    FullFrameSet.createHoleLine(documentInterface, addOperation,
+    	new RVector(
+    		x.getX()+FullFrameSet.weldLugHoleClearance,
+    		FullFrameSet.frameCRoot.getY()+FullFrameSet.frameCHeight - FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance),
+    	FullFrameSet.topbarWidth,
+    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
+    	Math.PI);
+
+    
+
+    if (!FullFrameSet.topOpener)
+    	{
+
 	var v;
 	v = FullFrameSet.line(documentInterface, addOperation,FullFrameSet.topbarRoot,FullFrameSet.topbarRoot.operator_add(new RVector(0,FullFrameSet.topbarBarWidth)));
 	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(FullFrameSet.topbarWidth,0)));
 	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.topbarBarWidth)));
-
-	    FullFrameSet.createHoleLine(documentInterface, addOperation,
-	    	new RVector(
-	    		v.getX()+FullFrameSet.weldLugHoleClearance,
-	    		FullFrameSet.frameCRoot.getY()+FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance),
-	    	FullFrameSet.topbarWidth,
-	    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
-	    	Math.PI);
-
-	    FullFrameSet.createHoleLine(documentInterface, addOperation,
-	    	new RVector(
-	    		v.getX()+FullFrameSet.weldLugHoleClearance,
-	    		FullFrameSet.frameCRoot.getY()+FullFrameSet.frameCHeight - FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance),
-	    	FullFrameSet.topbarWidth,
-	    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
-	    	Math.PI);
-
-
 	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
 
 // Create holes to match bottom lugged line
@@ -695,6 +742,7 @@ FullFrameSet.createTopbar = function(documentInterface, addOperation) {
 
 	FullFrameSet.createUnLuggedLine(documentInterface, addOperation,imaginaryP.operator_add(new RVector(inset,0)),FullFrameSet.topbarWidth-2*inset,FullFrameSet.mountingLugMinSpacing,1,0);
 
+    	}
 
 // Create seal holes -4*FullFrameSet
 
@@ -706,11 +754,22 @@ FullFrameSet.createTopbar = function(documentInterface, addOperation) {
 	
 	spacing = width/(s-1);
 
+    if (!FullFrameSet.topOpener)
+    	{
 	var v = FullFrameSet.createHole(documentInterface, 
 							addOperation, 
 							FullFrameSet.topbarRoot.operator_add(new RVector(20,15/2)), 
 							FullFrameSet.sidebarSealHoleDiameter);
-
+    	}
+    else
+    	{
+    	
+    	var v = FullFrameSet.createHole(documentInterface, 
+				addOperation, 
+				FullFrameSet.bottombarRoot.operator_add(new RVector(20,15/2-50)), 
+				FullFrameSet.sidebarSealHoleDiameter);
+    	}
+    
 	var v2 = FullFrameSet.createHole(documentInterface, 
 							addOperation, 
 							FullFrameSet.bottombarRoot.operator_add(new RVector(20,15/2)), 
@@ -720,15 +779,27 @@ FullFrameSet.createTopbar = function(documentInterface, addOperation) {
 	
 	
 	for (var i = 1; i <= s; i++) {
-		v = FullFrameSet.createHole(documentInterface, 
+    if (!FullFrameSet.topOpener)
+    	{
+	v = FullFrameSet.createHole(documentInterface, 
 								addOperation, 
 								v.operator_add(new RVector(spacing,0)), 
 								FullFrameSet.sidebarSealHoleDiameter);
-		v2 = FullFrameSet.createHole(documentInterface, 
+    	}
+    else
+    	{
+    	v = FullFrameSet.createHole(documentInterface, 
+				addOperation, 
+				v.operator_add(new RVector(spacing,0)), 
+				FullFrameSet.sidebarSealHoleDiameter);
+    	
+    	}
+	v2 = FullFrameSet.createHole(documentInterface, 
 								addOperation, 
 								v2.operator_add(new RVector(spacing,0)), 
 								FullFrameSet.sidebarSealHoleDiameter);
 	}	
+    	
 };
 
 //********************************************************************************************************************
@@ -761,6 +832,34 @@ FullFrameSet.createBottombar = function(documentInterface, addOperation) {
 	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.sidebarWidth)));
 	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,
 			FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
+	
+	  if (FullFrameSet.topOpener)
+	    	{
+
+	    	var second_root = FullFrameSet.bottombarRoot.operator_add(new RVector(0,-50));
+
+	    	v = FullFrameSet.line(documentInterface, addOperation,second_root,second_root.operator_add(new RVector(0,FullFrameSet.sidebarWidth)));
+	    	
+	    	if (FullFrameSet.topbarWidth<(2*FullFrameSet.mountingLugInset+FullFrameSet.lugWidth))
+	    		{
+	    		inset = (FullFrameSet.topbarWidth - FullFrameSet.lugWidth)/2;
+	    		}
+	    	
+	    	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+	    	
+	    	v = FullFrameSet.createLuggedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth-2*inset,FullFrameSet.mountingLugMinSpacing,1,0);
+
+	    	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+
+
+	    	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.sidebarWidth)));
+	    	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,
+	    			FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
+
+	    	
+	    	
+	    	}
+	
 	
 };
 
@@ -1065,7 +1164,52 @@ FullFrameSet.createMountingLug = function (documentInterface, addOperation, pos,
 	return v4; // start point for next object
 };
 
+
 FullFrameSet.createInvisibleMountingLug = function (documentInterface, addOperation, pos, angle) {
+
+// Y height is 15.5% more than hole centre
+// lugWidth, lugHoleDiameter, lugHoleOffset
+var v1 = new RVector(0,0);
+var v2 = new RVector(FullFrameSet.lugWidth/4,FullFrameSet.lugHoleOffset*1.155);
+var v3 = new RVector(3*FullFrameSet.lugWidth/4,FullFrameSet.lugHoleOffset*1.155);
+var v4 = new RVector(FullFrameSet.lugWidth,0);
+var v5 = new RVector(FullFrameSet.lugHoleOffset,FullFrameSet.lugHoleOffset);
+
+//var root = pos.operator_add(new RVector(FullFrameSet.lugWidth/2,0));
+var root = pos;
+
+v1 = v1.operator_add(root);
+v2 = v2.operator_add(root);
+v3 = v3.operator_add(root);
+v4 = v4.operator_add(root);
+v5 = v5.operator_add(root);
+
+//No point rotating v1 round itself
+v2 = v2.rotate(angle,v1);	
+v3 = v3.rotate(angle,v1);	
+v4 = v4.rotate(angle,v1);	
+v5 = v5.rotate(angle,v1);	
+
+//var lineData = new RLineData(v1, v2);
+//var line = new RLineEntity(documentInterface.getDocument(), lineData);
+//addOperation.addObject(line);
+//
+//var lineData2 = new RLineData(v3, v4);
+//var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
+//addOperation.addObject(line2);
+
+	FullFrameSet.createHole(documentInterface, addOperation, v5, FullFrameSet.lugHoleDiameter);
+
+//var arc = RArc.createFrom2PBulge( v2, v3, -0.89 );
+//var keyHoleData = new RArcData(arc);
+//var keyHole = new RArcEntity(documentInterface.getDocument(), keyHoleData);
+//
+//addOperation.addObject(keyHole);
+
+return v4; // start point for next object
+};
+
+FullFrameSet.oldcreateInvisibleMountingLug = function (documentInterface, addOperation, pos, angle) {
 
 	// Y height is 15.5% more than hole centre
 	// lugWidth, lugHoleDiameter, lugHoleOffset
