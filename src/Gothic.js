@@ -42,7 +42,7 @@ Gothic.init = function(formWidget)
 	ui = this;
 
 	this.twoLetterCode = "GW";
-	this.versionNumber = "13";
+	this.versionNumber = "14";
 
 	};
 
@@ -822,6 +822,7 @@ Gothic.createFullSideBar = function(di, ao, pos)
 			weldLugMinSpacing, weldLugMaxSpacing, lugHoleDiameter, lugWidth,
 			lugHoleOffset, insetStartTab, insetEndTab, suppressTop, mirror,
 			lugCountOption);
+	
 	var holeArcRadius = radius - allowance - this.getFloat("FrameCBarWidth")
 			/ 2;
 	var barWidth = this.getFloat("TopBarWidth");
@@ -833,20 +834,22 @@ Gothic.createFullSideBar = function(di, ao, pos)
 			holeArcWidth, holeArcRadius, barWidth, holeSpaceAngle,
 			weldLugWidth, weldLugDepth, sidebarWidth);
 
-	// Add some plastic holes
+	// Add some lug holes
 
 	var BarHoles = new HoleArray();
 
 	var StartPos = pos.operator_add(new RVector(-barWidth
 			+ this.getFloat("HoledBarMargin"), sidebarHeight
 			+ this.getFloat("HoledBarBottomInset")));
+	
 	var EndPos = pos.operator_add(new RVector(-barWidth
 			+ this.getFloat("HoledBarMargin"), sidebarHeight
 			+ getGothicArchLength(holeArcRadius, holeArcWidth)
 			- this.getFloat("HoledBarTopInset")));
 
 	BarHoles.autospace(StartPos, EndPos, this.getFloat("PlasticHoleDiameter"),
-			100);
+			200);
+	
 	BarHoles.render(di, ao);
 
 	// Add dimensions
@@ -980,20 +983,20 @@ Gothic.createSplitSideBar = function(di, ao, pos)
 			holeArcWidth, holeArcRadius, barWidth, holeSpaceAngle,
 			weldLugWidth, weldLugDepth, sidebarWidth);
 
-	// Add some plastic holes
+	// Add some lug holes
 
 	var BarHoles = new HoleArray();
 
-	var StartPos = pos.operator_add(new RVector(-barWidth
+	var StartPos = root.operator_add(new RVector(-barWidth
 			+ this.getFloat("HoledBarMargin"), sidebarHeight
 			+ this.getFloat("HoledBarBottomInset")));
-	var EndPos = pos.operator_add(new RVector(-barWidth
+	var EndPos = root.operator_add(new RVector(-barWidth
 			+ this.getFloat("HoledBarMargin"), sidebarHeight
 			+ getGothicArchLength(holeArcRadius, holeArcWidth)
 			- this.getFloat("HoledBarTopInset")));
 
 	BarHoles.autospace(StartPos, EndPos, this.getFloat("PlasticHoleDiameter"),
-			100);
+			200);
 	BarHoles.render(di, ao);
 
 	// And some dimensions

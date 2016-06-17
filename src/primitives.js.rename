@@ -733,7 +733,7 @@ function createArcBar(di, ao, pos, holeArcWidth, holeArcRadius, barWidth,
 
 	arcSidebarHoles.autospace(startPos, endPos, ui
 			.getFloat("PlasticHoleDiameter"), ui
-			.getFloat("SidebarSealHoleSpacing")/2);
+			.getFloat("SidebarSealHoleSpacing"));
 
 	arcSidebarHoles.render(di, ao);
 

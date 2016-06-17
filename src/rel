@@ -1,3 +1,6 @@
 cp Gothic.js Gothic.js.rename
 cp Gothic.ui Gothic.ui.rename
 cp primitives.js primitives.js.rename
+cp FullFrameSet.js FullFrameSet.js.rename
+cp FullFrameSet.ui FullFrameSet.ui.rename
+
