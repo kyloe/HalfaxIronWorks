@@ -135,7 +135,7 @@ Gothic.create = function(di)
 			0, "Text");
 	txt.render(di, ao);
 
-	var txt = new Text("Glass Template DO NOT CUT", offset(this.root, maxWidth,
+	var txt = new Text("Glass Template: Cut in 1.2mm Aluinium", offset(this.root, maxWidth,
 			-1).operator_add(new RVector(maxWidth * 0.3, 200)), 20, 10,
 			Math.PI / 2, "Laser Cutting");
 	txt.render(di, ao);

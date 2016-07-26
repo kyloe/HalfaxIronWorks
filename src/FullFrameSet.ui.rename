@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>954</height>
+    <height>815</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -765,7 +765,7 @@
       <item row="4" column="1">
        <widget class="QLineEdit" name="MountingLugMinSpacing">
         <property name="text">
-         <string>350</string>
+         <string>250</string>
         </property>
        </widget>
       </item>
