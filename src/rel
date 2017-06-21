@@ -3,6 +3,8 @@ cp Gothic.ui Gothic.ui.rename
 cp primitives.js primitives.js.rename
 cp FullFrameSet.js FullFrameSet.js.rename
 cp FullFrameSet.ui FullFrameSet.ui.rename
-cp SteeliteSlimUniversale.js SteeliteSlimUniversal.js.rename
-cp SteeliteSlimUniversale.ui SteeliteSlimUniversal.ui.rename
-
+cp SteeliteSlimUniversal.js SteeliteSlimUniversal.js.rename
+cp SteeliteSlimUniversal.ui SteeliteSlimUniversal.ui.rename
+git add --all
+git commit -m "Copy files for release"
+git tag $(date +Release_%e_%m_%g_%H:%M)
