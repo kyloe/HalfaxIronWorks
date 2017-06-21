@@ -34,7 +34,7 @@
    <property name="currentIndex">
     <number>0</number>
    </property>
-   <widget class="QWidget" name="tab_2">
+   <widget class="QWidget" name="tab">
     <attribute name="title">
      <string>Finished Size</string>
     </attribute>
@@ -51,7 +51,7 @@
       <item row="2" column="1">
        <widget class="QLineEdit" name="FinishedWidth">
         <property name="text">
-         <string>200</string>
+         <string>427</string>
         </property>
        </widget>
       </item>
@@ -65,7 +65,7 @@
       <item row="3" column="1">
        <widget class="QLineEdit" name="FinishedHeight">
         <property name="text">
-         <string>300</string>
+         <string>734</string>
         </property>
        </widget>
       </item>
@@ -112,6 +112,9 @@
       </item>
       <item row="4" column="1">
        <widget class="QCheckBox" name="TopOpener">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -119,6 +122,9 @@
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_46">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Top Opener</string>
         </property>
@@ -134,9 +140,9 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="tab_2">
     <attribute name="title">
-     <string>Frame A</string>
+     <string>Notched Frame</string>
     </attribute>
     <widget class="QWidget" name="formLayoutWidget_8">
      <property name="geometry">
@@ -217,7 +223,7 @@
       <item row="4" column="1">
        <widget class="QLineEdit" name="FrameABarWidth">
         <property name="text">
-         <string>44</string>
+         <string>49</string>
         </property>
        </widget>
       </item>
@@ -231,7 +237,7 @@
       <item row="5" column="1">
        <widget class="QLineEdit" name="FrameABarHeight">
         <property name="text">
-         <string>44</string>
+         <string>49</string>
         </property>
        </widget>
       </item>
@@ -245,7 +251,7 @@
       <item row="6" column="1">
        <widget class="QLineEdit" name="FrameAPlasticHoleSpacing">
         <property name="text">
-         <string>200</string>
+         <string>250</string>
         </property>
        </widget>
       </item>
@@ -329,7 +335,7 @@
       <item row="14" column="1">
        <widget class="QLineEdit" name="HandleRampHoleInset">
         <property name="text">
-         <string>3</string>
+         <string>5</string>
         </property>
        </widget>
       </item>
@@ -369,7 +375,7 @@
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
-     <string>Frame C</string>
+     <string>Flat Frame</string>
     </attribute>
     <widget class="QWidget" name="formLayoutWidget">
      <property name="geometry">

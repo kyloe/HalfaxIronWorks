@@ -1,4 +1,4 @@
-// FullFrameSet.js
+// SteeliteSlimUniversal.js
 // library.js contains some convenience functions like 'isNull':
 // This source is now managed under GIT
 
@@ -11,7 +11,7 @@ include("scripts/File/SaveAs/SaveAs.js");
 // Create main object 
 //
 
-function FullFrameSet() {
+function SteeliteSlimUniversal() {
 }
 
 //
@@ -19,9 +19,9 @@ function FullFrameSet() {
 //
 
 
-FullFrameSet.init = function(formWidget) {
+SteeliteSlimUniversal.init = function(formWidget) {
     if (!isNull(formWidget)) {
-        FullFrameSet.widgets = getWidgets(formWidget);
+        SteeliteSlimUniversal.widgets = getWidgets(formWidget);
     }    
     
 };
@@ -31,81 +31,84 @@ FullFrameSet.init = function(formWidget) {
 //
 // Set requested sizes (default sizes are suitable for ICON generation
 //
+// FRAME A  = NOTCHED FRAME
+// FRAME C = FLAT FRAME
+//
 
-FullFrameSet.setValues = function() {
+SteeliteSlimUniversal.setValues = function() {
 
-    FullFrameSet.customerName = FullFrameSet.widgets["CustomerName"].text;
-    FullFrameSet.finishedWidth = parseFloat(FullFrameSet.widgets["FinishedWidth"].text, 10);
-    FullFrameSet.finishedHeight = parseFloat(FullFrameSet.widgets["FinishedHeight"].text, 10);
-    FullFrameSet.cutoutHeight = parseFloat(FullFrameSet.widgets["CutoutHeight"].text, 10);
-    FullFrameSet.cutoutWidth = parseFloat(FullFrameSet.widgets["CutoutWidth"].text, 10);
+    SteeliteSlimUniversal.customerName = SteeliteSlimUniversal.widgets["CustomerName"].text;
+    SteeliteSlimUniversal.finishedWidth = parseFloat(SteeliteSlimUniversal.widgets["FinishedWidth"].text, 10);
+    SteeliteSlimUniversal.finishedHeight = parseFloat(SteeliteSlimUniversal.widgets["FinishedHeight"].text, 10);
+    SteeliteSlimUniversal.cutoutHeight = parseFloat(SteeliteSlimUniversal.widgets["CutoutHeight"].text, 10);
+    SteeliteSlimUniversal.cutoutWidth = parseFloat(SteeliteSlimUniversal.widgets["CutoutWidth"].text, 10);
 
-    FullFrameSet.frameARelativeWidth = parseFloat(FullFrameSet.widgets["FrameARelativeWidth"].text, 10);
-    FullFrameSet.frameARelativeHeight = parseFloat(FullFrameSet.widgets["FrameARelativeHeight"].text, 10);
-    FullFrameSet.frameABarWidth = parseFloat(FullFrameSet.widgets["FrameABarWidth"].text, 10);
-    FullFrameSet.frameABarHeight = parseFloat(FullFrameSet.widgets["FrameABarHeight"].text, 10);
-    FullFrameSet.frameAPlasticHoleSpacing = parseFloat(FullFrameSet.widgets["FrameAPlasticHoleSpacing"].text, 10);
+    SteeliteSlimUniversal.frameARelativeWidth = parseFloat(SteeliteSlimUniversal.widgets["FrameARelativeWidth"].text, 10);
+    SteeliteSlimUniversal.frameARelativeHeight = parseFloat(SteeliteSlimUniversal.widgets["FrameARelativeHeight"].text, 10);
+    SteeliteSlimUniversal.frameABarWidth = parseFloat(SteeliteSlimUniversal.widgets["FrameABarWidth"].text, 10);
+    SteeliteSlimUniversal.frameABarHeight = parseFloat(SteeliteSlimUniversal.widgets["FrameABarHeight"].text, 10);
+    SteeliteSlimUniversal.frameAPlasticHoleSpacing = parseFloat(SteeliteSlimUniversal.widgets["FrameAPlasticHoleSpacing"].text, 10);
 
-    FullFrameSet.handleRampHoleHeight = parseFloat(FullFrameSet.widgets["HandleRampHoleHeight"].text, 10);
-    FullFrameSet.handleRampHoleWidth = parseFloat(FullFrameSet.widgets["HandleRampHoleWidth"].text, 10);
-    FullFrameSet.handleRampHoleCentres = parseFloat(FullFrameSet.widgets["HandleRampHoleCentres"].text, 10);
-    FullFrameSet.handleRampHoleInset = parseFloat(FullFrameSet.widgets["HandleRampHoleInset"].text, 10);
-
-
-
-    FullFrameSet.frameCRelativeWidth = parseFloat(FullFrameSet.widgets["FrameCRelativeWidth"].text, 10);
-    FullFrameSet.frameCRelativeHeight = parseFloat(FullFrameSet.widgets["FrameCRelativeHeight"].text, 10);
-    FullFrameSet.frameCBarWidth = parseFloat(FullFrameSet.widgets["FrameCBarWidth"].text, 10);
-    FullFrameSet.frameCBarHeight = parseFloat(FullFrameSet.widgets["FrameCBarHeight"].text, 10);
-
-    FullFrameSet.frameCHingeHoleWidth = parseFloat(FullFrameSet.widgets["FrameCHingeHoleWidth"].text, 10);
-    FullFrameSet.frameCHingeHoleHeight = parseFloat(FullFrameSet.widgets["FrameCHingeHoleHeight"].text, 10);
-    FullFrameSet.frameCHingeHoleCentreW = parseFloat(FullFrameSet.widgets["FrameCHingeHoleCentreW"].text, 10);
-    FullFrameSet.frameCHingeHoleCentreH = parseFloat(FullFrameSet.widgets["FrameCHingeHoleCentreH"].text, 10);
+    SteeliteSlimUniversal.handleRampHoleHeight = parseFloat(SteeliteSlimUniversal.widgets["HandleRampHoleHeight"].text, 10);
+    SteeliteSlimUniversal.handleRampHoleWidth = parseFloat(SteeliteSlimUniversal.widgets["HandleRampHoleWidth"].text, 10);
+    SteeliteSlimUniversal.handleRampHoleCentres = parseFloat(SteeliteSlimUniversal.widgets["HandleRampHoleCentres"].text, 10);
+    SteeliteSlimUniversal.handleRampHoleInset = parseFloat(SteeliteSlimUniversal.widgets["HandleRampHoleInset"].text, 10);
 
 
 
-    FullFrameSet.holeDiameter = parseFloat(FullFrameSet.widgets["HoleDiameter"].text, 10);
- 	FullFrameSet.plasticHoleDiameter = parseFloat(FullFrameSet.widgets["PlasticHoleDiameter"].text, 10);
-    FullFrameSet.bendReliefDiameter = parseFloat(FullFrameSet.widgets["BendReliefDiameter"].text, 10);
-    FullFrameSet.bendReliefSlotWidth = parseFloat(FullFrameSet.widgets["BendReliefSlotWidth"].text, 10);
-    FullFrameSet.bendReliefSlotLength = parseFloat(FullFrameSet.widgets["BendReliefSlotLength"].text, 10);
+    SteeliteSlimUniversal.frameCRelativeWidth = parseFloat(SteeliteSlimUniversal.widgets["FrameCRelativeWidth"].text, 10);
+    SteeliteSlimUniversal.frameCRelativeHeight = parseFloat(SteeliteSlimUniversal.widgets["FrameCRelativeHeight"].text, 10);
+    SteeliteSlimUniversal.frameCBarWidth = parseFloat(SteeliteSlimUniversal.widgets["FrameCBarWidth"].text, 10);
+    SteeliteSlimUniversal.frameCBarHeight = parseFloat(SteeliteSlimUniversal.widgets["FrameCBarHeight"].text, 10);
 
-    FullFrameSet.lugWidth = parseFloat(FullFrameSet.widgets["LugWidth"].text, 10);
-    FullFrameSet.lugHoleOffset = parseFloat(FullFrameSet.widgets["LugHoleOffset"].text, 10);
-    FullFrameSet.lugHoleDiameter = parseFloat(FullFrameSet.widgets["LugHoleDiameter"].text, 10);
-    FullFrameSet.mountingLugInset = parseFloat(FullFrameSet.widgets["MountingLugInset"].text, 10);
-    FullFrameSet.mountingLugMinSpacing = parseFloat(FullFrameSet.widgets["MountingLugMinSpacing"].text, 10);
-    FullFrameSet.mountingLugMaxSpacing = parseFloat(FullFrameSet.widgets["MountingLugMaxSpacing"].text, 10);
+    SteeliteSlimUniversal.frameCHingeHoleWidth = parseFloat(SteeliteSlimUniversal.widgets["FrameCHingeHoleWidth"].text, 10);
+    SteeliteSlimUniversal.frameCHingeHoleHeight = parseFloat(SteeliteSlimUniversal.widgets["FrameCHingeHoleHeight"].text, 10);
+    SteeliteSlimUniversal.frameCHingeHoleCentreW = parseFloat(SteeliteSlimUniversal.widgets["FrameCHingeHoleCentreW"].text, 10);
+    SteeliteSlimUniversal.frameCHingeHoleCentreH = parseFloat(SteeliteSlimUniversal.widgets["FrameCHingeHoleCentreH"].text, 10);
 
-    FullFrameSet.sidebarWidth = parseFloat(FullFrameSet.widgets["SidebarWidth"].text, 10);
-    FullFrameSet.sidebarRelativeHeight = parseFloat(FullFrameSet.widgets["SidebarRelativeHeight"].text, 10);
-    FullFrameSet.sidebarSealHoleSpacing = parseFloat(FullFrameSet.widgets["SidebarSealHoleSpacing"].text, 10);
-    FullFrameSet.sidebarSealHoleDiameter = parseFloat(FullFrameSet.widgets["SidebarSealHoleDiameter"].text, 10);
 
-    FullFrameSet.weldLugWidth = parseFloat(FullFrameSet.widgets["WeldLugWidth"].text, 10);
-    FullFrameSet.weldLugDepth = parseFloat(FullFrameSet.widgets["WeldLugDepth"].text, 10);
-    FullFrameSet.weldLugInset = parseFloat(FullFrameSet.widgets["WeldLugInset"].text, 10);
-    FullFrameSet.weldLugMinSpacing = parseFloat(FullFrameSet.widgets["WeldLugMinSpacing"].text, 10);
-    FullFrameSet.weldLugMaxSpacing = parseFloat(FullFrameSet.widgets["WeldLugMaxSpacing"].text, 10);
-    FullFrameSet.weldLugHoleWidth = parseFloat(FullFrameSet.widgets["WeldLugHoleWidth"].text, 10);
-    FullFrameSet.weldLugHoleClearance = parseFloat(FullFrameSet.widgets["WeldLugHoleClearance"].text, 10);
 
-    FullFrameSet.topbarBarWidth = parseFloat(FullFrameSet.widgets["TopBarWidth"].text, 10);
-    FullFrameSet.topbarRelativeWidth = parseFloat(FullFrameSet.widgets["TopBarRelativeWidth"].text, 10);
-    FullFrameSet.handleRampHolePosition = parseFloat(FullFrameSet.widgets["HandleRampHolePosition"].text, 10);
-    FullFrameSet.includeRampHandle = FullFrameSet.widgets["IncludeRampHandle"].checked;
-    FullFrameSet.topOpener = FullFrameSet.widgets["TopOpener"].checked;
+    SteeliteSlimUniversal.holeDiameter = parseFloat(SteeliteSlimUniversal.widgets["HoleDiameter"].text, 10);
+ 	SteeliteSlimUniversal.plasticHoleDiameter = parseFloat(SteeliteSlimUniversal.widgets["PlasticHoleDiameter"].text, 10);
+    SteeliteSlimUniversal.bendReliefDiameter = parseFloat(SteeliteSlimUniversal.widgets["BendReliefDiameter"].text, 10);
+    SteeliteSlimUniversal.bendReliefSlotWidth = parseFloat(SteeliteSlimUniversal.widgets["BendReliefSlotWidth"].text, 10);
+    SteeliteSlimUniversal.bendReliefSlotLength = parseFloat(SteeliteSlimUniversal.widgets["BendReliefSlotLength"].text, 10);
 
-    if (FullFrameSet.topOpener)
+    SteeliteSlimUniversal.lugWidth = parseFloat(SteeliteSlimUniversal.widgets["LugWidth"].text, 10);
+    SteeliteSlimUniversal.lugHoleOffset = parseFloat(SteeliteSlimUniversal.widgets["LugHoleOffset"].text, 10);
+    SteeliteSlimUniversal.lugHoleDiameter = parseFloat(SteeliteSlimUniversal.widgets["LugHoleDiameter"].text, 10);
+    SteeliteSlimUniversal.mountingLugInset = parseFloat(SteeliteSlimUniversal.widgets["MountingLugInset"].text, 10);
+    SteeliteSlimUniversal.mountingLugMinSpacing = parseFloat(SteeliteSlimUniversal.widgets["MountingLugMinSpacing"].text, 10);
+    SteeliteSlimUniversal.mountingLugMaxSpacing = parseFloat(SteeliteSlimUniversal.widgets["MountingLugMaxSpacing"].text, 10);
+
+    SteeliteSlimUniversal.sidebarWidth = parseFloat(SteeliteSlimUniversal.widgets["SidebarWidth"].text, 10);
+    SteeliteSlimUniversal.sidebarRelativeHeight = parseFloat(SteeliteSlimUniversal.widgets["SidebarRelativeHeight"].text, 10);
+    SteeliteSlimUniversal.sidebarSealHoleSpacing = parseFloat(SteeliteSlimUniversal.widgets["SidebarSealHoleSpacing"].text, 10);
+    SteeliteSlimUniversal.sidebarSealHoleDiameter = parseFloat(SteeliteSlimUniversal.widgets["SidebarSealHoleDiameter"].text, 10);
+
+    SteeliteSlimUniversal.weldLugWidth = parseFloat(SteeliteSlimUniversal.widgets["WeldLugWidth"].text, 10);
+    SteeliteSlimUniversal.weldLugDepth = parseFloat(SteeliteSlimUniversal.widgets["WeldLugDepth"].text, 10);
+    SteeliteSlimUniversal.weldLugInset = parseFloat(SteeliteSlimUniversal.widgets["WeldLugInset"].text, 10);
+    SteeliteSlimUniversal.weldLugMinSpacing = parseFloat(SteeliteSlimUniversal.widgets["WeldLugMinSpacing"].text, 10);
+    SteeliteSlimUniversal.weldLugMaxSpacing = parseFloat(SteeliteSlimUniversal.widgets["WeldLugMaxSpacing"].text, 10);
+    SteeliteSlimUniversal.weldLugHoleWidth = parseFloat(SteeliteSlimUniversal.widgets["WeldLugHoleWidth"].text, 10);
+    SteeliteSlimUniversal.weldLugHoleClearance = parseFloat(SteeliteSlimUniversal.widgets["WeldLugHoleClearance"].text, 10);
+
+    SteeliteSlimUniversal.topbarBarWidth = parseFloat(SteeliteSlimUniversal.widgets["TopBarWidth"].text, 10);
+    SteeliteSlimUniversal.topbarRelativeWidth = parseFloat(SteeliteSlimUniversal.widgets["TopBarRelativeWidth"].text, 10);
+    SteeliteSlimUniversal.handleRampHolePosition = parseFloat(SteeliteSlimUniversal.widgets["HandleRampHolePosition"].text, 10);
+    SteeliteSlimUniversal.includeRampHandle = SteeliteSlimUniversal.widgets["IncludeRampHandle"].checked;
+    SteeliteSlimUniversal.topOpener = SteeliteSlimUniversal.widgets["TopOpener"].checked;
+
+    if (SteeliteSlimUniversal.topOpener)
     	{
     	// Transpose W & H as quick and dirty fix
-        FullFrameSet.finishedWidth =  parseFloat(FullFrameSet.widgets["FinishedHeight"].text, 10);
-        FullFrameSet.finishedHeight =parseFloat(FullFrameSet.widgets["FinishedWidth"].text, 10);
+        SteeliteSlimUniversal.finishedWidth =  parseFloat(SteeliteSlimUniversal.widgets["FinishedHeight"].text, 10);
+        SteeliteSlimUniversal.finishedHeight =parseFloat(SteeliteSlimUniversal.widgets["FinishedWidth"].text, 10);
     	}
     
     
-	FullFrameSet.setDerivedValues();
+	SteeliteSlimUniversal.setDerivedValues();
 
 };
 
@@ -113,90 +116,90 @@ FullFrameSet.setValues = function() {
 // Set default sizes (default sizes are suitable for ICON generation
 //
 
-FullFrameSet.setDefaults = function() {
+SteeliteSlimUniversal.setDefaults = function() {
 
-    FullFrameSet.finishedWidth = 50;
-    FullFrameSet.finishedHeight = 50;
-    FullFrameSet.cutoutWidth = 5;
-    FullFrameSet.cutoutHeight = 5;
-    FullFrameSet.frameABarWidth = 3;
-    FullFrameSet.frameABarHeight = 3;
-    FullFrameSet.frameARelativeHeight = 3;
-    FullFrameSet.frameARelativeWidth = 3;
-    FullFrameSet.frameCBarWidth = 3;
-    FullFrameSet.frameCBarHeight = 3;
-    FullFrameSet.frameCRelativeHeight = 3;
-    FullFrameSet.frameCRelativeWidth = 3;
+    SteeliteSlimUniversal.finishedWidth = 50;
+    SteeliteSlimUniversal.finishedHeight = 50;
+    SteeliteSlimUniversal.cutoutWidth = 5;
+    SteeliteSlimUniversal.cutoutHeight = 5;
+    SteeliteSlimUniversal.frameABarWidth = 3;
+    SteeliteSlimUniversal.frameABarHeight = 3;
+    SteeliteSlimUniversal.frameARelativeHeight = 3;
+    SteeliteSlimUniversal.frameARelativeWidth = 3;
+    SteeliteSlimUniversal.frameCBarWidth = 3;
+    SteeliteSlimUniversal.frameCBarHeight = 3;
+    SteeliteSlimUniversal.frameCRelativeHeight = 3;
+    SteeliteSlimUniversal.frameCRelativeWidth = 3;
 
-    FullFrameSet.frameCHingeHoleWidth = 1;
-    FullFrameSet.frameCHingeHoleHeight = 1;
-    FullFrameSet.frameCHingeHoleCentreW = 1;
-    FullFrameSet.frameCHingeHoleCentreH = 1;
-
-
-    FullFrameSet.holeDiameter = 1;
-    FullFrameSet.plasticHoleDiameter = 1;
-    FullFrameSet.handleRampHoleHeight = 1;
-    FullFrameSet.handleRampHoleWidth = 1;
-    FullFrameSet.handleRampHoleCentres = 1;
-    FullFrameSet.handleRampHoleInset = 1;
+    SteeliteSlimUniversal.frameCHingeHoleWidth = 1;
+    SteeliteSlimUniversal.frameCHingeHoleHeight = 1;
+    SteeliteSlimUniversal.frameCHingeHoleCentreW = 1;
+    SteeliteSlimUniversal.frameCHingeHoleCentreH = 1;
 
 
-    FullFrameSet.bendReliefDiameter = 5;
-    FullFrameSet.bendReliefSlotWidth = 5;
-    FullFrameSet.bendReliefSlotLength = 20;
-    FullFrameSet.lugWidth = 0.5
-    FullFrameSet.lugHoleOffset = 0.3;
-    FullFrameSet.lugHoleDiameter = 0.1;
-    FullFrameSet.sidebarWidth = .1;
-    FullFrameSet.sidebarRelativeHeight = .1;
-    FullFrameSet.weldLugWidth = .1;
-    FullFrameSet.weldLugDepth = .1;
-    FullFrameSet.mountingLugInset = .1;
-    FullFrameSet.weldLugInset = .1;
-    FullFrameSet.weldLugMinSpacing = .1;
-    FullFrameSet.weldLugMaxSpacing = .1;
-    FullFrameSet.mountingLugMinSpacing = .1;
-    FullFrameSet.mountingLugMaxSpacing = .1;
-    FullFrameSet.weldLugHoleWidth = .1;
-    FullFrameSet.weldLugHoleClearance = .1;
-	FullFrameSet.topbarWidth = .1;
-	FullFrameSet.topbarRelativeWidth = .1;
-	FullFrameSet.frameAPlasticHoleSpacing = 1;
-	FullFrameSet.sidebarSealHoleSpacing = 3;	
+    SteeliteSlimUniversal.holeDiameter = 1;
+    SteeliteSlimUniversal.plasticHoleDiameter = 1;
+    SteeliteSlimUniversal.handleRampHoleHeight = 1;
+    SteeliteSlimUniversal.handleRampHoleWidth = 1;
+    SteeliteSlimUniversal.handleRampHoleCentres = 1;
+    SteeliteSlimUniversal.handleRampHoleInset = 1;
+
+
+    SteeliteSlimUniversal.bendReliefDiameter = 5;
+    SteeliteSlimUniversal.bendReliefSlotWidth = 5;
+    SteeliteSlimUniversal.bendReliefSlotLength = 20;
+    SteeliteSlimUniversal.lugWidth = 0.5
+    SteeliteSlimUniversal.lugHoleOffset = 0.3;
+    SteeliteSlimUniversal.lugHoleDiameter = 0.1;
+    SteeliteSlimUniversal.sidebarWidth = .1;
+    SteeliteSlimUniversal.sidebarRelativeHeight = .1;
+    SteeliteSlimUniversal.weldLugWidth = .1;
+    SteeliteSlimUniversal.weldLugDepth = .1;
+    SteeliteSlimUniversal.mountingLugInset = .1;
+    SteeliteSlimUniversal.weldLugInset = .1;
+    SteeliteSlimUniversal.weldLugMinSpacing = .1;
+    SteeliteSlimUniversal.weldLugMaxSpacing = .1;
+    SteeliteSlimUniversal.mountingLugMinSpacing = .1;
+    SteeliteSlimUniversal.mountingLugMaxSpacing = .1;
+    SteeliteSlimUniversal.weldLugHoleWidth = .1;
+    SteeliteSlimUniversal.weldLugHoleClearance = .1;
+	SteeliteSlimUniversal.topbarWidth = .1;
+	SteeliteSlimUniversal.topbarRelativeWidth = .1;
+	SteeliteSlimUniversal.frameAPlasticHoleSpacing = 1;
+	SteeliteSlimUniversal.sidebarSealHoleSpacing = 3;	
  
-	FullFrameSet.setDerivedValues();
+	SteeliteSlimUniversal.setDerivedValues();
 
 };
 
-FullFrameSet.setDerivedValues = function (){
+SteeliteSlimUniversal.setDerivedValues = function (){
 
-    FullFrameSet.frameAWidth = FullFrameSet.finishedWidth+FullFrameSet.frameARelativeWidth;
-    FullFrameSet.frameAHeight = FullFrameSet.finishedHeight+FullFrameSet.frameARelativeHeight;
-    FullFrameSet.frameARoot = new RVector(0,(FullFrameSet.finishedHeight-FullFrameSet.frameARelativeHeight)/2);
+    SteeliteSlimUniversal.frameAWidth = SteeliteSlimUniversal.finishedWidth+SteeliteSlimUniversal.frameARelativeWidth;
+    SteeliteSlimUniversal.frameAHeight = SteeliteSlimUniversal.finishedHeight+SteeliteSlimUniversal.frameARelativeHeight;
+    SteeliteSlimUniversal.frameARoot = new RVector(0,(SteeliteSlimUniversal.finishedHeight-SteeliteSlimUniversal.frameARelativeHeight)/2);
 
-    FullFrameSet.frameCWidth = FullFrameSet.finishedWidth+FullFrameSet.frameCRelativeWidth;
-    FullFrameSet.frameCHeight = FullFrameSet.finishedHeight+FullFrameSet.frameCRelativeHeight;
-    FullFrameSet.frameCRoot = new RVector(-1.2*FullFrameSet.finishedWidth,(FullFrameSet.finishedHeight-FullFrameSet.frameCRelativeHeight)/2);
+    SteeliteSlimUniversal.frameCWidth = SteeliteSlimUniversal.finishedWidth+SteeliteSlimUniversal.frameCRelativeWidth;
+    SteeliteSlimUniversal.frameCHeight = SteeliteSlimUniversal.finishedHeight+SteeliteSlimUniversal.frameCRelativeHeight;
+    SteeliteSlimUniversal.frameCRoot = new RVector(-1.2*SteeliteSlimUniversal.finishedWidth,(SteeliteSlimUniversal.finishedHeight-SteeliteSlimUniversal.frameCRelativeHeight)/2);
 	
-    FullFrameSet.sidebarHeight = FullFrameSet.finishedHeight+FullFrameSet.sidebarRelativeHeight;
-    FullFrameSet.sidebarRoot = new RVector(-1.5*FullFrameSet.finishedWidth,(FullFrameSet.finishedHeight-FullFrameSet.sidebarRelativeHeight)/2);
+    SteeliteSlimUniversal.sidebarHeight = SteeliteSlimUniversal.finishedHeight+SteeliteSlimUniversal.sidebarRelativeHeight;
+    SteeliteSlimUniversal.sidebarRoot = new RVector(-1.5*SteeliteSlimUniversal.finishedWidth,(SteeliteSlimUniversal.finishedHeight-SteeliteSlimUniversal.sidebarRelativeHeight)/2);
 
-    FullFrameSet.topbarRoot = new RVector(FullFrameSet.frameCRoot.getX()+(FullFrameSet.frameCWidth-FullFrameSet.topbarWidth)/2,FullFrameSet.frameCHeight*1.6);
+    SteeliteSlimUniversal.topbarRoot = new RVector(SteeliteSlimUniversal.frameCRoot.getX()+(SteeliteSlimUniversal.frameCWidth-SteeliteSlimUniversal.topbarWidth)/2,SteeliteSlimUniversal.frameCHeight*1.6);
 	
 
 
-    FullFrameSet.topbarWidth = FullFrameSet.finishedWidth+FullFrameSet.topbarRelativeWidth;
-    FullFrameSet.bottombarRoot = new RVector(FullFrameSet.frameCRoot.getX()+(FullFrameSet.frameCWidth-FullFrameSet.topbarWidth)/2,FullFrameSet.frameCHeight*0.2	);
+    SteeliteSlimUniversal.topbarWidth = SteeliteSlimUniversal.finishedWidth+SteeliteSlimUniversal.topbarRelativeWidth;
+    SteeliteSlimUniversal.bottombarRoot = new RVector(SteeliteSlimUniversal.frameCRoot.getX()+(SteeliteSlimUniversal.frameCWidth-SteeliteSlimUniversal.topbarWidth)/2,SteeliteSlimUniversal.frameCHeight*0.2	);
 
 };
 //
 // Main function to generate the frames
 //
 
-FullFrameSet.generate = function(documentInterface, file) {
-    FullFrameSet.setValues();
-    return FullFrameSet.create(documentInterface);
+SteeliteSlimUniversal.generate = function(documentInterface, file) {
+    SteeliteSlimUniversal.setValues();
+    return SteeliteSlimUniversal.create(documentInterface);
 };
 
 //
@@ -204,9 +207,9 @@ FullFrameSet.generate = function(documentInterface, file) {
 //
 
 
-FullFrameSet.generatePreview = function(documentInterface, iconSize) {
-    FullFrameSet.setDefaults();
-    return FullFrameSet.createIcon(documentInterface);
+SteeliteSlimUniversal.generatePreview = function(documentInterface, iconSize) {
+    SteeliteSlimUniversal.setDefaults();
+    return SteeliteSlimUniversal.createIcon(documentInterface);
 
 };
 
@@ -215,23 +218,23 @@ FullFrameSet.generatePreview = function(documentInterface, iconSize) {
 // Plot each of main elements
 //
 
-FullFrameSet.create = function(documentInterface) {
+SteeliteSlimUniversal.create = function(documentInterface) {
     	
 	var addOperation = new RAddObjectsOperation(false);
-    	FullFrameSet.createFrameA(documentInterface, addOperation);
- 	FullFrameSet.createFrameC(documentInterface, addOperation);
-	FullFrameSet.createSidebar(documentInterface, addOperation);
+    	SteeliteSlimUniversal.createFrameA(documentInterface, addOperation);
+ 	SteeliteSlimUniversal.createFrameC(documentInterface, addOperation);
+	SteeliteSlimUniversal.createSidebar(documentInterface, addOperation);
 
 
-		FullFrameSet.createTopbar(documentInterface, addOperation);		
+		SteeliteSlimUniversal.createTopbar(documentInterface, addOperation);		
     
-	FullFrameSet.createBottombar(documentInterface, addOperation);
+	SteeliteSlimUniversal.createBottombar(documentInterface, addOperation);
 // debugger;
-    FullFrameSet.commentBox(documentInterface, addOperation);
+    SteeliteSlimUniversal.commentBox(documentInterface, addOperation);
     
     //var saveAsAction = new SaveAs();
 
-    //saveAsAction.save("../DXF_WINDOW_DRAWINGS/"+FullFrameSet.customerName+"_W_"+FullFrameSet.finishedWidth+"_x_H_"+FullFrameSet.finishedHeight+".dxf","R27",false);    
+    //saveAsAction.save("../DXF_WINDOW_DRAWINGS/"+SteeliteSlimUniversal.customerName+"_W_"+SteeliteSlimUniversal.finishedWidth+"_x_H_"+SteeliteSlimUniversal.finishedHeight+".dxf","R27",false);    
 
     //documentInterface.getDocument().setFileName();    
     
@@ -240,7 +243,7 @@ FullFrameSet.create = function(documentInterface) {
 };
 
 
-FullFrameSet.createIcon = function(documentInterface) {
+SteeliteSlimUniversal.createIcon = function(documentInterface) {
     	
 	var addOperation = new RAddObjectsOperation(false);    
            
@@ -259,19 +262,19 @@ FullFrameSet.createIcon = function(documentInterface) {
 //********************************************************************************************************************
 
 
-FullFrameSet.commentBox = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.commentBox = function(documentInterface, addOperation) {
 
     this.createRectangle(documentInterface, addOperation,new RVector(0,0),400,80);
-    this.createBigText(documentInterface, addOperation,new RVector(5,75),FullFrameSet.customerName);
-	if (FullFrameSet.topOpener)
+    this.createBigText(documentInterface, addOperation,new RVector(5,75),SteeliteSlimUniversal.customerName);
+	if (SteeliteSlimUniversal.topOpener)
 		{
 	    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
-	    this.createBigText(documentInterface, addOperation,new RVector(5,25),FullFrameSet.finishedHeight+"x"+FullFrameSet.finishedWidth);
+	    this.createBigText(documentInterface, addOperation,new RVector(5,25),SteeliteSlimUniversal.finishedHeight+"x"+SteeliteSlimUniversal.finishedWidth);
 		}
 	else
 		{
 	    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
-	    this.createBigText(documentInterface, addOperation,new RVector(5,25),FullFrameSet.finishedWidth+"x"+FullFrameSet.finishedHeight);		
+	    this.createBigText(documentInterface, addOperation,new RVector(5,25),SteeliteSlimUniversal.finishedWidth+"x"+SteeliteSlimUniversal.finishedHeight);		
 		}
     
 
@@ -285,166 +288,166 @@ FullFrameSet.commentBox = function(documentInterface, addOperation) {
 //
 //********************************************************************************************************************
 
-FullFrameSet.createFrameA = function(documentInterface, addOperation) {
-	FullFrameSet.createFrameAOutline(documentInterface, addOperation);
-	FullFrameSet.createFrameAInner(documentInterface, addOperation);	
-	FullFrameSet.drillFrameAHoles(documentInterface, addOperation);
-	FullFrameSet.drillPlasticHoles(documentInterface, addOperation);
+SteeliteSlimUniversal.createFrameA = function(documentInterface, addOperation) {
+	SteeliteSlimUniversal.createFrameAOutline(documentInterface, addOperation);
+	SteeliteSlimUniversal.createFrameAInner(documentInterface, addOperation);	
+	SteeliteSlimUniversal.drillFrameAHoles(documentInterface, addOperation);
+	SteeliteSlimUniversal.drillPlasticHoles(documentInterface, addOperation);
 
-    if (FullFrameSet.includeRampHandle && !FullFrameSet.topOpener)
+    if (SteeliteSlimUniversal.includeRampHandle && !SteeliteSlimUniversal.topOpener)
         {
-        FullFrameSet.drillFrameAHandleRampHolesVariablePosition(documentInterface, addOperation,FullFrameSet.handleRampHolePosition);
+        SteeliteSlimUniversal.drillFrameAHandleRampHolesVariablePosition(documentInterface, addOperation,SteeliteSlimUniversal.handleRampHolePosition);
 	    }
-	// FullFrameSet.drillFrameAHandleRampHoles(documentInterface, addOperation);
+	// SteeliteSlimUniversal.drillFrameAHandleRampHoles(documentInterface, addOperation);
 	return addOperation;
 };
 
 
-FullFrameSet.createFrameAOutline = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.createFrameAOutline = function(documentInterface, addOperation) {
 	
-	var width 			= FullFrameSet.frameAWidth;
-	var height 			= FullFrameSet.frameAHeight;
-	var cutoutWidth 	= FullFrameSet.cutoutWidth;
-	var cutoutHeight 	= FullFrameSet.cutoutHeight;
+	var width 			= SteeliteSlimUniversal.frameAWidth;
+	var height 			= SteeliteSlimUniversal.frameAHeight;
+	var cutoutWidth 	= SteeliteSlimUniversal.cutoutWidth;
+	var cutoutHeight 	= SteeliteSlimUniversal.cutoutHeight;
 	
     var va = new Array(
-            FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth-FullFrameSet.bendReliefSlotWidth,cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(0, cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(0, height-cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth-FullFrameSet.bendReliefSlotWidth, height-cutoutHeight))
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth-SteeliteSlimUniversal.bendReliefSlotWidth,cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(0, cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(0, height-cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth-SteeliteSlimUniversal.bendReliefSlotWidth, height-cutoutHeight))
    );
 
-	FullFrameSet.drawPolyLine(documentInterface, addOperation, va);
+	SteeliteSlimUniversal.drawPolyLine(documentInterface, addOperation, va);
 
     var va2 = new Array(
-            FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth, height-cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth, height)),
-            FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth,height)),
-            FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth,height-cutoutHeight))
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth, height-cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth, height)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth,height)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth,height-cutoutHeight))
      );
 
-	FullFrameSet.drawPolyLine(documentInterface, addOperation, va2);
+	SteeliteSlimUniversal.drawPolyLine(documentInterface, addOperation, va2);
 
     var va3 = new Array(
-           FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth+FullFrameSet.bendReliefSlotWidth,height-cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(width,height-cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(width,cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth+FullFrameSet.bendReliefSlotWidth,cutoutHeight))
+           SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth+SteeliteSlimUniversal.bendReliefSlotWidth,height-cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width,height-cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width,cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth+SteeliteSlimUniversal.bendReliefSlotWidth,cutoutHeight))
     );
 
-	FullFrameSet.drawPolyLine(documentInterface, addOperation, va3);
+	SteeliteSlimUniversal.drawPolyLine(documentInterface, addOperation, va3);
 
     var va4 = new Array(
-            FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth,cutoutHeight)),
-            FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth,0)),
-            FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth,0)),
-            FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth,cutoutHeight))
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth,cutoutHeight)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth,0)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth,0)),
+            SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth,cutoutHeight))
     );
 
-	FullFrameSet.drawPolyLine(documentInterface, addOperation, va4);
+	SteeliteSlimUniversal.drawPolyLine(documentInterface, addOperation, va4);
 
 	// Now insert the bend reliefs
 	
-	FullFrameSet.createVBendRelief(documentInterface, addOperation,FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth-FullFrameSet.bendReliefSlotWidth,cutoutHeight)),1,1);
-	FullFrameSet.createVBendRelief(documentInterface, addOperation,FullFrameSet.frameARoot.operator_add(new RVector(cutoutWidth-FullFrameSet.bendReliefSlotWidth, height-cutoutHeight)),-1,1);
-	FullFrameSet.createVBendRelief(documentInterface, addOperation,FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth,height-cutoutHeight)),-1,-1);
-	FullFrameSet.createVBendRelief(documentInterface, addOperation,FullFrameSet.frameARoot.operator_add(new RVector(width-cutoutWidth,cutoutHeight)),1,-1);
+	SteeliteSlimUniversal.createVBendRelief(documentInterface, addOperation,SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth-SteeliteSlimUniversal.bendReliefSlotWidth,cutoutHeight)),1,1);
+	SteeliteSlimUniversal.createVBendRelief(documentInterface, addOperation,SteeliteSlimUniversal.frameARoot.operator_add(new RVector(cutoutWidth-SteeliteSlimUniversal.bendReliefSlotWidth, height-cutoutHeight)),-1,1);
+	SteeliteSlimUniversal.createVBendRelief(documentInterface, addOperation,SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth,height-cutoutHeight)),-1,-1);
+	SteeliteSlimUniversal.createVBendRelief(documentInterface, addOperation,SteeliteSlimUniversal.frameARoot.operator_add(new RVector(width-cutoutWidth,cutoutHeight)),1,-1);
 
 };
 
 
-FullFrameSet.createFrameAInner = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.createFrameAInner = function(documentInterface, addOperation) {
 	
-	var width 			= FullFrameSet.frameAWidth-2*FullFrameSet.frameABarWidth;
-	var height 			= FullFrameSet.frameAHeight-2*FullFrameSet.frameABarHeight;
-	var widthOffset     = FullFrameSet.frameABarWidth;
-	var heightOffset    = FullFrameSet.frameABarHeight;
+	var width 			= SteeliteSlimUniversal.frameAWidth-2*SteeliteSlimUniversal.frameABarWidth;
+	var height 			= SteeliteSlimUniversal.frameAHeight-2*SteeliteSlimUniversal.frameABarHeight;
+	var widthOffset     = SteeliteSlimUniversal.frameABarWidth;
+	var heightOffset    = SteeliteSlimUniversal.frameABarHeight;
 	
 	
-    FullFrameSet.createRectangle(documentInterface, addOperation,FullFrameSet.frameARoot.operator_add(new RVector(widthOffset,heightOffset)),width,height);
+    SteeliteSlimUniversal.createRectangle(documentInterface, addOperation,SteeliteSlimUniversal.frameARoot.operator_add(new RVector(widthOffset,heightOffset)),width,height);
 
 };
 
-FullFrameSet.drillFrameAHoles = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.drillFrameAHoles = function(documentInterface, addOperation) {
 	
-	FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+11,FullFrameSet.frameAHeight-5.5)), FullFrameSet.holeDiameter);
-	FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+26,FullFrameSet.frameAHeight-11.5)), FullFrameSet.holeDiameter);
-	FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+41,FullFrameSet.frameAHeight-5.5)), FullFrameSet.holeDiameter);
+	SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+11,SteeliteSlimUniversal.frameAHeight-5.5)), SteeliteSlimUniversal.holeDiameter);
+	SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+26,SteeliteSlimUniversal.frameAHeight-11.5)), SteeliteSlimUniversal.holeDiameter);
+	SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+41,SteeliteSlimUniversal.frameAHeight-5.5)), SteeliteSlimUniversal.holeDiameter);
 
-	FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+11,5.5)), FullFrameSet.holeDiameter);
-	FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+26,11.5)), FullFrameSet.holeDiameter);
-	FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+41,5.5)), FullFrameSet.holeDiameter);
+	SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+11,5.5)), SteeliteSlimUniversal.holeDiameter);
+	SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+26,11.5)), SteeliteSlimUniversal.holeDiameter);
+	SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+41,5.5)), SteeliteSlimUniversal.holeDiameter);
 
 };
 
 // Drill v holes 
 
-FullFrameSet.drillPlasticHoles = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.drillPlasticHoles = function(documentInterface, addOperation) {
 
-	var length = FullFrameSet.frameAHeight-2*(FullFrameSet.frameABarHeight+3);
+	var length = SteeliteSlimUniversal.frameAHeight-2*(SteeliteSlimUniversal.frameABarHeight+3);
 		
-	// var s = Math.ceil(length/FullFrameSet.frameAPlasticHoleSpacing);
-	var s = FullFrameSet.calcHoleCount(length,FullFrameSet.frameAPlasticHoleSpacing,3);
+	// var s = Math.ceil(length/SteeliteSlimUniversal.frameAPlasticHoleSpacing);
+	var s = SteeliteSlimUniversal.calcHoleCount(length,SteeliteSlimUniversal.frameAPlasticHoleSpacing,3);
 	spacing = length/(s-1);
 
-	var v = FullFrameSet.createHole(documentInterface, 
+	var v = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.frameARoot.operator_add(new RVector(5,FullFrameSet.frameABarHeight+3)), 
-							FullFrameSet.plasticHoleDiameter);
+							SteeliteSlimUniversal.frameARoot.operator_add(new RVector(5,SteeliteSlimUniversal.frameABarHeight+3)), 
+							SteeliteSlimUniversal.plasticHoleDiameter);
 
-	var v2 = FullFrameSet.createHole(documentInterface, 
+	var v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.frameAWidth-5,FullFrameSet.frameABarHeight+3)), 
-							FullFrameSet.plasticHoleDiameter);
+							SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.frameAWidth-5,SteeliteSlimUniversal.frameABarHeight+3)), 
+							SteeliteSlimUniversal.plasticHoleDiameter);
 	s--;
 	
 	for (var i = 1; i <= s; i++) {
-		v = FullFrameSet.createHole(documentInterface, 
+		v = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v.operator_add(new RVector(0,spacing)), 
-								FullFrameSet.plasticHoleDiameter);
-		v2 = FullFrameSet.createHole(documentInterface, 
+								SteeliteSlimUniversal.plasticHoleDiameter);
+		v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v2.operator_add(new RVector(0,spacing)), 
-								FullFrameSet.plasticHoleDiameter);
+								SteeliteSlimUniversal.plasticHoleDiameter);
 	}
 	
 	
-	//FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+11,FullFrameSet.frameAHeight-5.5)), 99);
+	//SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+11,SteeliteSlimUniversal.frameAHeight-5.5)), 99);
 
 // 
 
-	var width = FullFrameSet.frameAWidth-(FullFrameSet.frameABarWidth+38)-(FullFrameSet.frameABarWidth+3) ;
+	var width = SteeliteSlimUniversal.frameAWidth-(SteeliteSlimUniversal.frameABarWidth+38)-(SteeliteSlimUniversal.frameABarWidth+3) ;
 		
-	//s = Math.ceil(width/FullFrameSet.frameAPlasticHoleSpacing);
-	s = FullFrameSet.calcHoleCount(width,FullFrameSet.frameAPlasticHoleSpacing,3);
+	//s = Math.ceil(width/SteeliteSlimUniversal.frameAPlasticHoleSpacing);
+	s = SteeliteSlimUniversal.calcHoleCount(width,SteeliteSlimUniversal.frameAPlasticHoleSpacing,3);
 	spacing = width/(s-1);
 
-	var v3 = FullFrameSet.createHole(documentInterface, 
+	var v3 = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.frameABarWidth+38,5)), 
-							FullFrameSet.plasticHoleDiameter);
+							SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.frameABarWidth+38,5)), 
+							SteeliteSlimUniversal.plasticHoleDiameter);
 
-	var v4 = FullFrameSet.createHole(documentInterface, 
+	var v4 = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.frameABarWidth+38,FullFrameSet.frameAHeight-5)), 
-							FullFrameSet.plasticHoleDiameter);
+							SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.frameABarWidth+38,SteeliteSlimUniversal.frameAHeight-5)), 
+							SteeliteSlimUniversal.plasticHoleDiameter);
 
 	s--;
 	
 	for (var i = 1; i <= s; i++) {
-		v3 = FullFrameSet.createHole(documentInterface, 
+		v3 = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v3.operator_add(new RVector(spacing,0)), 
-								FullFrameSet.plasticHoleDiameter);
-		v4 = FullFrameSet.createHole(documentInterface, 
+								SteeliteSlimUniversal.plasticHoleDiameter);
+		v4 = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v4.operator_add(new RVector(spacing,0)), 
-								FullFrameSet.plasticHoleDiameter);
+								SteeliteSlimUniversal.plasticHoleDiameter);
 	}
 	
 	
-	//FullFrameSet.createHole(documentInterface, addOperation, FullFrameSet.frameARoot.operator_add(new RVector(FullFrameSet.cutoutWidth+11,FullFrameSet.frameAHeight-5.5)), 99);
+	//SteeliteSlimUniversal.createHole(documentInterface, addOperation, SteeliteSlimUniversal.frameARoot.operator_add(new RVector(SteeliteSlimUniversal.cutoutWidth+11,SteeliteSlimUniversal.frameAHeight-5.5)), 99);
 
 
 
@@ -452,59 +455,59 @@ FullFrameSet.drillPlasticHoles = function(documentInterface, addOperation) {
 };
 
 
-FullFrameSet.drillFrameAHandleRampHoles = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.drillFrameAHandleRampHoles = function(documentInterface, addOperation) {
 	
 	
-    FullFrameSet.createRectangle
+    SteeliteSlimUniversal.createRectangle
     	(
     	documentInterface, 
     	addOperation,
     
-    	FullFrameSet.frameARoot.operator_add(
-    		new RVector(	FullFrameSet.frameAWidth - FullFrameSet.frameABarWidth+FullFrameSet.handleRampHoleInset,
-    						FullFrameSet.frameAHeight/2-FullFrameSet.handleRampHoleCentres/2-FullFrameSet.handleRampHoleHeight/2-FullFrameSet.weldLugHoleClearance)),
+    	SteeliteSlimUniversal.frameARoot.operator_add(
+    		new RVector(	SteeliteSlimUniversal.frameAWidth - SteeliteSlimUniversal.frameABarWidth+SteeliteSlimUniversal.handleRampHoleInset,
+    						SteeliteSlimUniversal.frameAHeight/2-SteeliteSlimUniversal.handleRampHoleCentres/2-SteeliteSlimUniversal.handleRampHoleHeight/2-SteeliteSlimUniversal.weldLugHoleClearance)),
     
-    	FullFrameSet.handleRampHoleWidth+2*FullFrameSet.weldLugHoleClearance,
-    	FullFrameSet.handleRampHoleHeight+2*FullFrameSet.weldLugHoleClearance);
+    	SteeliteSlimUniversal.handleRampHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance,
+    	SteeliteSlimUniversal.handleRampHoleHeight+2*SteeliteSlimUniversal.weldLugHoleClearance);
     
     
-    FullFrameSet.createRectangle(
+    SteeliteSlimUniversal.createRectangle(
     	documentInterface, 
     	addOperation,
-    	FullFrameSet.frameARoot.operator_add(
-    		new RVector(	FullFrameSet.frameAWidth - FullFrameSet.frameABarWidth+FullFrameSet.handleRampHoleInset,
-    						FullFrameSet.frameAHeight/2+FullFrameSet.handleRampHoleCentres/2-FullFrameSet.handleRampHoleHeight/2-FullFrameSet.weldLugHoleClearance)),
-    	FullFrameSet.handleRampHoleWidth+2*FullFrameSet.weldLugHoleClearance,
-    	FullFrameSet.handleRampHoleHeight+2*FullFrameSet.weldLugHoleClearance);
+    	SteeliteSlimUniversal.frameARoot.operator_add(
+    		new RVector(	SteeliteSlimUniversal.frameAWidth - SteeliteSlimUniversal.frameABarWidth+SteeliteSlimUniversal.handleRampHoleInset,
+    						SteeliteSlimUniversal.frameAHeight/2+SteeliteSlimUniversal.handleRampHoleCentres/2-SteeliteSlimUniversal.handleRampHoleHeight/2-SteeliteSlimUniversal.weldLugHoleClearance)),
+    	SteeliteSlimUniversal.handleRampHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance,
+    	SteeliteSlimUniversal.handleRampHoleHeight+2*SteeliteSlimUniversal.weldLugHoleClearance);
     
 
 
 };
 
-FullFrameSet.drillFrameAHandleRampHolesVariablePosition = function(documentInterface, addOperation, fraction) {
+SteeliteSlimUniversal.drillFrameAHandleRampHolesVariablePosition = function(documentInterface, addOperation, fraction) {
 	
 	
-    FullFrameSet.createRectangle
+    SteeliteSlimUniversal.createRectangle
     	(
     	documentInterface, 
     	addOperation,
     
-    	FullFrameSet.frameARoot.operator_add(
-    		new RVector(	FullFrameSet.frameAWidth - FullFrameSet.frameABarWidth+FullFrameSet.handleRampHoleInset,
-    						((FullFrameSet.frameAHeight-24)*fraction)+12-FullFrameSet.handleRampHoleCentres/2-FullFrameSet.handleRampHoleHeight/2-FullFrameSet.weldLugHoleClearance)),
+    	SteeliteSlimUniversal.frameARoot.operator_add(
+    		new RVector(	SteeliteSlimUniversal.frameAWidth - SteeliteSlimUniversal.frameABarWidth+SteeliteSlimUniversal.handleRampHoleInset,
+    						((SteeliteSlimUniversal.frameAHeight-24)*fraction)+12-SteeliteSlimUniversal.handleRampHoleCentres/2-SteeliteSlimUniversal.handleRampHoleHeight/2-SteeliteSlimUniversal.weldLugHoleClearance)),
     
-    	FullFrameSet.handleRampHoleWidth+2*FullFrameSet.weldLugHoleClearance,
-    	FullFrameSet.handleRampHoleHeight+2*FullFrameSet.weldLugHoleClearance);
+    	SteeliteSlimUniversal.handleRampHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance,
+    	SteeliteSlimUniversal.handleRampHoleHeight+2*SteeliteSlimUniversal.weldLugHoleClearance);
     
     
-    FullFrameSet.createRectangle(
+    SteeliteSlimUniversal.createRectangle(
     	documentInterface, 
     	addOperation,
-    	FullFrameSet.frameARoot.operator_add(
-    		new RVector(	FullFrameSet.frameAWidth - FullFrameSet.frameABarWidth+FullFrameSet.handleRampHoleInset,
-    						((FullFrameSet.frameAHeight-24)*fraction)+12+FullFrameSet.handleRampHoleCentres/2-FullFrameSet.handleRampHoleHeight/2-FullFrameSet.weldLugHoleClearance)),
-    	FullFrameSet.handleRampHoleWidth+2*FullFrameSet.weldLugHoleClearance,
-    	FullFrameSet.handleRampHoleHeight+2*FullFrameSet.weldLugHoleClearance);
+    	SteeliteSlimUniversal.frameARoot.operator_add(
+    		new RVector(	SteeliteSlimUniversal.frameAWidth - SteeliteSlimUniversal.frameABarWidth+SteeliteSlimUniversal.handleRampHoleInset,
+    						((SteeliteSlimUniversal.frameAHeight-24)*fraction)+12+SteeliteSlimUniversal.handleRampHoleCentres/2-SteeliteSlimUniversal.handleRampHoleHeight/2-SteeliteSlimUniversal.weldLugHoleClearance)),
+    	SteeliteSlimUniversal.handleRampHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance,
+    	SteeliteSlimUniversal.handleRampHoleHeight+2*SteeliteSlimUniversal.weldLugHoleClearance);
     
 
 
@@ -519,61 +522,61 @@ FullFrameSet.drillFrameAHandleRampHolesVariablePosition = function(documentInter
 //********************************************************************************************************************
 
 
-FullFrameSet.createFrameC = function(documentInterface, addOperation) {
-	FullFrameSet.createFrameCOutline(documentInterface, addOperation);
-	FullFrameSet.drillFrameCHoles(documentInterface, addOperation);
-	FullFrameSet.createFrameCHingeHoles(documentInterface, addOperation);
+SteeliteSlimUniversal.createFrameC = function(documentInterface, addOperation) {
+	SteeliteSlimUniversal.createFrameCOutline(documentInterface, addOperation);
+	SteeliteSlimUniversal.drillFrameCHoles(documentInterface, addOperation);
+	SteeliteSlimUniversal.createFrameCHingeHoles(documentInterface, addOperation);
 };
 
-FullFrameSet.createFrameCOutline = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.createFrameCOutline = function(documentInterface, addOperation) {
 	
-	var width 			= FullFrameSet.frameCWidth;
-	var height 			= FullFrameSet.frameCHeight;
+	var width 			= SteeliteSlimUniversal.frameCWidth;
+	var height 			= SteeliteSlimUniversal.frameCHeight;
 	
-	FullFrameSet.createRectangle(documentInterface, addOperation,FullFrameSet.frameCRoot,width,height);
-	FullFrameSet.createRectangle(documentInterface, addOperation,
-								 FullFrameSet.frameCRoot.operator_add(new RVector(FullFrameSet.frameCBarWidth,FullFrameSet.frameCBarHeight)),
-								 width-2*FullFrameSet.frameCBarWidth,
-								 height-2*FullFrameSet.frameCBarHeight);
+	SteeliteSlimUniversal.createRectangle(documentInterface, addOperation,SteeliteSlimUniversal.frameCRoot,width,height);
+	SteeliteSlimUniversal.createRectangle(documentInterface, addOperation,
+								 SteeliteSlimUniversal.frameCRoot.operator_add(new RVector(SteeliteSlimUniversal.frameCBarWidth,SteeliteSlimUniversal.frameCBarHeight)),
+								 width-2*SteeliteSlimUniversal.frameCBarWidth,
+								 height-2*SteeliteSlimUniversal.frameCBarHeight);
 	
 };
 
 
 // Create hinge holes
 
-FullFrameSet.createFrameCHingeHoles = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.createFrameCHingeHoles = function(documentInterface, addOperation) {
 
-    FullFrameSet.createRectangle(
+    SteeliteSlimUniversal.createRectangle(
     	documentInterface, 
     	addOperation,
-    	FullFrameSet.frameCRoot.operator_add(
-    		new RVector(FullFrameSet.frameCHingeHoleCentreW-FullFrameSet.frameCHingeHoleWidth/2-FullFrameSet.weldLugHoleClearance,
-    						FullFrameSet.frameCHingeHoleCentreH-FullFrameSet.frameCHingeHoleHeight/2-FullFrameSet.weldLugHoleClearance)),
-    	FullFrameSet.frameCHingeHoleWidth+2*FullFrameSet.weldLugHoleClearance,
-    	FullFrameSet.frameCHingeHoleHeight+2*FullFrameSet.weldLugHoleClearance);
+    	SteeliteSlimUniversal.frameCRoot.operator_add(
+    		new RVector(SteeliteSlimUniversal.frameCHingeHoleCentreW-SteeliteSlimUniversal.frameCHingeHoleWidth/2-SteeliteSlimUniversal.weldLugHoleClearance,
+    						SteeliteSlimUniversal.frameCHingeHoleCentreH-SteeliteSlimUniversal.frameCHingeHoleHeight/2-SteeliteSlimUniversal.weldLugHoleClearance)),
+    	SteeliteSlimUniversal.frameCHingeHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance,
+    	SteeliteSlimUniversal.frameCHingeHoleHeight+2*SteeliteSlimUniversal.weldLugHoleClearance);
     	
-      FullFrameSet.createRectangle(
+      SteeliteSlimUniversal.createRectangle(
     	documentInterface, 
     	addOperation,
-    	FullFrameSet.frameCRoot.operator_add(
-    		new RVector(FullFrameSet.frameCHingeHoleCentreW-FullFrameSet.frameCHingeHoleWidth/2-FullFrameSet.weldLugHoleClearance,
-    						FullFrameSet.frameCHeight-FullFrameSet.frameCHingeHoleCentreH-FullFrameSet.frameCHingeHoleHeight/2-FullFrameSet.weldLugHoleClearance)),
-    	FullFrameSet.frameCHingeHoleWidth+2*FullFrameSet.weldLugHoleClearance,
-    	FullFrameSet.frameCHingeHoleHeight+2*FullFrameSet.weldLugHoleClearance);
+    	SteeliteSlimUniversal.frameCRoot.operator_add(
+    		new RVector(SteeliteSlimUniversal.frameCHingeHoleCentreW-SteeliteSlimUniversal.frameCHingeHoleWidth/2-SteeliteSlimUniversal.weldLugHoleClearance,
+    						SteeliteSlimUniversal.frameCHeight-SteeliteSlimUniversal.frameCHingeHoleCentreH-SteeliteSlimUniversal.frameCHingeHoleHeight/2-SteeliteSlimUniversal.weldLugHoleClearance)),
+    	SteeliteSlimUniversal.frameCHingeHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance,
+    	SteeliteSlimUniversal.frameCHingeHoleHeight+2*SteeliteSlimUniversal.weldLugHoleClearance);
     	
     	
   
 };
 
-FullFrameSet.drillFrameCHoles = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.drillFrameCHoles = function(documentInterface, addOperation) {
 	
-	//var count = FullFrameSet.calculateSpacing(50,100,FullFrameSet.frameCWidth-FullFrameSet.frameCBarWidth);
-	//var spacing = (FullFrameSet.frameCWidth-FullFrameSet.frameCBarWidth)/count;
+	//var count = SteeliteSlimUniversal.calculateSpacing(50,100,SteeliteSlimUniversal.frameCWidth-SteeliteSlimUniversal.frameCBarWidth);
+	//var spacing = (SteeliteSlimUniversal.frameCWidth-SteeliteSlimUniversal.frameCBarWidth)/count;
 	
-	//FullFrameSet.createRectangleArray(documentInterface, addOperation, new RVector(-1.5*FullFrameSet.frameCWidth+FullFrameSet.frameCBarWidth/2,FullFrameSet.frameCBarHeight/2), 20, 10, 6, new RVector(80,0));	
-	//FullFrameSet.createRectangleArray(documentInterface, addOperation, new RVector(-1.5*FullFrameSet.frameCWidth+FullFrameSet.frameCBarWidth/2,FullFrameSet.frameCHeight-FullFrameSet.frameCBarHeight/2), 20, 10, 6, new RVector(80,0));	
-	//FullFrameSet.createRectangleArray(documentInterface, addOperation, new RVector(-1.5*FullFrameSet.frameCWidth+FullFrameSet.frameCBarWidth/2,FullFrameSet.frameCBarHeight/2+87), 10, 20, 9, new RVector(0,87));	
-	//FullFrameSet.createRectangleArray(documentInterface, addOperation, new RVector(-0.5*FullFrameSet.frameCWidth-FullFrameSet.frameCBarWidth/2,FullFrameSet.frameCBarHeight/2+87), 10, 20, 9, new RVector(0,87));	
+	//SteeliteSlimUniversal.createRectangleArray(documentInterface, addOperation, new RVector(-1.5*SteeliteSlimUniversal.frameCWidth+SteeliteSlimUniversal.frameCBarWidth/2,SteeliteSlimUniversal.frameCBarHeight/2), 20, 10, 6, new RVector(80,0));	
+	//SteeliteSlimUniversal.createRectangleArray(documentInterface, addOperation, new RVector(-1.5*SteeliteSlimUniversal.frameCWidth+SteeliteSlimUniversal.frameCBarWidth/2,SteeliteSlimUniversal.frameCHeight-SteeliteSlimUniversal.frameCBarHeight/2), 20, 10, 6, new RVector(80,0));	
+	//SteeliteSlimUniversal.createRectangleArray(documentInterface, addOperation, new RVector(-1.5*SteeliteSlimUniversal.frameCWidth+SteeliteSlimUniversal.frameCBarWidth/2,SteeliteSlimUniversal.frameCBarHeight/2+87), 10, 20, 9, new RVector(0,87));	
+	//SteeliteSlimUniversal.createRectangleArray(documentInterface, addOperation, new RVector(-0.5*SteeliteSlimUniversal.frameCWidth-SteeliteSlimUniversal.frameCBarWidth/2,SteeliteSlimUniversal.frameCBarHeight/2+87), 10, 20, 9, new RVector(0,87));	
 	
 	};
 
@@ -583,104 +586,104 @@ FullFrameSet.drillFrameCHoles = function(documentInterface, addOperation) {
 //
 //********************************************************************************************************************
 
-FullFrameSet.createSidebar = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.createSidebar = function(documentInterface, addOperation) {
 	var v;
 	
-	sidebarHeight = FullFrameSet.sidebarHeight;
+	sidebarHeight = SteeliteSlimUniversal.sidebarHeight;
 	
-	v = FullFrameSet.line(documentInterface, addOperation,FullFrameSet.sidebarRoot,FullFrameSet.sidebarRoot.operator_add(new RVector(-1*FullFrameSet.sidebarWidth,0)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FullFrameSet.mountingLugInset)));
-	v = FullFrameSet.createLuggedLine(documentInterface, addOperation,v,sidebarHeight-2*FullFrameSet.mountingLugInset,FullFrameSet.mountingLugMinSpacing,2,Math.PI/2);
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FullFrameSet.mountingLugInset)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(FullFrameSet.sidebarWidth,0)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,SteeliteSlimUniversal.sidebarRoot,SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
+	v = SteeliteSlimUniversal.createLuggedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.mountingLugInset,SteeliteSlimUniversal.mountingLugMinSpacing,2,Math.PI/2);
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
 
-	    FullFrameSet.createHoleLine(documentInterface, addOperation,
+	    SteeliteSlimUniversal.createHoleLine(documentInterface, addOperation,
 	    	new RVector(
-	    		FullFrameSet.frameCRoot.getX()+FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance,
-	    		v.getY()+FullFrameSet.weldLugHoleClearance),
-	    	sidebarHeight-2*FullFrameSet.weldLugInset,
-	    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
+	    		SteeliteSlimUniversal.frameCRoot.getX()+SteeliteSlimUniversal.frameCBarWidth/2+SteeliteSlimUniversal.weldLugHoleWidth/2+SteeliteSlimUniversal.weldLugHoleClearance,
+	    		v.getY()+SteeliteSlimUniversal.weldLugHoleClearance),
+	    	sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,
+	    	SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,
 	    	3*Math.PI/2);
 
-	    FullFrameSet.createHoleLine(documentInterface, addOperation,
+	    SteeliteSlimUniversal.createHoleLine(documentInterface, addOperation,
 	    	new RVector(
-	    		FullFrameSet.frameCRoot.getX()+FullFrameSet.frameCWidth-FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance	,
-	    		v.getY()+FullFrameSet.weldLugHoleClearance),
-	    	sidebarHeight-2*FullFrameSet.weldLugInset,
-	    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
+	    		SteeliteSlimUniversal.frameCRoot.getX()+SteeliteSlimUniversal.frameCWidth-SteeliteSlimUniversal.frameCBarWidth/2+SteeliteSlimUniversal.weldLugHoleWidth/2+SteeliteSlimUniversal.weldLugHoleClearance	,
+	    		v.getY()+SteeliteSlimUniversal.weldLugHoleClearance),
+	    	sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,
+	    	SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,
 	    	3*Math.PI/2);
 
-	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*FullFrameSet.weldLugInset,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,3*Math.PI/2);
+	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
 
 
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	 
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	 
 
 	// Make a clone of the bar a bit to the left
 
-	 if (!FullFrameSet.topOpener)
+	 if (!SteeliteSlimUniversal.topOpener)
 	    	{
 	
-	var newRoot = FullFrameSet.sidebarRoot.operator_add(new RVector(-4*FullFrameSet.sidebarWidth,0));
+	var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*SteeliteSlimUniversal.sidebarWidth,0));
 
-	v = FullFrameSet.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*FullFrameSet.sidebarWidth,0)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FullFrameSet.mountingLugInset)));
-	v = FullFrameSet.createLuggedLine(documentInterface, addOperation,v,sidebarHeight-2*FullFrameSet.mountingLugInset,FullFrameSet.mountingLugMinSpacing,2,Math.PI/2);
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FullFrameSet.mountingLugInset)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(FullFrameSet.sidebarWidth,0)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
-	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*FullFrameSet.weldLugInset,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,3*Math.PI/2);
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
+	v = SteeliteSlimUniversal.createLuggedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.mountingLugInset,SteeliteSlimUniversal.mountingLugMinSpacing,2,Math.PI/2);
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
+	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
 
 	    	}
 	 else
 		 {
 		 // make top style bar
 
-		var newRoot = FullFrameSet.sidebarRoot.operator_add(new RVector(-4*FullFrameSet.sidebarWidth,0));
+		var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*SteeliteSlimUniversal.sidebarWidth,0));
 
-		v = FullFrameSet.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*FullFrameSet.topbarBarWidth,0)));
-		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight)));
-		    FullFrameSet.createUnLuggedLine(documentInterface, addOperation,newRoot.operator_add(new RVector(-1*FullFrameSet.sidebarWidth,FullFrameSet.mountingLugInset)),sidebarHeight-2*FullFrameSet.mountingLugInset,FullFrameSet.mountingLugMinSpacing,2,Math.PI/2);
-		//v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FullFrameSet.mountingLugInset)));
-		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(FullFrameSet.topbarBarWidth,0)));
-		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
-		v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*FullFrameSet.weldLugInset,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,3*Math.PI/2);
-		v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.weldLugInset)));	
+		v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.topbarBarWidth,0)));
+		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight)));
+		    SteeliteSlimUniversal.createUnLuggedLine(documentInterface, addOperation,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.sidebarWidth,SteeliteSlimUniversal.mountingLugInset)),sidebarHeight-2*SteeliteSlimUniversal.mountingLugInset,SteeliteSlimUniversal.mountingLugMinSpacing,2,Math.PI/2);
+		//v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
+		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.topbarBarWidth,0)));
+		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
+		v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
+		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
 		 }
 	 
-// Create seal holes -4*FullFrameSet
+// Create seal holes -4*SteeliteSlimUniversal
 
-	var length = FullFrameSet.sidebarHeight-2*20;
+	var length = SteeliteSlimUniversal.sidebarHeight-2*20;
 		
-	// var s = Math.ceil(length/FullFrameSet.sidebarSealHoleSpacing);
+	// var s = Math.ceil(length/SteeliteSlimUniversal.sidebarSealHoleSpacing);
 	
-	var s = FullFrameSet.calcHoleCount(length,FullFrameSet.sidebarSealHoleSpacing,3);
+	var s = SteeliteSlimUniversal.calcHoleCount(length,SteeliteSlimUniversal.sidebarSealHoleSpacing,3);
 	
 	
 	spacing = length/(s-1);
 
-	var v = FullFrameSet.createHole(documentInterface, 
+	var v = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.sidebarRoot.operator_add(new RVector(-FullFrameSet.sidebarWidth/2,20)), 
-							FullFrameSet.sidebarSealHoleDiameter);
+							SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-SteeliteSlimUniversal.sidebarWidth/2,20)), 
+							SteeliteSlimUniversal.sidebarSealHoleDiameter);
 	
-	var v2 = FullFrameSet.createHole(documentInterface, 
+	var v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.sidebarRoot.operator_add(new RVector( -4*FullFrameSet.sidebarWidth-FullFrameSet.sidebarWidth/2,20)), 
-							FullFrameSet.sidebarSealHoleDiameter);
+							SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector( -4*SteeliteSlimUniversal.sidebarWidth-SteeliteSlimUniversal.sidebarWidth/2,20)), 
+							SteeliteSlimUniversal.sidebarSealHoleDiameter);
 	    	
 	s--; // to allow for one we just did
 	
 	for (var i = 1; i <= s; i++) {
-		v = FullFrameSet.createHole(documentInterface, 
+		v = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v.operator_add(new RVector(0,spacing)), 
-								FullFrameSet.sidebarSealHoleDiameter);
-		v2 = FullFrameSet.createHole(documentInterface, 
+								SteeliteSlimUniversal.sidebarSealHoleDiameter);
+		v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v2.operator_add(new RVector(0,spacing)), 
-								FullFrameSet.sidebarSealHoleDiameter);
+								SteeliteSlimUniversal.sidebarSealHoleDiameter);
 		    }
 
 
@@ -695,109 +698,109 @@ FullFrameSet.createSidebar = function(documentInterface, addOperation) {
 //
 //********************************************************************************************************************
 
-FullFrameSet.createTopbar = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.createTopbar = function(documentInterface, addOperation) {
 
 
-var x = FullFrameSet.topbarRoot.operator_add(new RVector(0,FullFrameSet.topbarBarWidth));
-x = x.operator_add(new RVector(FullFrameSet.topbarWidth,0));
-x = x.operator_add(new RVector(0,-FullFrameSet.topbarBarWidth));
+var x = SteeliteSlimUniversal.topbarRoot.operator_add(new RVector(0,SteeliteSlimUniversal.topbarBarWidth));
+x = x.operator_add(new RVector(SteeliteSlimUniversal.topbarWidth,0));
+x = x.operator_add(new RVector(0,-SteeliteSlimUniversal.topbarBarWidth));
 
-    FullFrameSet.createHoleLine(documentInterface, addOperation,
+    SteeliteSlimUniversal.createHoleLine(documentInterface, addOperation,
     	new RVector(
-    		x.getX()+FullFrameSet.weldLugHoleClearance,
-    		FullFrameSet.frameCRoot.getY()+FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance),
-    	FullFrameSet.topbarWidth,
-    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
+    		x.getX()+SteeliteSlimUniversal.weldLugHoleClearance,
+    		SteeliteSlimUniversal.frameCRoot.getY()+SteeliteSlimUniversal.frameCBarWidth/2+SteeliteSlimUniversal.weldLugHoleWidth/2+SteeliteSlimUniversal.weldLugHoleClearance),
+    	SteeliteSlimUniversal.topbarWidth,
+    	SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,
     	Math.PI);
 
-    FullFrameSet.createHoleLine(documentInterface, addOperation,
+    SteeliteSlimUniversal.createHoleLine(documentInterface, addOperation,
     	new RVector(
-    		x.getX()+FullFrameSet.weldLugHoleClearance,
-    		FullFrameSet.frameCRoot.getY()+FullFrameSet.frameCHeight - FullFrameSet.frameCBarWidth/2+FullFrameSet.weldLugHoleWidth/2+FullFrameSet.weldLugHoleClearance),
-    	FullFrameSet.topbarWidth,
-    	FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,
+    		x.getX()+SteeliteSlimUniversal.weldLugHoleClearance,
+    		SteeliteSlimUniversal.frameCRoot.getY()+SteeliteSlimUniversal.frameCHeight - SteeliteSlimUniversal.frameCBarWidth/2+SteeliteSlimUniversal.weldLugHoleWidth/2+SteeliteSlimUniversal.weldLugHoleClearance),
+    	SteeliteSlimUniversal.topbarWidth,
+    	SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,
     	Math.PI);
 
     
 
-    if (!FullFrameSet.topOpener)
+    if (!SteeliteSlimUniversal.topOpener)
     	{
 
 	var v;
-	v = FullFrameSet.line(documentInterface, addOperation,FullFrameSet.topbarRoot,FullFrameSet.topbarRoot.operator_add(new RVector(0,FullFrameSet.topbarBarWidth)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(FullFrameSet.topbarWidth,0)));
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.topbarBarWidth)));
-	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,SteeliteSlimUniversal.topbarRoot,SteeliteSlimUniversal.topbarRoot.operator_add(new RVector(0,SteeliteSlimUniversal.topbarBarWidth)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.topbarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.topbarBarWidth)));
+	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,Math.PI);
 
 // Create holes to match bottom lugged line
 
-	var inset = FullFrameSet.mountingLugInset;
+	var inset = SteeliteSlimUniversal.mountingLugInset;
 	
-	var	imaginaryP = FullFrameSet.topbarRoot.operator_add(new RVector(0,FullFrameSet.sidebarWidth));
+	var	imaginaryP = SteeliteSlimUniversal.topbarRoot.operator_add(new RVector(0,SteeliteSlimUniversal.sidebarWidth));
 	
-	if (FullFrameSet.topbarWidth<(2*FullFrameSet.mountingLugInset+FullFrameSet.lugWidth))
+	if (SteeliteSlimUniversal.topbarWidth<(2*SteeliteSlimUniversal.mountingLugInset+SteeliteSlimUniversal.lugWidth))
 		{
-		inset = (FullFrameSet.topbarWidth - FullFrameSet.lugWidth)/2;
+		inset = (SteeliteSlimUniversal.topbarWidth - SteeliteSlimUniversal.lugWidth)/2;
 		}
 
-	FullFrameSet.createUnLuggedLine(documentInterface, addOperation,imaginaryP.operator_add(new RVector(inset,0)),FullFrameSet.topbarWidth-2*inset,FullFrameSet.mountingLugMinSpacing,1,0);
+	SteeliteSlimUniversal.createUnLuggedLine(documentInterface, addOperation,imaginaryP.operator_add(new RVector(inset,0)),SteeliteSlimUniversal.topbarWidth-2*inset,SteeliteSlimUniversal.mountingLugMinSpacing,1,0);
 
     	}
 
-// Create seal holes -4*FullFrameSet
+// Create seal holes -4*SteeliteSlimUniversal
 
-	var width = FullFrameSet.topbarWidth-2*20;
+	var width = SteeliteSlimUniversal.topbarWidth-2*20;
 		
-	//var s = Math.ceil(width/FullFrameSet.sidebarSealHoleSpacing);
+	//var s = Math.ceil(width/SteeliteSlimUniversal.sidebarSealHoleSpacing);
 	
-	var s = FullFrameSet.calcHoleCount(width,FullFrameSet.sidebarSealHoleSpacing,3);
+	var s = SteeliteSlimUniversal.calcHoleCount(width,SteeliteSlimUniversal.sidebarSealHoleSpacing,3);
 	
 	spacing = width/(s-1);
 
-    if (!FullFrameSet.topOpener)
+    if (!SteeliteSlimUniversal.topOpener)
     	{
-	var v = FullFrameSet.createHole(documentInterface, 
+	var v = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.topbarRoot.operator_add(new RVector(20,15/2)), 
-							FullFrameSet.sidebarSealHoleDiameter);
+							SteeliteSlimUniversal.topbarRoot.operator_add(new RVector(20,15/2)), 
+							SteeliteSlimUniversal.sidebarSealHoleDiameter);
     	}
     else
     	{
     	
-    	var v = FullFrameSet.createHole(documentInterface, 
+    	var v = SteeliteSlimUniversal.createHole(documentInterface, 
 				addOperation, 
-				FullFrameSet.bottombarRoot.operator_add(new RVector(20,15/2-50)), 
-				FullFrameSet.sidebarSealHoleDiameter);
+				SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(20,15/2-50)), 
+				SteeliteSlimUniversal.sidebarSealHoleDiameter);
     	}
     
-	var v2 = FullFrameSet.createHole(documentInterface, 
+	var v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
-							FullFrameSet.bottombarRoot.operator_add(new RVector(20,15/2)), 
-							FullFrameSet.sidebarSealHoleDiameter);
+							SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(20,15/2)), 
+							SteeliteSlimUniversal.sidebarSealHoleDiameter);
 
 	s--; // to allow for the one we just made
 	
 	
 	for (var i = 1; i <= s; i++) {
-    if (!FullFrameSet.topOpener)
+    if (!SteeliteSlimUniversal.topOpener)
     	{
-	v = FullFrameSet.createHole(documentInterface, 
+	v = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v.operator_add(new RVector(spacing,0)), 
-								FullFrameSet.sidebarSealHoleDiameter);
+								SteeliteSlimUniversal.sidebarSealHoleDiameter);
     	}
     else
     	{
-    	v = FullFrameSet.createHole(documentInterface, 
+    	v = SteeliteSlimUniversal.createHole(documentInterface, 
 				addOperation, 
 				v.operator_add(new RVector(spacing,0)), 
-				FullFrameSet.sidebarSealHoleDiameter);
+				SteeliteSlimUniversal.sidebarSealHoleDiameter);
     	
     	}
-	v2 = FullFrameSet.createHole(documentInterface, 
+	v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v2.operator_add(new RVector(spacing,0)), 
-								FullFrameSet.sidebarSealHoleDiameter);
+								SteeliteSlimUniversal.sidebarSealHoleDiameter);
 	}	
     	
 };
@@ -808,53 +811,53 @@ x = x.operator_add(new RVector(0,-FullFrameSet.topbarBarWidth));
 //
 //********************************************************************************************************************
 
-FullFrameSet.createBottombar = function(documentInterface, addOperation) {
+SteeliteSlimUniversal.createBottombar = function(documentInterface, addOperation) {
 
 	var v;
 
-	v = FullFrameSet.line(documentInterface, addOperation,FullFrameSet.bottombarRoot,FullFrameSet.bottombarRoot.operator_add(new RVector(0,FullFrameSet.sidebarWidth)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,SteeliteSlimUniversal.bottombarRoot,SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(0,SteeliteSlimUniversal.sidebarWidth)));
 	
-	var inset = FullFrameSet.mountingLugInset;
+	var inset = SteeliteSlimUniversal.mountingLugInset;
 
 	
-	if (FullFrameSet.topbarWidth<(2*FullFrameSet.mountingLugInset+FullFrameSet.lugWidth))
+	if (SteeliteSlimUniversal.topbarWidth<(2*SteeliteSlimUniversal.mountingLugInset+SteeliteSlimUniversal.lugWidth))
 		{
-		inset = (FullFrameSet.topbarWidth - FullFrameSet.lugWidth)/2;
+		inset = (SteeliteSlimUniversal.topbarWidth - SteeliteSlimUniversal.lugWidth)/2;
 		}
 	
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
 	
-	v = FullFrameSet.createLuggedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth-2*inset,FullFrameSet.mountingLugMinSpacing,1,0);
+	v = SteeliteSlimUniversal.createLuggedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth-2*inset,SteeliteSlimUniversal.mountingLugMinSpacing,1,0);
 
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
 
 
-	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.sidebarWidth)));
-	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,
-			FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.sidebarWidth)));
+	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth,
+			SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,Math.PI);
 	
-	  if (FullFrameSet.topOpener)
+	  if (SteeliteSlimUniversal.topOpener)
 	    	{
 
-	    	var second_root = FullFrameSet.bottombarRoot.operator_add(new RVector(0,-50));
+	    	var second_root = SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(0,-50));
 
-	    	v = FullFrameSet.line(documentInterface, addOperation,second_root,second_root.operator_add(new RVector(0,FullFrameSet.sidebarWidth)));
+	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,second_root,second_root.operator_add(new RVector(0,SteeliteSlimUniversal.sidebarWidth)));
 	    	
-	    	if (FullFrameSet.topbarWidth<(2*FullFrameSet.mountingLugInset+FullFrameSet.lugWidth))
+	    	if (SteeliteSlimUniversal.topbarWidth<(2*SteeliteSlimUniversal.mountingLugInset+SteeliteSlimUniversal.lugWidth))
 	    		{
-	    		inset = (FullFrameSet.topbarWidth - FullFrameSet.lugWidth)/2;
+	    		inset = (SteeliteSlimUniversal.topbarWidth - SteeliteSlimUniversal.lugWidth)/2;
 	    		}
 	    	
-	    	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
 	    	
-	    	v = FullFrameSet.createLuggedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth-2*inset,FullFrameSet.mountingLugMinSpacing,1,0);
+	    	v = SteeliteSlimUniversal.createLuggedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth-2*inset,SteeliteSlimUniversal.mountingLugMinSpacing,1,0);
 
-	    	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
 
 
-	    	v = FullFrameSet.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FullFrameSet.sidebarWidth)));
-	    	v = FullFrameSet.createTabbedLine(documentInterface, addOperation,v,FullFrameSet.topbarWidth,
-	    			FullFrameSet.weldLugMinSpacing,FullFrameSet.weldLugMaxSpacing,Math.PI);
+	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.sidebarWidth)));
+	    	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth,
+	    			SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,Math.PI);
 
 	    	
 	    	
@@ -876,7 +879,7 @@ FullFrameSet.createBottombar = function(documentInterface, addOperation) {
 // Plot Text
 //********************************************************************************************************************
 
-FullFrameSet.createText = function(documentInterface, addOperation, pos,text ) {
+SteeliteSlimUniversal.createText = function(documentInterface, addOperation, pos,text ) {
         var textData = new RTextData();
         textData.setText(text);
         textData.setTextHeight(4);
@@ -888,7 +891,7 @@ FullFrameSet.createText = function(documentInterface, addOperation, pos,text ) {
         addOperation.addObject(textEntity);
 };
 
-FullFrameSet.createBigText = function(documentInterface, addOperation, pos,text ) {
+SteeliteSlimUniversal.createBigText = function(documentInterface, addOperation, pos,text ) {
     var textData = new RTextData();
     textData.setText(text);
     textData.setTextHeight(20);
@@ -903,7 +906,7 @@ FullFrameSet.createBigText = function(documentInterface, addOperation, pos,text 
 
 
 
-FullFrameSet.drawPolyLine = function(documentInterface, addOperation, vectors) {
+SteeliteSlimUniversal.drawPolyLine = function(documentInterface, addOperation, vectors) {
 
     for ( var i = 0; i < vectors.length-1; i++) {
         var v1 = vectors[i];
@@ -916,7 +919,7 @@ FullFrameSet.drawPolyLine = function(documentInterface, addOperation, vectors) {
 
 
 
-FullFrameSet.createHole = function(documentInterface, addOperation, pos, diameter) {
+SteeliteSlimUniversal.createHole = function(documentInterface, addOperation, pos, diameter) {
 
 	var circleData = new RCircleData(pos,diameter/2);
 	var circle = new RCircleEntity(documentInterface.getDocument(), circleData);
@@ -925,12 +928,12 @@ FullFrameSet.createHole = function(documentInterface, addOperation, pos, diamete
 };
 
 
-FullFrameSet.createBendRelief = function(documentInterface, addOperation, pos, orientation) {
+SteeliteSlimUniversal.createBendRelief = function(documentInterface, addOperation, pos, orientation) {
     
     
-    var diameter 	= FullFrameSet.bendReliefDiameter;
-    var slotWidth = FullFrameSet.bendReliefSlotWidth;
-    var slotLength 	= FullFrameSet.bendReliefSlotLength;
+    var diameter 	= SteeliteSlimUniversal.bendReliefDiameter;
+    var slotWidth = SteeliteSlimUniversal.bendReliefSlotWidth;
+    var slotLength 	= SteeliteSlimUniversal.bendReliefSlotLength;
     
     
     // First make two lines, pos is bottom left for keyhole pointing left bottom right for other
@@ -955,11 +958,11 @@ FullFrameSet.createBendRelief = function(documentInterface, addOperation, pos, o
     
     };
 
-FullFrameSet.createVBendRelief = function(documentInterface, addOperation, pos, vorientation,horientation) {
+SteeliteSlimUniversal.createVBendRelief = function(documentInterface, addOperation, pos, vorientation,horientation) {
     
-    var diameter 	= FullFrameSet.bendReliefDiameter;
-    var slotWidth = FullFrameSet.bendReliefSlotWidth;
-    var slotLength 	= FullFrameSet.bendReliefSlotLength;
+    var diameter 	= SteeliteSlimUniversal.bendReliefDiameter;
+    var slotWidth = SteeliteSlimUniversal.bendReliefSlotWidth;
+    var slotLength 	= SteeliteSlimUniversal.bendReliefSlotLength;
     
     
     // First make two lines, pos is bottom left for keyhole pointing left bottom right for other
@@ -1012,12 +1015,12 @@ FullFrameSet.createVBendRelief = function(documentInterface, addOperation, pos, 
 
 
 
-FullFrameSet.createXBendRelief = function(documentInterface, addOperation, pos, orientation) {
+SteeliteSlimUniversal.createXBendRelief = function(documentInterface, addOperation, pos, orientation) {
     
     
-    var diameter 	= FullFrameSet.bendReliefDiameter;
-    var slotWidth = FullFrameSet.bendReliefSlotWidth;
-    var slotLength 	= FullFrameSet.bendReliefSlotLength;
+    var diameter 	= SteeliteSlimUniversal.bendReliefDiameter;
+    var slotWidth = SteeliteSlimUniversal.bendReliefSlotWidth;
+    var slotLength 	= SteeliteSlimUniversal.bendReliefSlotLength;
     
     
     // First make two lines, pos is bottom left for keyhole pointing left bottom right for other
@@ -1043,7 +1046,7 @@ FullFrameSet.createXBendRelief = function(documentInterface, addOperation, pos, 
     };
 
 
-FullFrameSet.createRectangle = function(documentInterface, addOperation, pos, x, y) {
+SteeliteSlimUniversal.createRectangle = function(documentInterface, addOperation, pos, x, y) {
     var va = new Array(
             new RVector(0, 0),
             new RVector(0, y),
@@ -1063,31 +1066,31 @@ FullFrameSet.createRectangle = function(documentInterface, addOperation, pos, x,
 };
 
 
-FullFrameSet.line = function(documentInterface, addOperation, start,end ) {
+SteeliteSlimUniversal.line = function(documentInterface, addOperation, start,end ) {
         var lineData = new RLineData(start,end);
         var line = new RLineEntity(documentInterface.getDocument(), lineData);
         addOperation.addObject(line);
         return end;
 };
 
-FullFrameSet.createSquare = function(documentInterface, addOperation, pos,x) {
-	FullFrameSet.createSquare(documentInterface, addOperation, pos,x,x);
+SteeliteSlimUniversal.createSquare = function(documentInterface, addOperation, pos,x) {
+	SteeliteSlimUniversal.createSquare(documentInterface, addOperation, pos,x,x);
 };
 
-FullFrameSet.createRectangleArray = function(documentInterface, addOperation, pos, width, height, count, offset) {
+SteeliteSlimUniversal.createRectangleArray = function(documentInterface, addOperation, pos, width, height, count, offset) {
 	var tPos = pos;
 	for (var i=0;i < count; i++) {
-		FullFrameSet.createRectangle(documentInterface, addOperation, tPos, width, height);
+		SteeliteSlimUniversal.createRectangle(documentInterface, addOperation, tPos, width, height);
 		tPos = tPos.operator_add(offset);
 	};
 
 };
 
-FullFrameSet.calcHoleCount = function(length, minSpacing,minLugs) {
-	return FullFrameSet.calcLugCount(length, minSpacing,minLugs);
+SteeliteSlimUniversal.calcHoleCount = function(length, minSpacing,minLugs) {
+	return SteeliteSlimUniversal.calcLugCount(length, minSpacing,minLugs);
 };
 
-FullFrameSet.calcLugCount = function(length, minSpacing,minLugs) {
+SteeliteSlimUniversal.calcLugCount = function(length, minSpacing,minLugs) {
 
 	var segCount = (length - (length % minSpacing))/minSpacing;
     var lugCount = segCount+1;
@@ -1103,7 +1106,7 @@ FullFrameSet.calcLugCount = function(length, minSpacing,minLugs) {
 
 };
 
-FullFrameSet.calculateSpacing = function(minSpacing,maxSpacing,length) {
+SteeliteSlimUniversal.calculateSpacing = function(minSpacing,maxSpacing,length) {
 	var i;
 		
 	if (length < minSpacing) { return 1; }
@@ -1120,17 +1123,17 @@ FullFrameSet.calculateSpacing = function(minSpacing,maxSpacing,length) {
 
 };
 
-FullFrameSet.createMountingLug = function (documentInterface, addOperation, pos, angle) {
+SteeliteSlimUniversal.createMountingLug = function (documentInterface, addOperation, pos, angle) {
 
 	// Y height is 15.5% more than hole centre
 	// lugWidth, lugHoleDiameter, lugHoleOffset
 	var v1 = new RVector(0,0);
-	var v2 = new RVector(FullFrameSet.lugWidth/4,FullFrameSet.lugHoleOffset*1.155);
-	var v3 = new RVector(3*FullFrameSet.lugWidth/4,FullFrameSet.lugHoleOffset*1.155);
-	var v4 = new RVector(FullFrameSet.lugWidth,0);
-	var v5 = new RVector(FullFrameSet.lugHoleOffset,FullFrameSet.lugHoleOffset);
+	var v2 = new RVector(SteeliteSlimUniversal.lugWidth/4,SteeliteSlimUniversal.lugHoleOffset*1.155);
+	var v3 = new RVector(3*SteeliteSlimUniversal.lugWidth/4,SteeliteSlimUniversal.lugHoleOffset*1.155);
+	var v4 = new RVector(SteeliteSlimUniversal.lugWidth,0);
+	var v5 = new RVector(SteeliteSlimUniversal.lugHoleOffset,SteeliteSlimUniversal.lugHoleOffset);
 	
-	//var root = pos.operator_add(new RVector(FullFrameSet.lugWidth/2,0));
+	//var root = pos.operator_add(new RVector(SteeliteSlimUniversal.lugWidth/2,0));
 	var root = pos;
 	
 	v1 = v1.operator_add(root);
@@ -1153,7 +1156,7 @@ FullFrameSet.createMountingLug = function (documentInterface, addOperation, pos,
     var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
     addOperation.addObject(line2);
     
- 	FullFrameSet.createHole(documentInterface, addOperation, v5, FullFrameSet.lugHoleDiameter);
+ 	SteeliteSlimUniversal.createHole(documentInterface, addOperation, v5, SteeliteSlimUniversal.lugHoleDiameter);
  
     var arc = RArc.createFrom2PBulge( v2, v3, -0.89 );
 	var keyHoleData = new RArcData(arc);
@@ -1165,17 +1168,17 @@ FullFrameSet.createMountingLug = function (documentInterface, addOperation, pos,
 };
 
 
-FullFrameSet.createInvisibleMountingLug = function (documentInterface, addOperation, pos, angle) {
+SteeliteSlimUniversal.createInvisibleMountingLug = function (documentInterface, addOperation, pos, angle) {
 
 // Y height is 15.5% more than hole centre
 // lugWidth, lugHoleDiameter, lugHoleOffset
 var v1 = new RVector(0,0);
-var v2 = new RVector(FullFrameSet.lugWidth/4,FullFrameSet.lugHoleOffset*1.155);
-var v3 = new RVector(3*FullFrameSet.lugWidth/4,FullFrameSet.lugHoleOffset*1.155);
-var v4 = new RVector(FullFrameSet.lugWidth,0);
-var v5 = new RVector(FullFrameSet.lugHoleOffset,FullFrameSet.lugHoleOffset);
+var v2 = new RVector(SteeliteSlimUniversal.lugWidth/4,SteeliteSlimUniversal.lugHoleOffset*1.155);
+var v3 = new RVector(3*SteeliteSlimUniversal.lugWidth/4,SteeliteSlimUniversal.lugHoleOffset*1.155);
+var v4 = new RVector(SteeliteSlimUniversal.lugWidth,0);
+var v5 = new RVector(SteeliteSlimUniversal.lugHoleOffset,SteeliteSlimUniversal.lugHoleOffset);
 
-//var root = pos.operator_add(new RVector(FullFrameSet.lugWidth/2,0));
+//var root = pos.operator_add(new RVector(SteeliteSlimUniversal.lugWidth/2,0));
 var root = pos;
 
 v1 = v1.operator_add(root);
@@ -1198,7 +1201,7 @@ v5 = v5.rotate(angle,v1);
 //var line2 = new RLineEntity(documentInterface.getDocument(), lineData2);
 //addOperation.addObject(line2);
 
-	FullFrameSet.createHole(documentInterface, addOperation, v5, FullFrameSet.lugHoleDiameter);
+	SteeliteSlimUniversal.createHole(documentInterface, addOperation, v5, SteeliteSlimUniversal.lugHoleDiameter);
 
 //var arc = RArc.createFrom2PBulge( v2, v3, -0.89 );
 //var keyHoleData = new RArcData(arc);
@@ -1209,16 +1212,16 @@ v5 = v5.rotate(angle,v1);
 return v4; // start point for next object
 };
 
-FullFrameSet.oldcreateInvisibleMountingLug = function (documentInterface, addOperation, pos, angle) {
+SteeliteSlimUniversal.oldcreateInvisibleMountingLug = function (documentInterface, addOperation, pos, angle) {
 
 	// Y height is 15.5% more than hole centre
 	// lugWidth, lugHoleDiameter, lugHoleOffset
 
 	var v1 = new RVector(0,0);
-	var v4 = new RVector(FullFrameSet.lugWidth,0);
-	var v5 = new RVector(FullFrameSet.lugHoleOffset,FullFrameSet.lugHoleOffset);
+	var v4 = new RVector(SteeliteSlimUniversal.lugWidth,0);
+	var v5 = new RVector(SteeliteSlimUniversal.lugHoleOffset,SteeliteSlimUniversal.lugHoleOffset);
 	
-	//var root = pos.operator_add(new RVector(FullFrameSet.lugWidth/2,0));
+	//var root = pos.operator_add(new RVector(SteeliteSlimUniversal.lugWidth/2,0));
 	var root = pos;
 	
 	v1 = v1.operator_add(root);
@@ -1228,12 +1231,12 @@ FullFrameSet.oldcreateInvisibleMountingLug = function (documentInterface, addOpe
 	//No point rotating v1 round itself
 	v5 = v5.rotate(angle,v1);	
 	
- 	FullFrameSet.createHole(documentInterface, addOperation, v5, FullFrameSet.lugHoleDiameter);
+ 	SteeliteSlimUniversal.createHole(documentInterface, addOperation, v5, SteeliteSlimUniversal.lugHoleDiameter);
  	return v4;
 };
 
 
-FullFrameSet.createLuggedLine  = function (documentInterface, addOperation, pos, length, minSpacing, minObjects, orientation) {
+SteeliteSlimUniversal.createLuggedLine  = function (documentInterface, addOperation, pos, length, minSpacing, minObjects, orientation) {
 	
 	// Math.PI/2 = Lugs West
 	// Math.PI = Lugs South
@@ -1248,7 +1251,7 @@ FullFrameSet.createLuggedLine  = function (documentInterface, addOperation, pos,
 	// plot lug and if not last lug - join with a line
 
 	
-	var lugCount = FullFrameSet.calcLugCount(length,minSpacing,minObjects);
+	var lugCount = SteeliteSlimUniversal.calcLugCount(length,minSpacing,minObjects);
 	
 	var joinerOffset;
 	var lastPoint;
@@ -1257,7 +1260,7 @@ FullFrameSet.createLuggedLine  = function (documentInterface, addOperation, pos,
 	if (lugCount == 1) {
 	
 		// Special case - centre the lug
-		var l = length/2-FullFrameSet.lugWidth/2
+		var l = length/2-SteeliteSlimUniversal.lugWidth/2
 
 		if (orientation == 0) { // if the orientation East/West {
 			joinerOffset = new RVector(l,0);
@@ -1269,14 +1272,14 @@ FullFrameSet.createLuggedLine  = function (documentInterface, addOperation, pos,
 			joinerOffset = new RVector(0,-l);
 		}
 
-		var lugStart 		= FullFrameSet.line(documentInterface, addOperation, pos, pos.operator_add(joinerOffset));
-		var lastLineStart	= FullFrameSet.createMountingLug(documentInterface, addOperation, lugStart, orientation);
+		var lugStart 		= SteeliteSlimUniversal.line(documentInterface, addOperation, pos, pos.operator_add(joinerOffset));
+		var lastLineStart	= SteeliteSlimUniversal.createMountingLug(documentInterface, addOperation, lugStart, orientation);
 		
-		lastPoint 		= FullFrameSet.line(documentInterface, addOperation, lastLineStart, lastLineStart.operator_add(joinerOffset));
+		lastPoint 		= SteeliteSlimUniversal.line(documentInterface, addOperation, lastLineStart, lastLineStart.operator_add(joinerOffset));
 		
 	} else {
 
-		var l = (length-FullFrameSet.lugWidth)/(lugCount-1)-FullFrameSet.lugWidth;
+		var l = (length-SteeliteSlimUniversal.lugWidth)/(lugCount-1)-SteeliteSlimUniversal.lugWidth;
 		
 		if (orientation == 0) { // if the orientation East/West {
 			joinerOffset = new RVector(l,0);
@@ -1290,12 +1293,12 @@ FullFrameSet.createLuggedLine  = function (documentInterface, addOperation, pos,
 		
 		// create lug one
 		var lugStart;
-		var lineStart = FullFrameSet.createMountingLug(documentInterface, addOperation, pos, orientation);
+		var lineStart = SteeliteSlimUniversal.createMountingLug(documentInterface, addOperation, pos, orientation);
 		
 		for (var i=0;i<lugCount-1;i++) {
 			// plot lugs and joining lines
-			lugStart = FullFrameSet.line(documentInterface, addOperation, lineStart,lineStart.operator_add(joinerOffset)); 
-			lineStart = FullFrameSet.createMountingLug(documentInterface, addOperation, lugStart, orientation);		
+			lugStart = SteeliteSlimUniversal.line(documentInterface, addOperation, lineStart,lineStart.operator_add(joinerOffset)); 
+			lineStart = SteeliteSlimUniversal.createMountingLug(documentInterface, addOperation, lugStart, orientation);		
 		}	
 
 		
@@ -1307,7 +1310,7 @@ FullFrameSet.createLuggedLine  = function (documentInterface, addOperation, pos,
 };
 
 
-FullFrameSet.createUnLuggedLine  = function (documentInterface, addOperation, pos, length, minSpacing, minObjects, orientation) {
+SteeliteSlimUniversal.createUnLuggedLine  = function (documentInterface, addOperation, pos, length, minSpacing, minObjects, orientation) {
 	
 	// Math.PI/2 = Lugs West
 	// Math.PI = Lugs South
@@ -1321,7 +1324,7 @@ FullFrameSet.createUnLuggedLine  = function (documentInterface, addOperation, po
 	// For each lug
 	// plot lug and if not last lug - join with a line
 	
-	var lugCount = FullFrameSet.calcLugCount(length,minSpacing,minObjects);
+	var lugCount = SteeliteSlimUniversal.calcLugCount(length,minSpacing,minObjects);
 	
 	var joinerOffset;
 	var lastPoint;
@@ -1329,7 +1332,7 @@ FullFrameSet.createUnLuggedLine  = function (documentInterface, addOperation, po
 	if (lugCount == 1) {
 	
 		// Special case - centre the lug
-		var l = length/2-FullFrameSet.lugWidth/2
+		var l = length/2-SteeliteSlimUniversal.lugWidth/2
 
 		if (orientation == 0) { // if the orientation East/West {
 			joinerOffset = new RVector(l,0);
@@ -1341,15 +1344,15 @@ FullFrameSet.createUnLuggedLine  = function (documentInterface, addOperation, po
 			joinerOffset = new RVector(0,-l);
 		}
 
-		//var lugStart 		= FullFrameSet.line(documentInterface, addOperation, pos, pos.operator_add(joinerOffset)); // QQQ is this a bug??
+		//var lugStart 		= SteeliteSlimUniversal.line(documentInterface, addOperation, pos, pos.operator_add(joinerOffset)); // QQQ is this a bug??
 		var lugStart 		= pos.operator_add(joinerOffset); 
-		var lastLineStart	= FullFrameSet.createInvisibleMountingLug(documentInterface, addOperation, lugStart, orientation);
+		var lastLineStart	= SteeliteSlimUniversal.createInvisibleMountingLug(documentInterface, addOperation, lugStart, orientation);
 		
 		lastPoint 		= lastLineStart.operator_add(joinerOffset);
 		
 	} else {
 		
-		var l = (length-FullFrameSet.lugWidth)/(lugCount-1)-FullFrameSet.lugWidth;
+		var l = (length-SteeliteSlimUniversal.lugWidth)/(lugCount-1)-SteeliteSlimUniversal.lugWidth;
 		
 		if (orientation == 0) { // if the orientation East/West {
 			joinerOffset = new RVector(l,0);
@@ -1363,12 +1366,12 @@ FullFrameSet.createUnLuggedLine  = function (documentInterface, addOperation, po
 		
 		// create lug one
 		var lugStart;
-		var lineStart = FullFrameSet.createInvisibleMountingLug(documentInterface, addOperation, pos, orientation);
+		var lineStart = SteeliteSlimUniversal.createInvisibleMountingLug(documentInterface, addOperation, pos, orientation);
 		
 		for (var i=0;i<lugCount-1;i++) {
 			// plot lugs and joining lines
 			lugStart = lineStart.operator_add(joinerOffset); 
-			lineStart = FullFrameSet.createInvisibleMountingLug(documentInterface, addOperation, lugStart, orientation);		
+			lineStart = SteeliteSlimUniversal.createInvisibleMountingLug(documentInterface, addOperation, lugStart, orientation);		
 		}	
 		
 		lastPoint = lineStart;
@@ -1378,7 +1381,7 @@ FullFrameSet.createUnLuggedLine  = function (documentInterface, addOperation, po
 };
 
 
-FullFrameSet.createTabbedLine  = function (documentInterface, addOperation, pos, length, minSpacing, maxSpacing, orientation) {
+SteeliteSlimUniversal.createTabbedLine  = function (documentInterface, addOperation, pos, length, minSpacing, maxSpacing, orientation) {
 	
 	// Math.PI/2 = Lugs West
 	// Math.PI = Lugs South
@@ -1392,12 +1395,12 @@ FullFrameSet.createTabbedLine  = function (documentInterface, addOperation, pos,
 	// For each lug
 	// plot lug and if not last lug - join with a line
 	
-	// var count = FullFrameSet.calculateSpacing(minSpacing,maxSpacing,length);
-	var count = FullFrameSet.calcLugCount(length,minSpacing,3);
+	// var count = SteeliteSlimUniversal.calculateSpacing(minSpacing,maxSpacing,length);
+	var count = SteeliteSlimUniversal.calcLugCount(length,minSpacing,3);
 	var joinerOffset;
 	var lastPoint;
 		
-	var l = (length-FullFrameSet.weldLugWidth)/count-FullFrameSet.weldLugWidth;
+	var l = (length-SteeliteSlimUniversal.weldLugWidth)/count-SteeliteSlimUniversal.weldLugWidth;
 	
 	if (orientation == 0) { // if the orientation East/West {
 		joinerOffset = new RVector(l,0);
@@ -1411,18 +1414,18 @@ FullFrameSet.createTabbedLine  = function (documentInterface, addOperation, pos,
 	
 	// create lug one
 	var lugStart;
-	var lineStart = FullFrameSet.createWeldLug(documentInterface, addOperation, pos, orientation);
+	var lineStart = SteeliteSlimUniversal.createWeldLug(documentInterface, addOperation, pos, orientation);
 	
 	for (var i=0;i<count;i++) {
 		// plot lugs and joining lines
-		lugStart = FullFrameSet.line(documentInterface, addOperation, lineStart,lineStart.operator_add(joinerOffset)); 
-		lineStart = FullFrameSet.createWeldLug(documentInterface, addOperation, lugStart, orientation);			
+		lugStart = SteeliteSlimUniversal.line(documentInterface, addOperation, lineStart,lineStart.operator_add(joinerOffset)); 
+		lineStart = SteeliteSlimUniversal.createWeldLug(documentInterface, addOperation, lugStart, orientation);			
 	}	
 			
 	return lineStart;	
 };
 
-FullFrameSet.createHoleLine  = function (documentInterface, addOperation, pos, length, minSpacing, maxSpacing, orientation) {
+SteeliteSlimUniversal.createHoleLine  = function (documentInterface, addOperation, pos, length, minSpacing, maxSpacing, orientation) {
 	
 	// Math.PI/2 = Lugs West
 	// Math.PI = Lugs South
@@ -1438,58 +1441,58 @@ FullFrameSet.createHoleLine  = function (documentInterface, addOperation, pos, l
 	
 	
 	
-	// var count = FullFrameSet.calculateSpacing(minSpacing,maxSpacing,length);
-	var count = FullFrameSet.calcLugCount(length,minSpacing,3);
+	// var count = SteeliteSlimUniversal.calculateSpacing(minSpacing,maxSpacing,length);
+	var count = SteeliteSlimUniversal.calcLugCount(length,minSpacing,3);
 	var joinerOffset;
 		
-	var l = (length-FullFrameSet.weldLugWidth)/count;
+	var l = (length-SteeliteSlimUniversal.weldLugWidth)/count;
 	
 	var x,y;
 	
 	if (orientation == 0) { // if the orientation East/West {
 		joinerOffset = new RVector(l,0);
-		x = FullFrameSet.weldLugWidth+2*FullFrameSet.weldLugHoleClearance;
-		y = FullFrameSet.weldLugHoleWidth+2*FullFrameSet.weldLugHoleClearance;
+		x = SteeliteSlimUniversal.weldLugWidth+2*SteeliteSlimUniversal.weldLugHoleClearance;
+		y = SteeliteSlimUniversal.weldLugHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance;
 	} else if (orientation == Math.PI/2) {
 		joinerOffset = new RVector(0,l);
-		x = FullFrameSet.weldLugHoleWidth+2*FullFrameSet.weldLugHoleClearance;
-		y = FullFrameSet.weldLugWidth+2*FullFrameSet.weldLugHoleClearance;
+		x = SteeliteSlimUniversal.weldLugHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance;
+		y = SteeliteSlimUniversal.weldLugWidth+2*SteeliteSlimUniversal.weldLugHoleClearance;
 	} else if (orientation == Math.PI) {
 		joinerOffset = new RVector(-l,0);
-		x = -1*(FullFrameSet.weldLugWidth+2*FullFrameSet.weldLugHoleClearance);
-		y = -1*(FullFrameSet.weldLugHoleWidth+2*FullFrameSet.weldLugHoleClearance);
+		x = -1*(SteeliteSlimUniversal.weldLugWidth+2*SteeliteSlimUniversal.weldLugHoleClearance);
+		y = -1*(SteeliteSlimUniversal.weldLugHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance);
 	} else {
 		joinerOffset = new RVector(0,-l); // Tested OK
-		x = -(FullFrameSet.weldLugHoleWidth+2*FullFrameSet.weldLugHoleClearance);
-		y = -(FullFrameSet.weldLugWidth+2*FullFrameSet.weldLugHoleClearance);
+		x = -(SteeliteSlimUniversal.weldLugHoleWidth+2*SteeliteSlimUniversal.weldLugHoleClearance);
+		y = -(SteeliteSlimUniversal.weldLugWidth+2*SteeliteSlimUniversal.weldLugHoleClearance);
 	}
 	
 	// create lug one
 	var lugStart;
-	var lineStart = FullFrameSet.createRectangle(documentInterface, addOperation, pos, x, y);
+	var lineStart = SteeliteSlimUniversal.createRectangle(documentInterface, addOperation, pos, x, y);
 	
 	for (var i=0;i<count;i++) {
 		// plot lugs and joining lines
 		lugStart = lineStart.operator_add(joinerOffset); 
-		lineStart = FullFrameSet.createRectangle(documentInterface, addOperation, lugStart, x, y);			
+		lineStart = SteeliteSlimUniversal.createRectangle(documentInterface, addOperation, lugStart, x, y);			
 	}	
 			
 };
 
 
-FullFrameSet.createWeldLug  = function (documentInterface, addOperation, pos, orientation) {
+SteeliteSlimUniversal.createWeldLug  = function (documentInterface, addOperation, pos, orientation) {
 	
-	v2 = pos.operator_add(new RVector(0,FullFrameSet.weldLugDepth));
-	v3 = v2.operator_add(new RVector(FullFrameSet.weldLugWidth,0));
-	v4 = v3.operator_add(new RVector(0,-FullFrameSet.weldLugDepth));
+	v2 = pos.operator_add(new RVector(0,SteeliteSlimUniversal.weldLugDepth));
+	v3 = v2.operator_add(new RVector(SteeliteSlimUniversal.weldLugWidth,0));
+	v4 = v3.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugDepth));
 	
 	v2 = v2.rotate(orientation,pos);
 	v3 = v3.rotate(orientation,pos);
 	v4 = v4.rotate(orientation,pos);
 	
-	FullFrameSet.line(documentInterface, addOperation,pos,v2);
-	FullFrameSet.line(documentInterface, addOperation,v2,v3);
-	FullFrameSet.line(documentInterface, addOperation,v3,v4);
+	SteeliteSlimUniversal.line(documentInterface, addOperation,pos,v2);
+	SteeliteSlimUniversal.line(documentInterface, addOperation,v2,v3);
+	SteeliteSlimUniversal.line(documentInterface, addOperation,v3,v4);
 	
 	return v4;	
 };
