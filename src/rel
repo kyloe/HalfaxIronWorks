@@ -3,4 +3,6 @@ cp Gothic.ui Gothic.ui.rename
 cp primitives.js primitives.js.rename
 cp FullFrameSet.js FullFrameSet.js.rename
 cp FullFrameSet.ui FullFrameSet.ui.rename
+cp SteeliteSlimUniversale.js SteeliteSlimUniversal.js.rename
+cp SteeliteSlimUniversale.ui SteeliteSlimUniversal.ui.rename
 
