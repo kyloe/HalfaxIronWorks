@@ -32,7 +32,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -428,7 +428,7 @@
       <item row="2" column="1">
        <widget class="QLineEdit" name="FrameCBarWidth">
         <property name="text">
-         <string>30</string>
+         <string>19</string>
         </property>
        </widget>
       </item>
@@ -442,7 +442,7 @@
       <item row="3" column="1">
        <widget class="QLineEdit" name="FrameCBarHeight">
         <property name="text">
-         <string>30</string>
+         <string>19</string>
         </property>
        </widget>
       </item>
@@ -491,14 +491,28 @@
       <item row="6" column="1">
        <widget class="QLineEdit" name="FrameCHingeHoleCentreW">
         <property name="text">
-         <string>8</string>
+         <string>9</string>
         </property>
        </widget>
       </item>
       <item row="7" column="1">
        <widget class="QLineEdit" name="FrameCHingeHoleCentreH">
         <property name="text">
-         <string>4.5</string>
+         <string>5</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_48">
+        <property name="text">
+         <string>Weld Tab Position</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="FlatFrameWeldHolePosition">
+        <property name="text">
+         <string>14.5</string>
         </property>
        </widget>
       </item>
@@ -539,7 +553,7 @@
       <item row="2" column="1">
        <widget class="QLineEdit" name="SidebarRelativeHeight">
         <property name="text">
-         <string>-45</string>
+         <string>-38</string>
         </property>
        </widget>
       </item>
@@ -574,7 +588,7 @@
       <item row="0" column="1">
        <widget class="QLineEdit" name="SidebarWidth">
         <property name="text">
-         <string>15</string>
+         <string>41</string>
         </property>
        </widget>
       </item>
@@ -622,14 +636,14 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="TopBarRelativeWidth">
         <property name="text">
-         <string>-39</string>
+         <string>-44</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="TopBarWidth">
         <property name="text">
-         <string>31</string>
+         <string>41</string>
         </property>
        </widget>
       </item>
