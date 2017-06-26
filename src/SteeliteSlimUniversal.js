@@ -604,13 +604,13 @@ SteeliteSlimUniversal.createSidebar = function(documentInterface, addOperation) 
 	
 	sidebarHeight = SteeliteSlimUniversal.sidebarHeight;
 	
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,SteeliteSlimUniversal.sidebarRoot,SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,SteeliteSlimUniversal.sidebarRoot,SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-1*(SteeliteSlimUniversal.sidebarWidth-14),0)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-14,14)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight-34)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(14,14)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth-14,0)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
 
 	    SteeliteSlimUniversal.createHoleLine(documentInterface, addOperation,
@@ -641,13 +641,13 @@ SteeliteSlimUniversal.createSidebar = function(documentInterface, addOperation) 
 	
 	var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*SteeliteSlimUniversal.sidebarWidth,0));
 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*(SteeliteSlimUniversal.sidebarWidth-14),0)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-14,14)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight-34)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(14,14)));
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth,0)));
+	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth-14,0)));
 	
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
 	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
@@ -658,11 +658,11 @@ SteeliteSlimUniversal.createSidebar = function(documentInterface, addOperation) 
 		 {
 		 // make top style bar
 
-		var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*SteeliteSlimUniversal.sidebarWidth,0));
+		var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*(SteeliteSlimUniversal.sidebarWidth),0));
 
 		v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.topbarBarWidth,0)));
 		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight)));
-		    SteeliteSlimUniversal.createUnLuggedLine(documentInterface, addOperation,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.sidebarWidth,SteeliteSlimUniversal.mountingLugInset)),sidebarHeight-2*SteeliteSlimUniversal.mountingLugInset,SteeliteSlimUniversal.mountingLugMinSpacing,2,Math.PI/2);
+		    SteeliteSlimUniversal.createUnLuggedLine(documentInterface, addOperation,newRoot.operator_add(new RVector(-1*(SteeliteSlimUniversal.sidebarWidth-14),SteeliteSlimUniversal.mountingLugInset)),sidebarHeight-2*SteeliteSlimUniversal.mountingLugInset,SteeliteSlimUniversal.mountingLugMinSpacing,2,Math.PI/2);
 		//v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
 		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.topbarBarWidth,0)));
 		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));	
