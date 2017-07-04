@@ -5,6 +5,9 @@ cp FullFrameSet.js FullFrameSet.js.rename
 cp FullFrameSet.ui FullFrameSet.ui.rename
 cp SteeliteSlimUniversal.js SteeliteSlimUniversal.js.rename
 cp SteeliteSlimUniversal.ui SteeliteSlimUniversal.ui.rename
+cp FixedFrameSpecial.js FixedFrameSecial.js.rename
+cp FixedFrameSpecial.ui FixedFrameSecial.ui.rename
+
 git add --all
 git commit -m "Copy files for release"
 git tag $(date +Release_%d_%m_%g_%H_%M)
