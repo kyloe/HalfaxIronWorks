@@ -302,7 +302,7 @@ FixedFrameSpecial.commentBox = function(documentInterface, addOperation) {
 
     this.createRectangle(documentInterface, addOperation,cbroot.operator_add(new RVector(0,0)),600,120);
     
-    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,100)),FixedFrameSpecial.customerName);
+    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,100))s,FixedFrameSpecial.customerName);
 	if (FixedFrameSpecial.topOpener)
 		{
 	    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,50)),"Dimensions (WxH)");
