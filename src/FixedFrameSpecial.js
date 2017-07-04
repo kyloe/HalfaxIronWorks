@@ -81,8 +81,8 @@ FixedFrameSpecial.setValues = function() {
 
     FixedFrameSpecial.lugWidth = parseFloat(FixedFrameSpecial.widgets["LugWidth"].text, 10);
     FixedFrameSpecial.lugLength = parseFloat(FixedFrameSpecial.widgets["LugLength"].text, 10);
-    FixedFrameSpecial.lugHoleOffset = parseFloat(FixedFrameSpecial.widgets["LugHoleOffset"].text, 10);
-    FixedFrameSpecial.lugHoleDiameter = parseFloat(FixedFrameSpecial.widgets["LugHoleDiameter"].text, 10);
+    //FixedFrameSpecial.lugHoleOffset = parseFloat(FixedFrameSpecial.widgets["LugHoleOffset"].text, 10);
+    //FixedFrameSpecial.lugHoleDiameter = parseFloat(FixedFrameSpecial.widgets["LugHoleDiameter"].text, 10);
     FixedFrameSpecial.mountingLugInset = parseFloat(FixedFrameSpecial.widgets["MountingLugInset"].text, 10);
     FixedFrameSpecial.mountingLugMinSpacing = parseFloat(FixedFrameSpecial.widgets["MountingLugMinSpacing"].text, 10);
     FixedFrameSpecial.mountingLugMaxSpacing = parseFloat(FixedFrameSpecial.widgets["MountingLugMaxSpacing"].text, 10);
@@ -115,6 +115,22 @@ FixedFrameSpecial.setValues = function() {
         FixedFrameSpecial.finishedWidth =  parseFloat(FixedFrameSpecial.widgets["FinishedHeight"].text, 10);
         FixedFrameSpecial.finishedHeight =parseFloat(FixedFrameSpecial.widgets["FinishedWidth"].text, 10);
     	}
+    
+    
+    FixedFrameSpecial.setScrewHoleDiameter = parseFloat(FixedFrameSpecial.widgets["SetScrewHoleDiameter"].text, 10);
+    FixedFrameSpecial.setScrewHoleOffset = parseFloat(FixedFrameSpecial.widgets["SetScrewHoleOffset"].text, 10);
+    FixedFrameSpecial.locatingPinHoleDiameter = parseFloat(FixedFrameSpecial.widgets["LocatingPinHoleDiameter"].text, 10);
+    FixedFrameSpecial.locatingPinHoleOffset = parseFloat(FixedFrameSpecial.widgets["LocatingPinHoleOffset"].text, 10);
+    
+    FixedFrameSpecial.tabbedBarTappedHoleDiameter = parseFloat(FixedFrameSpecial.widgets["TabbedBarTappedHoleDiameter"].text, 10);
+    FixedFrameSpecial.tabbedBarTappedHoleOffset = parseFloat(FixedFrameSpecial.widgets["TabbedBarTappedHoleOffset"].text, 10);
+    FixedFrameSpecial.tabbedBarClearanceHoleDiameter = parseFloat(FixedFrameSpecial.widgets["TabbedBarClearanceHoleDiameter"].text, 10);
+    FixedFrameSpecial.tabbedBarClearanceHoleOffset = parseFloat(FixedFrameSpecial.widgets["TabbedBarClearanceHoleOffset"].text, 10);
+
+    FixedFrameSpecial.simpleBarTappedHoleDiameter = parseFloat(FixedFrameSpecial.widgets["SimpleBarTappedHoleDiameter"].text, 10);
+    FixedFrameSpecial.simpleBarTappedHoleOffset = parseFloat(FixedFrameSpecial.widgets["SimpleBarTappedHoleOffset"].text, 10);
+
+
     
     
 	FixedFrameSpecial.setDerivedValues();
@@ -195,10 +211,13 @@ FixedFrameSpecial.setDerivedValues = function (){
     FixedFrameSpecial.sidebarRoot = new RVector(-1.5*FixedFrameSpecial.finishedWidth,(FixedFrameSpecial.finishedHeight-FixedFrameSpecial.sidebarRelativeHeight)/2);
 
     FixedFrameSpecial.tabbedBarWidth = FixedFrameSpecial.finishedWidth+FixedFrameSpecial.tabbedBarRelativeWidth;
-    FixedFrameSpecial.tabbedBarRoot = new RVector(FixedFrameSpecial.frameARoot.getX()+(FixedFrameSpecial.frameAWidth-FixedFrameSpecial.tabbedBarWidth)/2,FixedFrameSpecial.frameCHeight*1.6);
+    FixedFrameSpecial.tabbedBarRoot = new RVector(FixedFrameSpecial.frameARoot.getX()+(FixedFrameSpecial.frameAWidth-FixedFrameSpecial.tabbedBarWidth)/2,FixedFrameSpecial.frameARoot.getY()-100);
 
     FixedFrameSpecial.simpleBarWidth = FixedFrameSpecial.finishedWidth+FixedFrameSpecial.simpleBarRelativeWidth;    
-    FixedFrameSpecial.simpleBarRoot = new RVector(FixedFrameSpecial.frameARoot.getX()+(FixedFrameSpecial.frameAWidth-FixedFrameSpecial.simpleBarWidth)/2,FixedFrameSpecial.frameCHeight*0.2	);
+    FixedFrameSpecial.simpleBarRoot = 
+        new RVector(
+                FixedFrameSpecial.frameARoot.getX()+(FixedFrameSpecial.frameAWidth-FixedFrameSpecial.simpleBarWidth)/2,
+                FixedFrameSpecial.frameARoot.getY()-200);
 
 };
 //
@@ -279,18 +298,21 @@ FixedFrameSpecial.createIcon = function(di)
 
 FixedFrameSpecial.commentBox = function(documentInterface, addOperation) {
 
-    this.createRectangle(documentInterface, addOperation,new RVector(0,0),600,120);
-    this.createBigText(documentInterface, addOperation,new RVector(5,100),FixedFrameSpecial.customerName);
+    cbroot = new RVector(this.frameARoot.getX(), this.frameARoot.getY()-400)
+
+    this.createRectangle(documentInterface, addOperation,cbroot.operator_add(new RVector(0,0)),600,120);
+    
+    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,100)),FixedFrameSpecial.customerName);
 	if (FixedFrameSpecial.topOpener)
 		{
-	    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
-	    this.createBigText(documentInterface, addOperation,new RVector(5,25),FixedFrameSpecial.finishedHeight+"x"+FixedFrameSpecial.finishedWidth);
+	    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,50)),"Dimensions (WxH)");
+	    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,25)),FixedFrameSpecial.finishedHeight+"x"+FixedFrameSpecial.finishedWidth);
 		}
 	else
 		{
-	    this.createBigText(documentInterface, addOperation,new RVector(5,75),"Fixed Frame (Special)");			
-	    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
-	    this.createBigText(documentInterface, addOperation,new RVector(5,25),FixedFrameSpecial.finishedWidth+"x"+FixedFrameSpecial.finishedHeight);		
+	    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,75)),"Fixed Frame (Special)");			
+	    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,50)),"Dimensions (WxH)");
+	    this.createBigText(documentInterface, addOperation,cbroot.operator_add(new RVector(5,25)),FixedFrameSpecial.finishedWidth+"x"+FixedFrameSpecial.finishedHeight);		
 		}
     
 
@@ -317,7 +339,6 @@ FixedFrameSpecial.createFrameA = function(documentInterface, addOperation) {
 	// FixedFrameSpecial.drillFrameAHandleRampHoles(documentInterface, addOperation);
 	return addOperation;
 };
-
 
 FixedFrameSpecial.createFrameAOutline = function(documentInterface, addOperation) {
 	
@@ -747,34 +768,92 @@ FixedFrameSpecial.createHorizontalBars = function(documentInterface, addOperatio
     x2 = FixedFrameSpecial.frameARoot.getX()+FixedFrameSpecial.frameAWidth-FixedFrameSpecial.tabHoleInset;
     w = FixedFrameSpecial.lugWidth;
     l = FixedFrameSpecial.lugLength;
+    tto = FixedFrameSpecial.tabbedBarTappedHoleOffset;
+    ttd = FixedFrameSpecial.tabbedBarTappedHoleDiameter;
+    tco = FixedFrameSpecial.tabbedBarClearanceHoleOffset;
+    tcd = FixedFrameSpecial.tabbedBarClearanceHoleDiameter;
+    sto = FixedFrameSpecial.simpleBarTappedHoleOffset;
+    std = FixedFrameSpecial.simpleBarTappedHoleDiameter;
+
+
+    tbr = FixedFrameSpecial.tabbedBarRoot
+    sbr = FixedFrameSpecial.simpleBarRoot
     // First tabbed bar
 
     var v;
 
     v = FixedFrameSpecial.tabbedBarRoot;
-    
+    // start line to tab
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(x1-w/2,v.getY()));
-    
-    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()-l));
-    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX()+w,v.getY()));
-    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()+l));
-    
+    // tab 1
+    //down
+    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()-l+2));    
+    var arc = new RArcData(v.operator_add(new RVector(2,0)),2,Math.PI,3*Math.PI/2,false); 
+    var curve = new RArcEntity(documentInterface.getDocument(), arc);
+    addOperation.addObject(curve);
+    //across
+    v = v.operator_add(new RVector(2,-2));
+    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX()+w-4,v.getY()));
+    var arc = new RArcData(v.operator_add(new RVector(0,2)),2,3*Math.PI/2,0,false); 
+    var curve = new RArcEntity(documentInterface.getDocument(), arc);
+    addOperation.addObject(curve);
+    //up
+    v = v.operator_add(new RVector(2,2));
+    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()+l-2));
+
+
+    // joiner
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(x2-w/2,v.getY()));
-    
-    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()-l));
-    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX()+w,v.getY()));
-    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()+l));
-    
+
+    // tab 2
+    //down
+    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()-l+2));    
+    var arc = new RArcData(v.operator_add(new RVector(2,0)),2,Math.PI,3*Math.PI/2,false); 
+    var curve = new RArcEntity(documentInterface.getDocument(), arc);
+    addOperation.addObject(curve);
+    //across
+    v = v.operator_add(new RVector(2,-2));
+    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX()+w-4,v.getY()));
+    var arc = new RArcData(v.operator_add(new RVector(0,2)),2,3*Math.PI/2,0,false); 
+    var curve = new RArcEntity(documentInterface.getDocument(), arc);
+    addOperation.addObject(curve);
+    //up
+    v = v.operator_add(new RVector(2,2));
+    v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(v.getX(),v.getY()+l-2));
+
+
+    //end
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,new RVector(FixedFrameSpecial.tabbedBarRoot.getX()+FixedFrameSpecial.tabbedBarWidth,v.getY()));
-    
-    
+    //up back down
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FixedFrameSpecial.tabbedBarHeight)));
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,v.operator_add(new RVector(-FixedFrameSpecial.tabbedBarWidth,0)));
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FixedFrameSpecial.tabbedBarHeight)));
     
     // Add tabs and holes - note tabHoleInset is relative to X pos of frameARoot, and Ypos of object root 
     
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x1,tbr.getY()+tto),ttd);
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x2,tbr.getY()+tto),ttd);
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x1,tbr.getY()+tco),tcd);
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x2,tbr.getY()+tco),tcd);
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x1,sbr.getY()+sto),std);
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x2,sbr.getY()+sto),std);
+
+    // Add holes that are in teh Frame A - as they use the same centers
     
+    var sso = FixedFrameSpecial.setScrewHoleOffset;
+    var ssd = FixedFrameSpecial.setScrewHoleDiameter;
+    var lpo = FixedFrameSpecial.locatingPinHoleOffset;
+    var lpd = FixedFrameSpecial.locatingPinHoleDiameter;
+    var far = FixedFrameSpecial.frameARoot;
+
+
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x1,far.getY()+lpo),lpd);
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x2,far.getY()+lpo),lpd);
+
+    ssy = FixedFrameSpecial.frameAHeight-FixedFrameSpecial.frameABarHeight+sso;
+
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x1,far.getY()+ssy),ssd);
+    FixedFrameSpecial.createHole(documentInterface, addOperation,new RVector(x2,far.getY()+ssy),ssd);
 
 
     // Second simple bar
@@ -784,6 +863,10 @@ FixedFrameSpecial.createHorizontalBars = function(documentInterface, addOperatio
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,FixedFrameSpecial.simpleBarHeight)));
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,v.operator_add(new RVector(-FixedFrameSpecial.simpleBarWidth,0)));
     v = FixedFrameSpecial.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-FixedFrameSpecial.simpleBarHeight)));
+
+
+
+
 
     }
 
