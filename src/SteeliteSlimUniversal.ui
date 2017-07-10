@@ -32,7 +32,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -113,7 +113,7 @@
       <item row="4" column="1">
        <widget class="QCheckBox" name="TopOpener">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
          <string/>
@@ -123,7 +123,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label_46">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
          <string>Top Opener</string>
