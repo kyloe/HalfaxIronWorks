@@ -25,7 +25,7 @@ SteeliteSlimUniversal.init = function(formWidget) {
     }
         
     this.twoLetterCode = "SU";
-	this.versionNumber = "01";
+	this.versionNumber = "02";
 
 };
 
@@ -248,8 +248,7 @@ SteeliteSlimUniversal.create = function(documentInterface) {
 };
 
 
-SteeliteSlimUniversal.createIcon = function(di)
-	{
+SteeliteSlimUniversal.createIcon = function(di) {
 
 	var ao = new RAddObjectsOperation(false);
 
@@ -267,6 +266,7 @@ SteeliteSlimUniversal.createIcon = function(di)
 	return ao;
 	};
 
+
 //********************************************************************************************************************
 //
 //  Comments box
@@ -280,6 +280,7 @@ SteeliteSlimUniversal.commentBox = function(documentInterface, addOperation) {
     this.createBigText(documentInterface, addOperation,new RVector(5,100),SteeliteSlimUniversal.customerName);
 	if (SteeliteSlimUniversal.topOpener)
 		{
+	    this.createBigText(documentInterface, addOperation,new RVector(5,75),"Steelite Slim Universal (Top Opener)");			
 	    this.createBigText(documentInterface, addOperation,new RVector(5,50),"Dimensions (WxH)");
 	    this.createBigText(documentInterface, addOperation,new RVector(5,25),SteeliteSlimUniversal.finishedHeight+"x"+SteeliteSlimUniversal.finishedWidth);
 		}
@@ -294,7 +295,6 @@ SteeliteSlimUniversal.commentBox = function(documentInterface, addOperation) {
     return addOperation;
 };
 
-
 //********************************************************************************************************************
 //
 //   Frame A
@@ -302,12 +302,12 @@ SteeliteSlimUniversal.commentBox = function(documentInterface, addOperation) {
 //********************************************************************************************************************
 
 SteeliteSlimUniversal.createFrameA = function(documentInterface, addOperation) {
-	SteeliteSlimUniversal.createFrameAOutline(documentInterface, addOperation);
-	SteeliteSlimUniversal.createFrameAInner(documentInterface, addOperation);	
-	SteeliteSlimUniversal.drillFrameAHoles(documentInterface, addOperation);
-	SteeliteSlimUniversal.drillPlasticHoles(documentInterface, addOperation);
+	this.createFrameAOutline(documentInterface, addOperation);
+	this.createFrameAInner(documentInterface, addOperation);	
+	this.drillFrameAHoles(documentInterface, addOperation);
+	this.drillPlasticHoles(documentInterface, addOperation);
 
-    if (SteeliteSlimUniversal.includeRampHandle && !SteeliteSlimUniversal.topOpener)
+    if (this.includeRampHandle && !SteeliteSlimUniversal.topOpener)
         {
         SteeliteSlimUniversal.drillFrameAHandleRampHolesVariablePosition(documentInterface, addOperation,SteeliteSlimUniversal.handleRampHolePosition);
 	    }
@@ -645,56 +645,56 @@ SteeliteSlimUniversal.createSidebar = function(documentInterface, addOperation) 
 
 	// Make a clone of the bar a bit to the left
 
-	 if (!SteeliteSlimUniversal.topOpener)
-	    	{
-	
-	var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*SteeliteSlimUniversal.sidebarWidth,0));
+	 //~ if (!SteeliteSlimUniversal.topOpener)
+        //~ {
 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*(SteeliteSlimUniversal.sidebarWidth-14),0)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-14,14)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight-34)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(14,14)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth-14,0)));
-	
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-3,0)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset+6)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(3,0)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
+        var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*SteeliteSlimUniversal.sidebarWidth,0));
 
-	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*(SteeliteSlimUniversal.sidebarWidth-14),0)));
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-14,14)));
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight-34)));
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(14,14)));
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,3)));
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.sidebarWidth-14,0)));
 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-3,0)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset+6)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(3,0)));	 
-	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-3,0)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset+6)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(3,0)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
 
-	    	}
-	 else
-		 {
-		 // make top style bar
+        v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
 
-		var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*(SteeliteSlimUniversal.sidebarWidth),0));
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-3,0)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset+6)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(3,0)));	 
+        v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
 
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.topbarBarWidth,0)));
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight)));
-		    SteeliteSlimUniversal.createUnLuggedLine(documentInterface, addOperation,newRoot.operator_add(new RVector(-1*(SteeliteSlimUniversal.sidebarWidth-14),SteeliteSlimUniversal.mountingLugInset)),sidebarHeight-2*SteeliteSlimUniversal.mountingLugInset,SteeliteSlimUniversal.mountingLugMinSpacing,2,Math.PI/2);
-		    
-		//v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.topbarBarWidth,0)));
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));
-			
-		v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
-
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-3,0)));	 
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset+6)));	 
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(3,0)));	 
-		v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
-		 }
+        //~ }
+	 //~ else
+		 //~ {
+		 //~ // make top style bar
+//~ 
+		//~ var newRoot = SteeliteSlimUniversal.sidebarRoot.operator_add(new RVector(-4*(SteeliteSlimUniversal.sidebarWidth),0));
+//~ 
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,newRoot,newRoot.operator_add(new RVector(-1*SteeliteSlimUniversal.topbarBarWidth,0)));
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,sidebarHeight)));
+		    //~ SteeliteSlimUniversal.createUnLuggedLine(documentInterface, addOperation,newRoot.operator_add(new RVector(-1*(SteeliteSlimUniversal.sidebarWidth-14),SteeliteSlimUniversal.mountingLugInset)),sidebarHeight-2*SteeliteSlimUniversal.mountingLugInset,SteeliteSlimUniversal.mountingLugMinSpacing,2,Math.PI/2);
+		    //~ 
+		//~ //v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,SteeliteSlimUniversal.mountingLugInset)));
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(SteeliteSlimUniversal.topbarBarWidth,0)));
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset)));
+			//~ 
+		//~ v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,sidebarHeight-2*SteeliteSlimUniversal.weldLugInset,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,3*Math.PI/2);
+//~ 
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(-3,0)));	 
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.weldLugInset+6)));	 
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(3,0)));	 
+		//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-3)));	 
+		 //~ }
 	 
 // Create seal holes -4*SteeliteSlimUniversal
 
@@ -769,8 +769,8 @@ x = x.operator_add(new RVector(0,-SteeliteSlimUniversal.topbarBarWidth));
 
     
 
-    if (!SteeliteSlimUniversal.topOpener)
-    	{
+    //~ if (!SteeliteSlimUniversal.topOpener)
+    	//~ {
 
 		var v;
 		v = SteeliteSlimUniversal.line(documentInterface, addOperation,SteeliteSlimUniversal.topbarRoot,SteeliteSlimUniversal.topbarRoot.operator_add(new RVector(0,SteeliteSlimUniversal.topbarBarWidth-14)));
@@ -793,7 +793,7 @@ x = x.operator_add(new RVector(0,-SteeliteSlimUniversal.topbarBarWidth));
 
 		//SteeliteSlimUniversal.createUnLuggedLine(documentInterface, addOperation,imaginaryP.operator_add(new RVector(inset,0)),SteeliteSlimUniversal.topbarWidth-2*inset,SteeliteSlimUniversal.mountingLugMinSpacing,1,0);
 
-    	}
+    	//~ }
 
 	// Create seal holes -4*SteeliteSlimUniversal
 
@@ -805,21 +805,21 @@ x = x.operator_add(new RVector(0,-SteeliteSlimUniversal.topbarBarWidth));
 	
 	spacing = width/(s-1);
 
-    if (!SteeliteSlimUniversal.topOpener)
-    	{
+    //~ if (!SteeliteSlimUniversal.topOpener)
+    	//~ {
 		var v = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
 							SteeliteSlimUniversal.topbarRoot.operator_add(new RVector(20,15/2)), 
 							SteeliteSlimUniversal.sidebarSealHoleDiameter);
-    	}
-    else
-    	{
-    	
-    	var v = SteeliteSlimUniversal.createHole(documentInterface, 
-				addOperation, 
-				SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(20,15/2-50)), 
-				SteeliteSlimUniversal.sidebarSealHoleDiameter);
-    	}
+    	//~ }
+    //~ else
+    	//~ {
+    	//~ 
+    	//~ var v = SteeliteSlimUniversal.createHole(documentInterface, 
+				//~ addOperation, 
+				//~ SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(20,15/2-50)), 
+				//~ SteeliteSlimUniversal.sidebarSealHoleDiameter);
+    	//~ }
     
 	var v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 							addOperation, 
@@ -830,21 +830,21 @@ x = x.operator_add(new RVector(0,-SteeliteSlimUniversal.topbarBarWidth));
 	
 	
 	for (var i = 1; i <= s; i++) {
-    if (!SteeliteSlimUniversal.topOpener)
-    	{
+    //~ if (!SteeliteSlimUniversal.topOpener)
+    	//~ {
 	v = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v.operator_add(new RVector(spacing,0)), 
 								SteeliteSlimUniversal.sidebarSealHoleDiameter);
-    	}
-    else
-    	{
-    	v = SteeliteSlimUniversal.createHole(documentInterface, 
-				addOperation, 
-				v.operator_add(new RVector(spacing,0)), 
-				SteeliteSlimUniversal.sidebarSealHoleDiameter);
-    	
-    	}
+    	//~ }
+    //~ else
+    	//~ {
+    	//~ v = SteeliteSlimUniversal.createHole(documentInterface, 
+				//~ addOperation, 
+				//~ v.operator_add(new RVector(spacing,0)), 
+				//~ SteeliteSlimUniversal.sidebarSealHoleDiameter);
+    	//~ 
+    	//~ }
 	v2 = SteeliteSlimUniversal.createHole(documentInterface, 
 								addOperation, 
 								v2.operator_add(new RVector(spacing,0)), 
@@ -870,33 +870,33 @@ SteeliteSlimUniversal.createBottombar = function(documentInterface, addOperation
 	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.topbarBarWidth+14)));
 	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth,SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,Math.PI);
 
-	  if (SteeliteSlimUniversal.topOpener)
-	    	{
-
-	    	var second_root = SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(0,-50));
-
-	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,second_root,second_root.operator_add(new RVector(0,SteeliteSlimUniversal.sidebarWidth)));
-	    	
-	    	if (SteeliteSlimUniversal.topbarWidth<(2*SteeliteSlimUniversal.mountingLugInset+SteeliteSlimUniversal.lugWidth))
-	    		{
-	    		inset = (SteeliteSlimUniversal.topbarWidth - SteeliteSlimUniversal.lugWidth)/2;
-	    		}
-	    	
-	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
-	    	
-	    	v = SteeliteSlimUniversal.createLuggedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth-2*inset,SteeliteSlimUniversal.mountingLugMinSpacing,1,0);
-
-	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
-
-
-	    	v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.sidebarWidth)));
-	    	v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth,
-	    			SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,Math.PI);
-
-	    	
-	    	
-	    	}
-	
+	  //~ if (SteeliteSlimUniversal.topOpener)
+	    	//~ {
+//~ 
+	    	//~ var second_root = SteeliteSlimUniversal.bottombarRoot.operator_add(new RVector(0,-50));
+//~ 
+	    	//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,second_root,second_root.operator_add(new RVector(0,SteeliteSlimUniversal.sidebarWidth)));
+	    	//~ 
+	    	//~ if (SteeliteSlimUniversal.topbarWidth<(2*SteeliteSlimUniversal.mountingLugInset+SteeliteSlimUniversal.lugWidth))
+	    		//~ {
+	    		//~ inset = (SteeliteSlimUniversal.topbarWidth - SteeliteSlimUniversal.lugWidth)/2;
+	    		//~ }
+	    	//~ 
+	    	//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+	    	//~ 
+	    	//~ v = SteeliteSlimUniversal.createLuggedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth-2*inset,SteeliteSlimUniversal.mountingLugMinSpacing,1,0);
+//~ 
+	    	//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(inset,0)));
+//~ 
+//~ 
+	    	//~ v = SteeliteSlimUniversal.line(documentInterface, addOperation,v,v.operator_add(new RVector(0,-SteeliteSlimUniversal.sidebarWidth)));
+	    	//~ v = SteeliteSlimUniversal.createTabbedLine(documentInterface, addOperation,v,SteeliteSlimUniversal.topbarWidth,
+	    			//~ SteeliteSlimUniversal.weldLugMinSpacing,SteeliteSlimUniversal.weldLugMaxSpacing,Math.PI);
+//~ 
+	    	//~ 
+	    	//~ 
+	    	//~ }
+	//~ 
 	
 };
 
